@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -27,7 +28,7 @@ namespace API.Controllers
         {
             var request = new ActivityGetAllQueryRequest();
 
-            var response = await _mediator.Send(request);
+            var response = await _mediator.Send(request, HttpContext.RequestAborted);
 
             return Ok(response);
         }
@@ -40,7 +41,7 @@ namespace API.Controllers
         {
             var request = new ActivityGetByIdQueryRequest() { Id = id };
 
-            var response = await _mediator.Send(request);
+            var response = await _mediator.Send(request, HttpContext.RequestAborted);
 
             return Ok(response);
         }
