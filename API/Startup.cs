@@ -1,4 +1,4 @@
-using Application.Activities;
+using Application.Query.Activities;
 using FrameworkCore.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -40,7 +40,7 @@ namespace API
                 );
             });
 
-            services.AddMediatR(typeof(ActivityGetAllQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetAllActivityQueryHandler).GetTypeInfo().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
