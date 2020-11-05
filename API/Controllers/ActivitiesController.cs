@@ -63,7 +63,7 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Add(AddToActivityCommandRequest request)
+        public async Task<IActionResult> Add([FromBody]AddToActivityCommandRequest request)
         {
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
             return Ok(response);
