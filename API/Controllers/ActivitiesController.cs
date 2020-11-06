@@ -68,5 +68,24 @@ namespace API.Controllers
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
             return Ok(response);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Edit(Guid id, [FromBody] EditActivityCommandRequest request)
+        {
+            if (id != request.Id)
+                throw new Exception("Bad request");
+
+            var response = await _mediator.Send(request, HttpContext.RequestAborted);
+            return Ok(response);
+        }
     }
 }
