@@ -70,7 +70,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Edit activity
         /// </summary>
         /// <param name="id"></param>
         /// <param name="request"></param>
@@ -83,6 +83,24 @@ namespace API.Controllers
         {
             if (id != request.Id)
                 throw new Exception("Bad request");
+
+            var response = await _mediator.Send(request, HttpContext.RequestAborted);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Delete activity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var request = new DeleteActivityCommandRequest { Id = id };
 
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
             return Ok(response);
