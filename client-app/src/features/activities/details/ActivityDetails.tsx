@@ -8,7 +8,7 @@ interface IProps{
     setSelectedActivity : (activity : IActivity | null) => void;
 }
 
-export const ActivityDetails: React.FC<IProps> = ({
+const ActivityDetails: React.FC<IProps> = ({
   activity,
   setEditMode,
   setSelectedActivity
@@ -45,3 +45,5 @@ export const ActivityDetails: React.FC<IProps> = ({
     </Card>
   );
 };
+
+export default ActivityDetails;

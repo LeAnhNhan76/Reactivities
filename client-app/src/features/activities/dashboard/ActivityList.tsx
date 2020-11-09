@@ -10,7 +10,7 @@ interface IProps {
     target: string
 }
 
-export const ActivityList: React.FC<IProps> = ({
+const ActivityList: React.FC<IProps> = ({
   activities,
   selectActivity,
   deleteActivity,
@@ -55,3 +55,5 @@ export const ActivityList: React.FC<IProps> = ({
     </Segment>
   );
 };
+
+export default ActivityList;
