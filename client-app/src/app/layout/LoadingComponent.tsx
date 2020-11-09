@@ -6,7 +6,7 @@ interface IProps{
     content: string
 }
 
-export const LoadingComponent: React.FC<IProps> = ({ inverted, content }) => {
+const LoadingComponent: React.FC<IProps> = ({ inverted, content }) => {
   inverted = true;
   return (
     <Dimmer active inverted={inverted}>
@@ -14,3 +14,5 @@ export const LoadingComponent: React.FC<IProps> = ({ inverted, content }) => {
     </Dimmer>
   );
 };
+
+export default LoadingComponent;
