@@ -13,6 +13,7 @@ const App = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null >(null);
   const [editMode, setEditMode] = useState(false);
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [target, setTarget] = useState('')
