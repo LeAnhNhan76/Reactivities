@@ -1,5 +1,4 @@
-﻿using Domain;
-using MediatR;
+﻿using MediatR;
 using Persistence;
 using System;
 using System.Threading;
@@ -21,6 +20,7 @@ namespace Application.Command.Activities
     public class EditActivityCommandHandler : IRequestHandler<EditActivityCommandRequest>
     {
         private readonly ApplicationDbContext _context;
+
         public EditActivityCommandHandler(ApplicationDbContext context)
         {
             this._context = context;
@@ -40,7 +40,7 @@ namespace Application.Command.Activities
             activity.City = request.City ?? activity.City;
             activity.Venue = request.Venue ?? activity.Venue;
 
-            var success = await _context.SaveChangesAsync() >  0;
+            var success = await _context.SaveChangesAsync() > 0;
 
             if (success) return Unit.Value;
             throw new Exception("Problem saving changes");

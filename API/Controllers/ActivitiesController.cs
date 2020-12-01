@@ -79,7 +79,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Edit(Guid id, [FromBody] EditActivityCommandRequest request)
+        public async Task<IActionResult> Edit(Guid id, [FromForm] EditActivityCommandRequest request)
         {
             if (id != request.Id)
                 throw new Exception("Bad request");
