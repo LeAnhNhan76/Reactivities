@@ -26,7 +26,7 @@ namespace API
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
-                opt.UseSqlite(Configuration.GetConnectionString(Constant.DefaultConnection));
+                opt.UseSqlite(Configuration.GetConnectionString(Constant.DefaultConnection)).EnableSensitiveDataLogging();
             });
             services.AddControllers();
 
