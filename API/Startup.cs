@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Persistence;
 using System.Reflection;
 
@@ -30,6 +31,11 @@ namespace API
             });
             services.AddControllers();
 
+            services.AddSwaggerGen(options => 
+            {
+                options.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Reactivities APIs", Version = "v1" });
+            });
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowCors", policy =>
@@ -52,6 +58,12 @@ namespace API
             }
 
             // app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Reactivites API V1");
+            });
 
             app.UseRouting();
 
