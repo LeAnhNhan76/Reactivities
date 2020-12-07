@@ -41,7 +41,7 @@ namespace Application.Command.Activities
             activity.Venue = request.Venue ?? activity.Venue;
 
             var success = await _context.SaveChangesAsync() > 0;
-            //Comment from local
+            // Comment from github
             if (success) return Unit.Value;
             throw new Exception("Problem saving changes");
         }
