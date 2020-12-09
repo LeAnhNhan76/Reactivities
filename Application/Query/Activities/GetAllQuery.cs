@@ -22,7 +22,8 @@ namespace Application.Query.Activities
 
         public async Task<IReadOnlyCollection<Activity>> Handle(GetAllActivityQueryRequest request, CancellationToken cancellationToken)
         {
-        // Coment 7
+            // Comment 1
+            // Coment 7
             var response = await _context.Activities.ToListAsync(cancellationToken);
 
             return response;
