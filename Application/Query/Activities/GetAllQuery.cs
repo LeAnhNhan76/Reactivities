@@ -17,6 +17,7 @@ namespace Application.Query.Activities
         public GetAllActivityQueryHandler(ApplicationDbContext context)
         {
             this._context = context;
+            //Comenet 9
         }
 
         public async Task<IReadOnlyCollection<Activity>> Handle(GetAllActivityQueryRequest request, CancellationToken cancellationToken)
