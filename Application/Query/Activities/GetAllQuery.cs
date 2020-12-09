@@ -25,6 +25,7 @@ namespace Application.Query.Activities
             var response = await _context.Activities.ToListAsync(cancellationToken);
 
             return response;
+            // Comment 8
         }
     }
 }
