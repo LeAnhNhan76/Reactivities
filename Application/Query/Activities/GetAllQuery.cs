@@ -17,6 +17,7 @@ namespace Application.Query.Activities
         public GetAllActivityQueryHandler(ApplicationDbContext context)
         {
             this._context = context;
+            // comment 3
             //Comenet 9
         }
 
@@ -28,6 +29,8 @@ namespace Application.Query.Activities
 
             return response;
             // Comment 8
+        
+            // comment 2        
         }
     }
 }
