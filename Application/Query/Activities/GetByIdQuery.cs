@@ -23,9 +23,11 @@ namespace Application.Query.Activities
 
         public async Task<Activity> Handle(GetByIdActivityQueryRequest request, CancellationToken cancellationToken)
         {
+            // comment 111
             var response = await _context.Activities.FindAsync(request.Id);
 
             return response;
+            //comment 10
         }
     }
 }
