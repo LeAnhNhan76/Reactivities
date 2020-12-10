@@ -19,6 +19,7 @@ namespace API.Controllers
         public ActivitiesController(IMediator mediator)
         {
             this._mediator = mediator;
+            // comment from remote
         }
 
         /// <summary>
