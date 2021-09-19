@@ -15,23 +15,24 @@ namespace API
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this._configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(opt =>
+            services.AddDbContextPool<ApplicationDbContext>(opt =>
             {
-                opt.UseSqlite(Configuration.GetConnectionString(Constant.DefaultConnection)).EnableSensitiveDataLogging();
+                opt.UseSqlServer(
+                    _configuration.GetConnectionString(Constant.DefaultConnection)
+                ).EnableSensitiveDataLogging();
             });
             services.AddControllers();
 
-            services.AddSwaggerGen(options => 
+            services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Reactivities APIs", Version = "v1" });
             });
