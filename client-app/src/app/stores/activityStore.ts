@@ -39,6 +39,7 @@ class ActivityStore{
     @action createActivity = async (activity: IActivity) => {
         this.submitting = true;
         try{
+            console.log(activity);
             await agent.Activities.create(activity);
             this.activities.push(activity);
             this.submitting = false;
@@ -54,6 +55,13 @@ class ActivityStore{
     @action openCreateForm = () => {
         this.editMode = true;
         this.selectedActivity = undefined;
+    }
+
+    @action deleteActivity = async (id: string) => {
+        await agent.Activities.delete(id).then((result) => {
+            console.log('result', result);
+            this.activities = [...this.activities.filter(x => x.id !== id)];
+        });
     }
 }
 
