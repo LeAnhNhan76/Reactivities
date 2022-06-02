@@ -14,7 +14,7 @@ const NavBar : React.FC = () => {
                 </Menu.Item>
                 <Menu.Item name='Activities' />
                 <Menu.Item>
-                    <Button onClick={activityStore.openCreateForm} positive content='Create a new Activity'/>
+                    <Button onClick={() => activityStore.openForm} positive content='Create a new Activity'/>
                 </Menu.Item>
             </Container>
       </Menu>
