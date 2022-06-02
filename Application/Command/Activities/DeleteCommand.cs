@@ -1,5 +1,6 @@
 ﻿using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Threading;
@@ -22,7 +23,7 @@ namespace Application.Command.Activities
 
         public async Task<Unit> Handle(DeleteActivityCommandRequest request, CancellationToken cancellationToken)
         {
-            var activity = await _context.Activities.FindAsync(request.Id);
+            var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (activity == null)
                 throw new Exception("The item is not found!");
