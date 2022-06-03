@@ -45,14 +45,7 @@ const App = () => {
       <Fragment>
         <NavBar />
         <Container style={{ marginTop: "7em" }}>
-          <ActivityDashboard
-            setEditMode={setEditMode}
-            setSelectedActivity={setSelectedActivity}
-            editActivity={handleEditActivity}
-            deleteActivity={handleDeleteActivity}
-            submitting={submitting}
-            target={target}
-          />
+          <ActivityDashboard />
         </Container>
       </Fragment>
     );

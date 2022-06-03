@@ -2,46 +2,36 @@ import React, {FormEvent, useContext, useState} from 'react'
 import { Button, Form, Segment } from 'semantic-ui-react'
 import { IActivity } from '../../../app/models/activity'
 import {v4 as uuid} from 'uuid';
-import ActivityStore from '../../../app/stores/activityStore';
+import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite'
 
-interface IProps {
-  setEditMode: (editMode: boolean) => void;
-  activity: IActivity | null;
-  editActivity: (activity: IActivity) => void;
-  submitting: boolean;
-}
+const ActivityForm: React.FC = () => {
+  const {activityStore} = useStore();
+  const {
+    createActivity,
+    selectedActivity,
+    setEditMode,
+    submitting,
+    editActivity
+  } = activityStore;
 
-const ActivityForm: React.FC<IProps> = ({
-  setEditMode,
-  activity: initializeFormState,
-  editActivity,
-  submitting
-}) => {
-  const activityStore = useContext(ActivityStore);
-  const {createActivity} = activityStore;
-  const initializeForm = () => {
-    if (initializeFormState) return initializeFormState;
-    else {
-      return {
-        id: "",
-        title: "",
-        description: "",
-        category: "",
-        date: "",
-        city: "",
-        venue: "",
-      };
-    }
-  };
+  const isCreate = selectedActivity === null || selectedActivity === undefined;
 
-  const [activity, setActivity] = useState<IActivity>(initializeForm);
+  let activity = isCreate ? {
+    id: "",
+    title: "",
+    description: "",
+    category: "",
+    date: "",
+    city: "",
+    venue: "",
+  } : selectedActivity ;
 
   const handleInputChange = (
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.currentTarget;
-    setActivity({ ...activity, [name]: value });
+    activity = {...activity, [name]: value};
   };
 
   const handleSubmit = () => {

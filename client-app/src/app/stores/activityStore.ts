@@ -9,6 +9,7 @@ export default class ActivityStore{
     @observable loadingInitial = false;
     @observable editMode = false;
     @observable submitting = false;
+    @observable target: string | undefined;
 
     @computed get activitiesByDate() {
         return this.activities.sort((a, b) => Date.parse(a.date)- Date.parse(b.date))
@@ -33,11 +34,13 @@ export default class ActivityStore{
 
     @action selectActivity = (id: string) => {
         this.selectedActivity = this.activities.find(a => a.id === id);
+        this.target = this.selectedActivity?.id;
         this.setEditMode(false);
     }
 
     @action cancelSelectedActivity = () => {
         this.selectedActivity = undefined;
+        this.target = undefined;
         this.setEditMode(false);
     }
 
@@ -54,6 +57,22 @@ export default class ActivityStore{
             this.setEditMode(false);
             console.log(error);
         }
+    }
+
+    @action editActivity = async (activity: IActivity) => {
+        this.submitting = true;
+        try {
+            await agent.Activities.update(activity);
+            let edittingActivity = this.activities.filter(x => x.id = activity.id)[0];
+            edittingActivity = {...activity};
+            this.setSubmitting(false);
+            this.setEditMode(false);
+        }
+        catch (error) {
+            this.setSubmitting(false);
+            this.setEditMode(false);
+            console.log(error);
+        } 
     }
 
     @action openForm = (id?: string): void => {
@@ -73,7 +92,7 @@ export default class ActivityStore{
 
     private setLoadingInitial = (state: boolean) => this.loadingInitial = state;
 
-    private setEditMode = (state: boolean) => this.editMode = state;
+    public setEditMode = (state: boolean) => this.editMode = state;
 
     private setSubmitting = (state: boolean) => this.submitting = state;
 }
