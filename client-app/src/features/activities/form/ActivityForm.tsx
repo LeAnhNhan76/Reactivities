@@ -1,9 +1,8 @@
-import React, {FormEvent, useContext, useState} from 'react'
-import { Button, Form, Segment } from 'semantic-ui-react'
-import { IActivity } from '../../../app/models/activity'
+import React, {FormEvent} from 'react';
+import { Button, Form, Segment } from 'semantic-ui-react';
 import {v4 as uuid} from 'uuid';
 import { useStore } from '../../../app/stores/store';
-import { observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite';
 
 const ActivityForm: React.FC = () => {
   const {activityStore} = useStore();
@@ -17,15 +16,7 @@ const ActivityForm: React.FC = () => {
 
   const isCreate = selectedActivity === null || selectedActivity === undefined;
 
-  let activity = isCreate ? {
-    id: "",
-    title: "",
-    description: "",
-    category: "",
-    date: "",
-    city: "",
-    venue: "",
-  } : selectedActivity ;
+  let activity: any = isCreate ? {} : selectedActivity ;
 
   const handleInputChange = (
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement>

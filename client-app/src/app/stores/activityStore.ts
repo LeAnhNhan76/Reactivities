@@ -3,19 +3,16 @@ import {IActivity} from '../models/activity';
 import agent from '../api/agent';
 
 export default class ActivityStore{
-
-    @observable activities: IActivity[] = [];
-    @observable selectedActivity : IActivity | undefined;
-    @observable loadingInitial = false;
-    @observable editMode = false;
-    @observable submitting = false;
-    @observable target: string | undefined;
-
-    @computed get activitiesByDate() {
-        return this.activities.sort((a, b) => Date.parse(a.date)- Date.parse(b.date))
-    }
-
-    @action loadActivities = async () => {
+  @observable activities: IActivity[] = [];
+  @observable selectedActivity : IActivity | undefined;
+  @observable loadingInitial = false;
+  @observable editMode = false;
+  @observable submitting = false;
+  @observable target: string | undefined;
+  @computed get activitiesByDate() {
+    return this.activities.sort((a, b) => Date.parse(a.date)- Date.parse(b.date))
+  }
+  @action loadActivities = async () => {
         this.setLoadingInitial(true);
 
         try{
@@ -30,69 +27,59 @@ export default class ActivityStore{
             console.log(error);
             this.setLoadingInitial(false);
         }
+  }
+  @action selectActivity = (id: string) => {
+    this.selectedActivity = this.activities.find(a => a.id === id);
+    this.target = this.selectedActivity?.id;
+    this.setEditMode(false);
+  }
+  @action cancelSelectedActivity = () => {
+    this.selectedActivity = undefined;
+    this.target = undefined;
+    this.setEditMode(false);
+  }
+  @action createActivity = async (activity: IActivity) => {
+    this.submitting = true;
+    try{
+      await agent.Activities.create(activity);
+      this.activities.push(activity);
+      this.setSubmitting(false);
+      this.setEditMode(false);
     }
-
-    @action selectActivity = (id: string) => {
-        this.selectedActivity = this.activities.find(a => a.id === id);
-        this.target = this.selectedActivity?.id;
-        this.setEditMode(false);
+    catch(error){
+      this.setSubmitting(false);
+      this.setEditMode(false);
+      console.log(error);
     }
-
-    @action cancelSelectedActivity = () => {
-        this.selectedActivity = undefined;
-        this.target = undefined;
-        this.setEditMode(false);
+  }
+  @action editActivity = async (activity: IActivity) => {
+    this.submitting = true;
+    try {
+      await agent.Activities.update(activity);
+      let edittingActivity = this.activities.filter(x => x.id = activity.id)[0];
+      edittingActivity = {...activity};
+      this.setSubmitting(false);
+      this.setEditMode(false);
     }
-
-    @action createActivity = async (activity: IActivity) => {
-        this.submitting = true;
-        try{
-            await agent.Activities.create(activity);
-            this.activities.push(activity);
-            this.setSubmitting(false);
-            this.setEditMode(false);
-        }
-        catch(error){
-            this.setSubmitting(false);
-            this.setEditMode(false);
-            console.log(error);
-        }
-    }
-
-    @action editActivity = async (activity: IActivity) => {
-        this.submitting = true;
-        try {
-            await agent.Activities.update(activity);
-            let edittingActivity = this.activities.filter(x => x.id = activity.id)[0];
-            edittingActivity = {...activity};
-            this.setSubmitting(false);
-            this.setEditMode(false);
-        }
-        catch (error) {
-            this.setSubmitting(false);
-            this.setEditMode(false);
-            console.log(error);
-        } 
-    }
-
-    @action openForm = (id?: string): void => {
-        id ? this.selectActivity(id) : this.cancelSelectedActivity();
-        this.setEditMode(true);
-    }
-
-    @action closeForm = () => {
-        this.cancelSelectedActivity();
-    }
-
-    @action deleteActivity = async (id: string) => {
-        await agent.Activities.delete(id).then((result) => {
-            this.activities = [...this.activities.filter(x => x.id !== id)];
-        });
-    }
-
-    private setLoadingInitial = (state: boolean) => this.loadingInitial = state;
-
-    public setEditMode = (state: boolean) => this.editMode = state;
-
-    private setSubmitting = (state: boolean) => this.submitting = state;
+    catch (error) {
+      this.setSubmitting(false);
+      this.setEditMode(false);
+      console.log(error);
+    } 
+  }
+  @action openForm = (id?: string): void => {
+    id ? this.selectActivity(id) : this.cancelSelectedActivity();
+    this.setEditMode(true);
+  }
+  @action closeForm = () => {
+    this.cancelSelectedActivity();
+  }
+  @action deleteActivity = async (id: string) => {
+    await agent.Activities.delete(id).then((result) => {
+      this.activities = [...this.activities.filter(x => x.id !== id)];
+    });
+  }
+  private setLoadingInitial = (state: boolean) => this.loadingInitial = state;
+  public setEditMode = (state: boolean) => this.editMode = state;
+  private setSubmitting = (state: boolean) => this.submitting = state;
 }

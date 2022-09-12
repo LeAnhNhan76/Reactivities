@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment, SyntheticEvent, useContext} from 'react';
+import React, {useState, useEffect, Fragment, SyntheticEvent} from 'react';
 import { Container } from 'semantic-ui-react';
 import { IActivity } from '../models/activity';
 import NavBar from '../../features/nav/NavBar';
@@ -18,7 +18,7 @@ const App = () => {
   // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [target, setTarget] = useState('')
+  const [target, setTarget] = useState('');
 
   const handleEditActivity = (activity : IActivity) => {
     setSubmitting(true);
@@ -36,7 +36,7 @@ const App = () => {
   }
 
   useEffect(() => {
-      activityStore.loadActivities();
+    activityStore.loadActivities();
   }, [activityStore]);
 
     if(activityStore.loadingInitial) return <LoadingComponent content='Loading activities...' />
