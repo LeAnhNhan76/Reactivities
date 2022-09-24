@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Container, Menu, Button } from 'semantic-ui-react'
 import { observer } from 'mobx-react-lite'
 import { useStore } from '../../app/stores/store';
 
-const NavBar : React.FC = () => {
+const NavBar = () => {
     const {activityStore} = useStore();
     return (
         <Menu fixed='top' inverted>
@@ -14,7 +14,7 @@ const NavBar : React.FC = () => {
             </Menu.Item>
             <Menu.Item name='Activities' />
             <Menu.Item>
-              <Button onClick={() => activityStore.openForm} positive content='Create a new Activity'/>
+              <Button onClick={() => activityStore.openForm()} positive content='Create a new Activity'/>
             </Menu.Item>
           </Container>
       </Menu>

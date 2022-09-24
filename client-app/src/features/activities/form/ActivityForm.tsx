@@ -1,10 +1,11 @@
-import React, {FormEvent} from 'react';
+import React, {FormEvent, useState} from 'react';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import {v4 as uuid} from 'uuid';
 import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
+import {IActivity} from '../../../app/models/activity';
 
-const ActivityForm: React.FC = () => {
+const ActivityForm = () => {
   const {activityStore} = useStore();
   const {
     createActivity,
@@ -14,27 +15,41 @@ const ActivityForm: React.FC = () => {
     editActivity
   } = activityStore;
 
-  const isCreate = selectedActivity === null || selectedActivity === undefined;
+  const [activity, setActivity] = useState<IActivity | undefined> (() => {
+    if(selectedActivity !== undefined) {
+      return selectedActivity;
+    }
 
-  let activity: any = isCreate ? {} : selectedActivity ;
+    return {
+      id: '',
+      title: '',
+      description: '',
+      category: '',
+      date: '',
+      city: '',
+      venue: ''
+    };
+  });
 
   const handleInputChange = (
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.currentTarget;
-    activity = {...activity, [name]: value};
+    setActivity((item: any) => {return {...item, [name]: value}});
   };
 
   const handleSubmit = () => {
-    if(activity.id.length === 0){
-      let newActivity = {
-        ...activity, 
-        id: uuid()
+    if(activity) {
+      if(activity.id === '') {
+        let newActivity = {
+          ...activity, 
+          id: uuid()
+        }
+        createActivity(newActivity);
       }
-      createActivity(newActivity);
-    }
-    else{
-      editActivity(activity);
+      else{
+        editActivity(activity);
+      }
     }
   };
 
@@ -45,39 +60,39 @@ const ActivityForm: React.FC = () => {
           onChange={handleInputChange}
           name="title"
           placeholder="Title"
-          value={activity.title}
+          value={activity?.title}
         />
         <Form.TextArea
           onChange={handleInputChange}
           name="description"
           row={2}
           placeholder="Description"
-          value={activity.description}
+          value={activity?.description}
         />
         <Form.Input
           onChange={handleInputChange}
           name="category"
           placeholder="Category"
-          value={activity.category}
+          value={activity?.category}
         />
         <Form.Input
           onChange={handleInputChange}
           name="date"
           type="datetime-local"
           placeholder="Date"
-          value={activity.date}
+          value={activity?.date}
         />
         <Form.Input
           onChange={handleInputChange}
           name="city"
           placeholder="City"
-          value={activity.city}
+          value={activity?.city}
         />
         <Form.Input
           onChange={handleInputChange}
           name="venue"
           placeholder="Venue"
-          value={activity.venue}
+          value={activity?.venue}
         />
         <Button
           loading={submitting}
