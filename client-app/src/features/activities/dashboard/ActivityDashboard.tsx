@@ -1,14 +1,12 @@
-import React, { SyntheticEvent, useContext } from 'react'
-import { Grid, GridColumn } from 'semantic-ui-react'
-import { IActivity } from '../../../app/models/activity'
+import React from 'react'
+import { Grid, GridColumn } from 'semantic-ui-react';
 import ActivityList from './ActivityList'
 import ActivityDetails from '../details/ActivityDetails'
 import ActivityForm from '../form/ActivityForm'
 import { observer } from 'mobx-react-lite'
 import {useStore} from '../../../app/stores/store';
 
-
-const ActivityDashboard: React.FC = () => {
+const ActivityDashboard = () => {
   const {activityStore} = useStore();
   const {
     editMode,

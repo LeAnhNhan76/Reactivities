@@ -1,39 +1,13 @@
-import React, {useState, useEffect, Fragment, SyntheticEvent} from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { Container } from 'semantic-ui-react';
-import { IActivity } from '../models/activity';
 import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
-import agent from '../api/agent';
 import LoadingComponent from './LoadingComponent';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import { useStore } from '../stores/store';
 
 const App = () => {
   const {activityStore} = useStore();
-  const [activities, setActivities] = useState<IActivity[]>([]);
-  // eslint-disable-next-line
-  const [selectedActivity, setSelectedActivity] = useState<IActivity | null >(null);
-  // eslint-disable-next-line
-  const [editMode, setEditMode] = useState(false);
-  // eslint-disable-next-line
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [target, setTarget] = useState('');
-
-  const handleEditActivity = (activity : IActivity) => {
-    setSubmitting(true);
-    agent.Activities.update(activity).then(() => {
-      setActivities([...activities.filter(a => a.id !== activity.id), activity]);
-      setSelectedActivity(activity);
-      setEditMode(false);
-    }).then(() => setSubmitting(false));
-  }
-
-  const handleDeleteActivity = (event: SyntheticEvent<HTMLButtonElement>, id: string) => {
-    setSubmitting(true);
-    setTarget(event.currentTarget.name);
-    activityStore.deleteActivity(id).then(() => setSubmitting(false));
-  }
 
   useEffect(() => {
     activityStore.loadActivities();

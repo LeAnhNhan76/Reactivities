@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite';
-import React, { SyntheticEvent, useContext } from 'react'
+import React from 'react'
 import {Item, Button, Label, Segment} from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store'
 
-const ActivityList: React.FC = () => {
+const ActivityList = () => {
   const {activityStore} = useStore();
   const {
     activitiesByDate, 

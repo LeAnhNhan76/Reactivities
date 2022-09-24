@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Button, Card, Image } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../../../app/stores/store';
 
-const ActivityDetails: React.FC = () => {
+const ActivityDetails = () => {
   const {activityStore} = useStore();
   const {
     selectedActivity: activity,
