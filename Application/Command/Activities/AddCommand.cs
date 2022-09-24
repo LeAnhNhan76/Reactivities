@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Activities
 {
-    public class AddToActivityCommandRequest : IRequest
+    public class AddToActivityCommandRequest : IRequest<bool>
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -18,15 +18,15 @@ namespace Application.Command.Activities
         public string Venue { get; set; }
     }
 
-    public class AddToActivityCommandHandler : IRequestHandler<AddToActivityCommandRequest>
+    public class AddToActivityCommandHandler : IRequestHandler<AddToActivityCommandRequest, bool>
     {
-        private readonly ApplicationDbContext _context;
-        public AddToActivityCommandHandler(ApplicationDbContext context)
+        private readonly ApplicationDbContext _dbContext;
+        public AddToActivityCommandHandler(ApplicationDbContext dbContext)
         {
-            this._context = context;
+            this._dbContext = dbContext;
         }
 
-        public async Task<Unit> Handle(AddToActivityCommandRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AddToActivityCommandRequest request, CancellationToken cancellationToken)
         {
             var activity = new Activity
             {
@@ -39,11 +39,9 @@ namespace Application.Command.Activities
                 Venue = request.Venue
             };
 
-            await _context.Activities.AddAsync(activity);
-            var success = await _context.SaveChangesAsync() >  0;
-
-            if (success) return Unit.Value;
-            throw new Exception("Problem saving changes");
+            await _dbContext.Activities.AddAsync(activity);
+            var success = await _dbContext.SaveChangesAsync() >  0;
+            return success;
         }
     }
 }

@@ -51,7 +51,6 @@ namespace API.Controllers
             var request = new GetByIdActivityQueryRequest() { Id = id };
 
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
-
             return Ok(response);
         }
 
@@ -63,7 +62,7 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Add([FromBody]AddToActivityCommandRequest request)
+        public async Task<IActionResult> Add([FromBody] AddToActivityCommandRequest request)
         {
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
             return Ok(response);
@@ -79,7 +78,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] EditActivityCommandRequest request)
+        public async Task<IActionResult> Edit(Guid id, [FromBody] EditActivityCommandRequest request)
         {
             if (id != request.Id)
                 throw new Exception("Bad request");
