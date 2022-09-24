@@ -55,9 +55,12 @@ export default class ActivityStore{
   @action editActivity = async (activity: IActivity) => {
     this.submitting = true;
     try {
-      await agent.Activities.update(activity);
-      let edittingActivity = this.activities.filter(x => x.id = activity.id)[0];
-      edittingActivity = {...activity};
+      const result = await agent.Activities.update(activity);
+      if(result) {
+        this.activities = [...this.activities.map(x => x.id === activity.id ? {...x, ...activity} : x)];
+        this.selectedActivity = {...activity};
+      }
+
       this.setSubmitting(false);
       this.setEditMode(false);
     }

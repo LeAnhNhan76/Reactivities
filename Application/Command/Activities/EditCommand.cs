@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Command.Activities
 {
-    public class EditActivityCommandRequest : IRequest
+    public class EditActivityCommandRequest : IRequest<bool>
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -17,7 +17,7 @@ namespace Application.Command.Activities
         public string Venue { get; set; }
     }
 
-    public class EditActivityCommandHandler : IRequestHandler<EditActivityCommandRequest>
+    public class EditActivityCommandHandler : IRequestHandler<EditActivityCommandRequest, bool>
     {
         private readonly ApplicationDbContext _context;
 
@@ -26,7 +26,7 @@ namespace Application.Command.Activities
             this._context = context;
         }
 
-        public async Task<Unit> Handle(EditActivityCommandRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(EditActivityCommandRequest request, CancellationToken cancellationToken)
         {
             var activity = await _context.Activities.FindAsync(request.Id);
 
@@ -41,9 +41,7 @@ namespace Application.Command.Activities
             activity.Venue = request.Venue ?? activity.Venue;
 
             var success = await _context.SaveChangesAsync() > 0;
-
-            if (success) return Unit.Value;
-            throw new Exception("Problem saving changes");
+            return success;
         }
     }
 }
