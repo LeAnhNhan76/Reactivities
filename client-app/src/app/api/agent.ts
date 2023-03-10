@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { IActivity } from '../models/activity';
 
-//axios.defaults.baseURL = 'http://localhost:5000/api';
-axios.defaults.baseURL = 'https://localhost:44311/api';
+axios.defaults.baseURL = 'http://localhost:5000/api';
+//axios.defaults.baseURL = 'https://localhost:44311/api';
 
 const responseBody = (response : AxiosResponse) => response.data;
 
