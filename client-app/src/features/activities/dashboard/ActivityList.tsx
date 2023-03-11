@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react'
-import {Item, Button, Label, Segment} from 'semantic-ui-react';
-import { useStore } from '../../../app/stores/store'
+import { Button, Item, Label, Segment } from 'semantic-ui-react';
+import { useStore } from '../../../stores/store';
 
 const ActivityList = () => {
   const {activityStore} = useStore();

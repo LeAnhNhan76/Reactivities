@@ -1,10 +1,10 @@
-import React, { useEffect, Fragment } from 'react';
-import { Container } from 'semantic-ui-react';
-import NavBar from '../../features/nav/NavBar';
-import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
-import LoadingComponent from './LoadingComponent';
 import { observer } from 'mobx-react-lite';
+import { Fragment, useEffect } from 'react';
+import { Container } from 'semantic-ui-react';
+import ActivityDashboard from '../features/activities/dashboard/ActivityDashboard';
+import NavBar from '../features/nav/NavBar';
 import { useStore } from '../stores/store';
+import LoadingComponent from './LoadingComponent';
 
 const App = () => {
   const {activityStore} = useStore();

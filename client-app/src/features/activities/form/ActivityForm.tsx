@@ -1,9 +1,9 @@
-import React, {FormEvent, useState} from 'react';
-import { Button, Form, Segment } from 'semantic-ui-react';
-import {v4 as uuid} from 'uuid';
-import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
-import {IActivity} from '../../../app/models/activity';
+import { FormEvent, useState } from 'react';
+import { Button, Form, Segment } from 'semantic-ui-react';
+import { v4 as uuid } from 'uuid';
+import { IActivity } from '../../../models/activity';
+import { useStore } from '../../../stores/store';
 
 const ActivityForm = () => {
   const {activityStore} = useStore();

@@ -1,9 +1,8 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import './app/layout/styles.css';
-import App from './app/layout/App';
+import './layout/styles.css';
+import App from './layout/App';
 import reportWebVitals from './reportWebVitals';
-import { store, StoreContext } from './app/stores/store';
+import { store, StoreContext } from './stores/store';
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>

@@ -1,7 +1,6 @@
-import React from 'react';
-import { Container, Menu, Button } from 'semantic-ui-react'
-import { observer } from 'mobx-react-lite'
-import { useStore } from '../../app/stores/store';
+import { observer } from 'mobx-react-lite';
+import { Button, Container, Menu } from 'semantic-ui-react';
+import { useStore } from '../../stores/store';
 
 const NavBar = () => {
     const {activityStore} = useStore();

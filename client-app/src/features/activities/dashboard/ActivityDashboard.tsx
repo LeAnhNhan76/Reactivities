@@ -1,10 +1,9 @@
-import React from 'react'
+import { observer } from 'mobx-react-lite';
 import { Grid, GridColumn } from 'semantic-ui-react';
-import ActivityList from './ActivityList'
-import ActivityDetails from '../details/ActivityDetails'
-import ActivityForm from '../form/ActivityForm'
-import { observer } from 'mobx-react-lite'
-import {useStore} from '../../../app/stores/store';
+import { useStore } from '../../../stores/store';
+import ActivityDetails from '../details/ActivityDetails';
+import ActivityForm from '../form/ActivityForm';
+import ActivityList from './ActivityList';
 
 const ActivityDashboard = () => {
   const {activityStore} = useStore();

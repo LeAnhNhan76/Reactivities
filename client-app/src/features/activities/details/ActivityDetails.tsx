@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Card, Image } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
-import { useStore } from '../../../app/stores/store';
+import { useStore } from '../../../stores/store';
 
 const ActivityDetails = () => {
   const {activityStore} = useStore();
