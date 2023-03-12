@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { Grid, GridColumn } from 'semantic-ui-react';
+import { SystemConstants } from '../../../constants/setting.constanst';
 import LoadingComponent from '../../../layout/LoadingComponent';
 import { useStore } from '../../../stores/store';
 import ActivityForm from '../form/ActivityForm';
@@ -16,7 +17,7 @@ const ActivityDashboard = () => {
     activityStore.loadActivities();
   }, [activityStore]);
 
-  if(activityStore.loadingInitial) return <LoadingComponent content='Loading activities...' />
+  if(activityStore.loadingInitial) return <LoadingComponent content={SystemConstants.LoadingApp} />
 
   return (
     <Grid>
