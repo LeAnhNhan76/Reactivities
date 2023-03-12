@@ -2,7 +2,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 
 interface ILoadingComponentProps{
   inverted? : boolean;
-  content: string
+  content?: string
 }
 
 const LoadingComponent = (props: ILoadingComponentProps) => {

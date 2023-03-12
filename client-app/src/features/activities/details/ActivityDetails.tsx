@@ -24,7 +24,7 @@ const ActivityDetails = () => {
     }
   }, [id, loadActivity]);
 
-  if (loadingInitial || !activity) return <LoadingComponent content='Activity detail loadding...' />
+  if (loadingInitial || !activity) return <LoadingComponent />
 
   return (
     <Card fluid>
