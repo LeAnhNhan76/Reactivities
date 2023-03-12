@@ -25,7 +25,7 @@ const ActivityForm = () => {
       title: '',
       description: '',
       category: '',
-      date: '',
+      date: new Date(),
       city: '',
       venue: ''
     };

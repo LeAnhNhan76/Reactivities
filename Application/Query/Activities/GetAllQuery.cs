@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +22,9 @@ namespace Application.Query.Activities
 
         public async Task<IReadOnlyCollection<Activity>> Handle(GetAllActivityQueryRequest request, CancellationToken cancellationToken)
         {
-            var response = await _context.Activities.ToListAsync(cancellationToken);
+            var response = await _context.Activities
+                .OrderByDescending(x => x.Date)
+                .ToListAsync(cancellationToken);
 
             return response;
         }

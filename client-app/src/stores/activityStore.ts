@@ -10,17 +10,16 @@ export default class ActivityStore{
   @observable submitting = false;
   @observable target: string | undefined;
   @computed get activitiesByDate() {
-    return this.activities.sort((a, b) => Date.parse(a.date)- Date.parse(b.date))
+    return this.activities;
   }
   @action loadActivities = async () => {
       this.setLoadingInitial(true);
 
       try{
-          const activities = await agent.Activities.list();
-          activities.forEach(activity => {
-              this.setActivity(activity);
-              this.activities.push(activity);
-          });
+          const data = await agent.Activities.list();
+          if(data) {
+            this.activities = [...data];
+          }
           this.setLoadingInitial(false);
       }
       catch (error) {
@@ -33,14 +32,12 @@ export default class ActivityStore{
     let item = this.getActivity(id);
     try {
       if(item !== undefined && item !== null) {
-        this.setActivity(item);
         this.selectedActivity = item;
       }
       else {
         this.setLoadingInitial(true);
         const data = await agent.Activities.details(id);
         if(data !== undefined && data !== null) {
-          this.setActivity(data);
           this.selectedActivity = data;
         }
         this.setLoadingInitial(false);
@@ -50,9 +47,6 @@ export default class ActivityStore{
       console.log(error);
       this.setLoadingInitial(false);
     }
-  }
-  private setActivity = (activity: IActivity) => {
-    activity.date = activity.date.split("T")[0];
   }
   private getActivity = (id: string) => {
     return this.activities.find((x) => x.id === id);

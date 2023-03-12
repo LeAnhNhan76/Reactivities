@@ -4,14 +4,10 @@ import { Grid, GridColumn } from 'semantic-ui-react';
 import { SystemConstants } from '../../../constants/setting.constanst';
 import LoadingComponent from '../../../layout/LoadingComponent';
 import { useStore } from '../../../stores/store';
-import ActivityForm from '../form/ActivityForm';
 import ActivityList from './ActivityList';
 
 const ActivityDashboard = () => {
   const {activityStore} = useStore();
-  const {
-    editMode,
-  } = activityStore;
 
   useEffect(() => {
     activityStore.loadActivities();
@@ -25,9 +21,7 @@ const ActivityDashboard = () => {
         <ActivityList />
       </GridColumn>
       <GridColumn width={6}>
-        {editMode && (
-          <ActivityForm />
-        )}
+        <h2>Activity Filters</h2>
       </GridColumn>
     </Grid>
   );

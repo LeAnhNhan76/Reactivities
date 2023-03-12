@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Button, Card, Image } from 'semantic-ui-react';
 import LoadingComponent from '../../../layout/LoadingComponent';
 import { useStore } from '../../../stores/store';
+import { formatDate } from '../../../utils/dateTime.utils';
 
 const ActivityDetails = () => {
   const {activityStore} = useStore();
@@ -18,7 +19,6 @@ const ActivityDetails = () => {
   const {id} = useParams();
 
   useEffect(() => {
-    console.log(id)
     if (id) {
       loadActivity(id);
     }
@@ -34,12 +34,12 @@ const ActivityDetails = () => {
         ui={false}
       />
       <Card.Content>
-        <Card.Header>{activity?.title}</Card.Header>
+        <Card.Header>{activity.title}</Card.Header>
         <Card.Meta>
           <span>Date</span>
         </Card.Meta>
-        {activity?.date}
-        <Card.Description>{activity?.description}</Card.Description>
+        {formatDate(activity.date)}
+        <Card.Description>{activity.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button

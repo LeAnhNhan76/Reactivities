@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
 import { useStore } from '../../../stores/store';
+import { formatDate } from '../../../utils/dateTime.utils';
 import { isValid } from '../../../utils/string.utils';
 
 const ActivityList = () => {
@@ -20,7 +21,7 @@ const ActivityList = () => {
           <Item key={activity.id}>
             <Item.Content>
               <Item.Header as="a">{activity.title}</Item.Header>
-              <Item.Meta>{activity.date}</Item.Meta>
+              <Item.Meta>{formatDate(activity.date)}</Item.Meta>
               <Item.Description>
                 <div>{activity.description}</div>
                 <div>
