@@ -1,6 +1,8 @@
-import React from 'react'
-import { Button, Card, Image } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button, Card, Image } from 'semantic-ui-react';
+import LoadingComponent from '../../../layout/LoadingComponent';
 import { useStore } from '../../../stores/store';
 
 const ActivityDetails = () => {
@@ -8,8 +10,22 @@ const ActivityDetails = () => {
   const {
     selectedActivity: activity,
     setEditMode,
+    loadActivity,
+    loadingInitial,
     cancelSelectedActivity
   } = activityStore;
+
+  const {id} = useParams();
+
+  useEffect(() => {
+    console.log(id)
+    if (id) {
+      loadActivity(id);
+    }
+  }, [id, loadActivity]);
+
+  if (loadingInitial || !activity) return <LoadingComponent content='Activity detail loadding...' />
+
   return (
     <Card fluid>
       <Image

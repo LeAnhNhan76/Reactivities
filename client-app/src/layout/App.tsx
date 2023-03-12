@@ -1,25 +1,15 @@
 import { observer } from 'mobx-react-lite';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
+import { Outlet } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
-import ActivityDashboard from '../features/activities/dashboard/ActivityDashboard';
 import NavBar from '../features/nav/NavBar';
-import { useStore } from '../stores/store';
-import LoadingComponent from './LoadingComponent';
 
 const App = () => {
-  const {activityStore} = useStore();
-
-  useEffect(() => {
-    activityStore.loadActivities();
-  }, [activityStore]);
-
-    if(activityStore.loadingInitial) return <LoadingComponent content='Loading activities...' />
-
     return (
       <Fragment>
         <NavBar />
         <Container style={{ marginTop: "7em" }}>
-          <ActivityDashboard />
+          <Outlet />
         </Container>
       </Fragment>
     );

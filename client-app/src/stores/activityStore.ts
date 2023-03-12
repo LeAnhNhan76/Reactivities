@@ -1,6 +1,6 @@
-import { observable, action, computed} from 'mobx';
-import {IActivity} from '../models/activity';
+import { action, computed, observable } from 'mobx';
 import agent from '../api/agent';
+import { IActivity } from '../models/activity';
 
 export default class ActivityStore{
   @observable activities: IActivity[] = [];
@@ -13,20 +13,49 @@ export default class ActivityStore{
     return this.activities.sort((a, b) => Date.parse(a.date)- Date.parse(b.date))
   }
   @action loadActivities = async () => {
-        this.setLoadingInitial(true);
+      this.setLoadingInitial(true);
 
-        try{
-            const activities = await agent.Activities.list();
-            activities.forEach(activity => {
-                activity.date = activity.date.split(".")[0];
-                this.activities.push(activity);
-            });
-            this.setLoadingInitial(false);
+      try{
+          const activities = await agent.Activities.list();
+          activities.forEach(activity => {
+              this.setActivity(activity);
+              this.activities.push(activity);
+          });
+          this.setLoadingInitial(false);
+      }
+      catch (error) {
+          console.log(error);
+          this.setLoadingInitial(false);
+      }
+  }
+  
+  @action loadActivity = async (id: string) => {
+    let item = this.getActivity(id);
+    try {
+      if(item !== undefined && item !== null) {
+        this.setActivity(item);
+        this.selectedActivity = item;
+      }
+      else {
+        this.setLoadingInitial(true);
+        const data = await agent.Activities.details(id);
+        if(data !== undefined && data !== null) {
+          this.setActivity(data);
+          this.selectedActivity = data;
         }
-        catch (error) {
-            console.log(error);
-            this.setLoadingInitial(false);
-        }
+        this.setLoadingInitial(false);
+      }
+    }
+    catch (error) {
+      console.log(error);
+      this.setLoadingInitial(false);
+    }
+  }
+  private setActivity = (activity: IActivity) => {
+    activity.date = activity.date.split("T")[0];
+  }
+  private getActivity = (id: string) => {
+    return this.activities.find((x) => x.id === id);
   }
   @action selectActivity = (id: string) => {
     this.selectedActivity = this.activities.find(a => a.id === id);

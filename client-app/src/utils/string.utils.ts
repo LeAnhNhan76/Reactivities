@@ -1,0 +1,1 @@
+export const isValid = (val: string | null | undefined) => val !== undefined && val !== null && val !== '';
