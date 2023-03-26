@@ -1,13 +1,15 @@
 import { observer } from 'mobx-react-lite';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import NavBar from '../features/nav/NavBar';
 
 const App = () => {
+    const [isLoggedIn, setLoggedIn] = useState(false);
+
     return (
       <Fragment>
-        <NavBar />
+        {isLoggedIn && <NavBar />} 
         <Container style={{ marginTop: "7em" }}>
           <Outlet />
         </Container>

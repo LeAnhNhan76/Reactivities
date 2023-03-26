@@ -1,11 +1,11 @@
 import { Dimmer, Loader } from 'semantic-ui-react';
 
-interface ILoadingComponentProps{
+interface ISpinnerProps{
   inverted? : boolean;
   content?: string
 }
 
-const LoadingComponent = (props: ILoadingComponentProps) => {
+const Spinner = (props: ISpinnerProps) => {
   const { inverted, content } = props;
 
   return (
@@ -15,4 +15,4 @@ const LoadingComponent = (props: ILoadingComponentProps) => {
   );
 };
 
-export default LoadingComponent;
+export default Spinner;
