@@ -1,11 +1,13 @@
-import { Button, Container, Divider, Icon } from "semantic-ui-react";
+import { Button, Container, Divider, Header, Icon } from "semantic-ui-react";
+import { Logo } from "../../components/logo/Logo";
+import './index.scss';
 
 export const HomePage = () => {
     return (
         <Container style={{marginTop: '7em'}}>
-            <div>
-                <img src="/assets/logo.png" alt="logo" style={{marginRight:'10px'}} />
-                <span>Reactivities</span>
+            <div className="header">
+                <Logo size="tiny" classNames={'logo'}></Logo>
+                <Header as={'h2'}>Reactivities</Header>
             </div>
             <div>
                 <Button basic>Login</Button>
