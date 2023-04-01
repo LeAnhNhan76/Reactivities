@@ -1,9 +1,9 @@
 import { action, computed, observable } from 'mobx';
 import agent from '../api/agent';
 import { IActivity } from '../models/activity';
-export default class ActivityStore{
+import BaseStore from './baseStore';
+export default class ActivityStore extends BaseStore {
 
-  @observable isLoading = false;
   @observable activities: IActivity[] = [];
   @observable selectedActivity : IActivity | undefined;
   @observable editMode = false;
@@ -82,8 +82,6 @@ export default class ActivityStore{
     });
   }
 
-  private showLoading = () => this.isLoading = true;
-  private hideLoading = () => this.isLoading = false;
   public setEditMode = (state: boolean) => this.editMode = state;
   private setSubmitting = (state: boolean) => this.submitting = state;
 }
