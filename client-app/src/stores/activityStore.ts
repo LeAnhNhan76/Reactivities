@@ -1,53 +1,43 @@
 import { action, computed, observable } from 'mobx';
 import agent from '../api/agent';
 import { IActivity } from '../models/activity';
-
 export default class ActivityStore{
+
+  @observable isLoading = false;
   @observable activities: IActivity[] = [];
   @observable selectedActivity : IActivity | undefined;
-  @observable loadingInitial = false;
   @observable editMode = false;
   @observable submitting = false;
   @observable target: string | undefined;
+  
   @computed get activitiesByDate() {
     return this.activities;
   }
-  @action loadActivities = async () => {
-      this.setLoadingInitial(true);
 
-      try{
-          const data = await agent.Activities.list();
-          if(data) {
-            this.activities = [...data];
-          }
-          this.setLoadingInitial(false);
+  @action loadActivities = async () => {
+      this.showLoading();
+      const data = await agent.Activities.list();
+      if(data) {
+        this.activities = [...data];
       }
-      catch (error) {
-          console.log(error);
-          this.setLoadingInitial(false);
-      }
+      this.hideLoading();
   }
   
   @action loadActivity = async (id: string) => {
     let item = this.getActivity(id);
-    try {
-      if(item !== undefined && item !== null) {
-        this.selectedActivity = item;
-      }
-      else {
-        this.setLoadingInitial(true);
-        const data = await agent.Activities.details(id);
-        if(data !== undefined && data !== null) {
-          this.selectedActivity = data;
-        }
-        this.setLoadingInitial(false);
-      }
+    if(item !== undefined && item !== null) {
+      this.selectedActivity = item;
     }
-    catch (error) {
-      console.log(error);
-      this.setLoadingInitial(false);
+    else {
+      this.showLoading();
+      const data = await agent.Activities.details(id);
+      if(data !== undefined && data !== null) {
+        this.selectedActivity = data;
+      }
+      this.hideLoading();
     }
   }
+
   private getActivity = (id: string) => {
     return this.activities.find((x) => x.id === id);
   }
@@ -62,36 +52,22 @@ export default class ActivityStore{
     this.setEditMode(false);
   }
   @action createActivity = async (activity: IActivity) => {
-    this.submitting = true;
-    try{
-      await agent.Activities.create(activity);
-      this.activities.push(activity);
-      this.setSubmitting(false);
-      this.setEditMode(false);
-    }
-    catch(error){
-      this.setSubmitting(false);
-      this.setEditMode(false);
-      console.log(error);
-    }
+    this.setSubmitting(true);
+    await agent.Activities.create(activity);
+    this.activities.push(activity);
+    this.setSubmitting(false);
+    this.setEditMode(false);
   }
   @action editActivity = async (activity: IActivity) => {
-    this.submitting = true;
-    try {
-      const result = await agent.Activities.update(activity);
-      if(result) {
-        this.activities = [...this.activities.map(x => x.id === activity.id ? {...x, ...activity} : x)];
-        this.selectedActivity = {...activity};
-      }
-
-      this.setSubmitting(false);
-      this.setEditMode(false);
+    this.setSubmitting(true);
+    const result = await agent.Activities.update(activity);
+    if(result) {
+      this.activities = [...this.activities.map(x => x.id === activity.id ? {...x, ...activity} : x)];
+      this.selectedActivity = {...activity};
     }
-    catch (error) {
-      this.setSubmitting(false);
-      this.setEditMode(false);
-      console.log(error);
-    } 
+
+    this.setSubmitting(false);
+    this.setEditMode(false);
   }
   @action openForm = (id?: string): void => {
     id ? this.selectActivity(id) : this.cancelSelectedActivity();
@@ -105,7 +81,9 @@ export default class ActivityStore{
       this.activities = [...this.activities.filter(x => x.id !== id)];
     });
   }
-  private setLoadingInitial = (state: boolean) => this.loadingInitial = state;
+
+  private showLoading = () => this.isLoading = true;
+  private hideLoading = () => this.isLoading = false;
   public setEditMode = (state: boolean) => this.editMode = state;
   private setSubmitting = (state: boolean) => this.submitting = state;
 }

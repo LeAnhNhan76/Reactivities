@@ -9,13 +9,17 @@ const responseBody = (response : AxiosResponse) => response.data;
 const sleep = (ms: number) => (response: AxiosResponse) =>
   new Promise<AxiosResponse>(resolve => setTimeout(() => resolve(response), ms));
 
-const requests = {
-  get : (url: string) => axios.get(url).then(sleep(1000)).then(responseBody),
-  post : (url: string, body: {}) => axios.post(url, body).then(sleep(1000)).then(responseBody),
-  put : (url: string, body: {}) => axios.put(url, body).then(sleep(1000)).then(responseBody),
-  del : (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody)
+const handleError = (err: any) => {
+  console.log('ERROR: ', err);
+  return Promise.reject(err);
 }
 
+const requests = {
+  get : (url: string) => axios.get(url).then(sleep(1000)).then(responseBody).catch(handleError),
+  post : (url: string, body: {}) => axios.post(url, body).then(sleep(1000)).then(responseBody).catch(handleError),
+  put : (url: string, body: {}) => axios.put(url, body).then(sleep(1000)).then(responseBody).catch(handleError),
+  del : (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody).catch(handleError)
+}
 
 const Activities = {
   list: () : Promise<IActivity[]> => requests.get('/activities'),

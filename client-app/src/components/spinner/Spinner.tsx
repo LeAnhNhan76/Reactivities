@@ -1,4 +1,6 @@
+import { observer } from 'mobx-react-lite';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import { useStore } from '../../stores/store';
 
 interface ISpinnerProps{
   inverted? : boolean;
@@ -7,6 +9,9 @@ interface ISpinnerProps{
 
 const Spinner = (props: ISpinnerProps) => {
   const { inverted, content } = props;
+  const { activityStore } = useStore();
+
+  if(!activityStore.isLoading) return <></>
 
   return (
     <Dimmer active inverted={inverted}>
@@ -15,4 +20,4 @@ const Spinner = (props: ISpinnerProps) => {
   );
 };
 
-export default Spinner;
+export default observer(Spinner);
