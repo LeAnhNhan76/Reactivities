@@ -10,11 +10,11 @@ const App = () => {
 
     return (
       <Fragment>
-        {isLoggedIn && <NavBar />} 
-        <Container style={{ marginTop: "7em" }}>
+        <Container>
+          {isLoggedIn && <NavBar />}
           <Outlet />
+          <Spinner />
         </Container>
-        <Spinner />
       </Fragment>
     );
 }

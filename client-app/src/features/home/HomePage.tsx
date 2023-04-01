@@ -4,11 +4,11 @@ import './index.scss';
 
 export const HomePage = () => {
     return (
-        <Container style={{marginTop: '7em'}}>
-            <div className="header">
-                <Logo size="tiny" classNames={'logo'}></Logo>
-                <Header as={'h2'}>Reactivities</Header>
-            </div>
+        <div className="home-container">
+            <Header as='h1' className="header">
+                <Logo size="mini"></Logo>
+                Reactivies
+            </Header>
             <div>
                 <Button basic>Login</Button>
                 <Button basic>Register!</Button>
@@ -18,6 +18,6 @@ export const HomePage = () => {
                     Login with Facebook
                 </Button>
             </div>
-        </Container>
+        </div>
     );
 }

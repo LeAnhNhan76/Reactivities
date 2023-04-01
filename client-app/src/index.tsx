@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom';
 import { RouterProvider } from 'react-router-dom';
-import './layout/styles.css';
 import reportWebVitals from './reportWebVitals';
 import { router } from './router/Routes';
 import { store, StoreContext } from './stores/store';
+import './assets/css/_global.scss'
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>

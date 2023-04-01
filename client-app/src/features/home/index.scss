@@ -1,7 +1,12 @@
-.header {
-    border: 1px solid red;
-}
+@use '../../assets/css/index.scss' as *;
 
-.logo {
-    
+.home-container {
+    @include flex-col-center;
+    background-image: $background-image-color;
+    height: inherit;
+
+    >.header {
+        color: $white;
+    }
+
 }
