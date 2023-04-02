@@ -1,25 +1,35 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background-color: rgb(234, 234, 234) !important;
-  }
-  
-  .ui.inverted.top.fixed.menu {
-    background-image: linear-gradient(
-      135deg,
-      rgb(24, 42, 115) 0%,
-      rgb(33, 138, 174) 69%,
-      rgb(32, 167, 172) 89%
-    ) !important;
-  }
+@use './index.scss' as *;
 
-  .ui {
-    &.container {
-        height: 100vh;
-        width: 100vw;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+  
+body {
+  background-color: $background-white-color !important;
+}
+
+.ui.inverted.top.fixed.menu {
+  background-image: $background-image-color !important;
+}
+
+.root-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+.form-container {
+  height: inherit;
+  background-color: $black;
+  @include flex-col-center;
+
+  .container {
+    background-color: $background-white-color;
+    padding: 25px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   }
+}

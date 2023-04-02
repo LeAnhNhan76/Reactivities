@@ -10,11 +10,11 @@ const App = () => {
 
     return (
       <Fragment>
-        <Container>
+        <div className='root-container'>
           {isLoggedIn && <NavBar />}
-          <Outlet />
-          <Spinner />
-        </Container>
+            <Outlet />
+            <Spinner />
+        </div>
       </Fragment>
     );
 }

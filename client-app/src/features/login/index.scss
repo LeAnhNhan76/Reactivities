@@ -1,0 +1,10 @@
+@use '../../assets/css/index.scss' as *;
+
+.form-container {
+    >.container {
+        max-width: 30% !important;
+        >.header {
+            color: $teal
+        }
+    }
+}

@@ -1,12 +1,21 @@
 @use '../../assets/css/index.scss' as *;
 
-.home-container {
+.home {
     @include flex-col-center;
     background-image: $background-image-color;
     height: inherit;
+    color: $white;
 
-    >.header {
-        color: $white;
+    >.container {
+        max-width: 35% !important;
+        @include flex-col-center;
+        gap: 20px;
+
+        >.header {
+            @include flex-center;
+            color: $white;
+            font-size: 40px;
+            font-weight: 400;
+        }
     }
-
 }
