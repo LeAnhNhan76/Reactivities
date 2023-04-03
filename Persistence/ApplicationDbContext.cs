@@ -15,6 +15,7 @@ namespace Persistence
         public DbSet<ActivityCommentStatus> ActivityCommentStatuses { get; set; }
         public DbSet<ActivityMember> ActivityMembers { get; set; }
         public DbSet<ActivityStatus> ActivityStatuses { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Follower> Followers { get; set; }
 
 

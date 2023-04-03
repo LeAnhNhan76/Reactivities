@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class ActivitiesController : ControllerBase
+    public class ActivitiesController : ApiController
     {
         private readonly IMediator _mediator;
 

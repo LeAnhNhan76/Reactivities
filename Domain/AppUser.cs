@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +15,9 @@ public class AppUser : IBaseEntity<Guid>, IAuditEntity<Guid>
 
     [Required]
     public string Password { get; set;}
+
+    [Required]
+    public string PasswordSalt { get; set;}
     
     [Required]
     [StringLength(100)]

@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace FrameworkCore.Constants
 {
     public partial class Constant
@@ -6,5 +8,7 @@ namespace FrameworkCore.Constants
         /// DefaultConnection
         /// </summary>
         public const string DefaultConnection = "DefaultConnection";
+
+        public const int MaxPasswordLength = 3;
     }
 }
