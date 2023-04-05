@@ -6,7 +6,9 @@ const App = () => {
 
     return (
         <div className='root-container'>
-            <Outlet></Outlet>
+            <div className='page-container'>
+                <Outlet></Outlet>
+            </div>
             <Spinner></Spinner>
         </div>
     );
