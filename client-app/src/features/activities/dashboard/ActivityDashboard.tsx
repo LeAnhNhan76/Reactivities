@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { Grid, GridColumn } from 'semantic-ui-react';
 import { useStore } from '../../../stores/store';
-import ActivityList from './ActivityList';
+import ActivityList from '../list/ActivityList';
 
 const ActivityDashboard = () => {
   const {activityStore} = useStore();
