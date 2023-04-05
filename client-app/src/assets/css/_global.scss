@@ -22,14 +22,25 @@ body {
 .form-container {
   height: inherit;
   background-color: $black;
-  @include flex-col-center;
+  @include flex-center;
 
   .container {
     background-color: $background-white-color;
     padding: 25px;
-    text-align: center;
     border: none;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    @include flex-col;
+    align-items: center;
+    gap: 15px;
+    width: 20vw;
+
+    .form {
+      width: inherit
+    }
+
+    p {
+      font-size: 16px;
+    }
   }
 }

@@ -48,6 +48,7 @@ const Login = () => {
                     Login
                 </Button>
             </Form>
+            <p>You don't have account? Register!</p>
         </Container>
     </div>
   )
