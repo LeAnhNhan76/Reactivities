@@ -2,7 +2,7 @@ import { Image, SemanticSIZES } from "semantic-ui-react";
 
 export interface ILogoProps {
     size?: SemanticSIZES | undefined;
-    classNames?: string;
+    className?: string;
 }
 
 export const Logo = (props: ILogoProps) => {
@@ -10,6 +10,6 @@ export const Logo = (props: ILogoProps) => {
         src={'/assets/logo.png'}
         alt={'logo'}
         size={props.size}
-        className={props.classNames}
+        className={props.className}
     ></Image>
 };

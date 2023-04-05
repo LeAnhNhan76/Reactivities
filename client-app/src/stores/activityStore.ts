@@ -15,12 +15,16 @@ export default class ActivityStore extends BaseStore {
   }
 
   @action loadActivities = async () => {
-      this.showLoading();
-      const data = await agent.Activities.list();
-      if(data) {
-        this.activities = [...data];
+      try {
+        this.showLoading();
+        const data = await agent.Activities.list();
+        if(data) {
+          this.activities = [...data];
+        }
+        this.hideLoading();
+      } catch (error) {
+        this.hideLoading();
       }
-      this.hideLoading();
   }
   
   @action loadActivity = async (id: string) => {
