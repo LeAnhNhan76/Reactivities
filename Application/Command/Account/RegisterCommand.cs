@@ -48,29 +48,29 @@ namespace Application.Command.Account
             try
             {
               using(var hmac = new HMACSHA512()) 
-            {
-              var newUser = new AppUser 
               {
-                Id = Guid.NewGuid(),
-                UserName = request.UserName,
-                Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.UserName)),
-                PasswordSalt = hmac.Key,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                NickName = request.NickName,
-                Email = request.Email,
-                CreatedBy = new Guid(Constant.SYSTEM_USER_ID),
-                CreatedDate = DateTime.Now
-              };
+                var newUser = new AppUser 
+                {
+                  Id = Guid.NewGuid(),
+                  UserName = request.UserName,
+                  Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
+                  PasswordSalt = hmac.Key,
+                  FirstName = request.FirstName,
+                  LastName = request.LastName,
+                  NickName = request.NickName,
+                  Email = request.Email,
+                  CreatedBy = new Guid(Constant.SYSTEM_USER_ID),
+                  CreatedDate = DateTime.Now
+                };
 
-              await this._dbContext.AppUsers.AddAsync(newUser);
-              await this._dbContext.SaveChangesAsync();
+                await this._dbContext.AppUsers.AddAsync(newUser);
+                await this._dbContext.SaveChangesAsync();
 
-              return new RegisterCommandResponse {
-                IsRegistered = true,
-                ErrorMessage = string.Empty
-              };
-            }
+                return new RegisterCommandResponse {
+                  IsRegistered = true,
+                  ErrorMessage = string.Empty
+                };
+              }
             }
             catch (Exception ex)
             {
