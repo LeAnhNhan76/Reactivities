@@ -19,7 +19,6 @@ public class AppUser : IBaseEntity<Guid>, IAuditEntity<Guid>
     [Required]
     public string PasswordSalt { get; set;}
     
-    [Required]
     [StringLength(100)]
     public string FirstName { get; set; }
     
@@ -33,7 +32,7 @@ public class AppUser : IBaseEntity<Guid>, IAuditEntity<Guid>
     [Column(TypeName = "VARCHAR")]
     public string Email { get; set; }
 
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
 
     [Required]
     public DateTime CreatedDate { get; set; }
