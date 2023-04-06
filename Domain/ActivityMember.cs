@@ -23,9 +23,9 @@ public class ActivityMember: IBaseEntity<Guid>, IAuditEntity<Guid>
     [Required]
     public Guid CreatedBy { get; set; }
 
-    public DateTime ModifiedDate { get; set; }
+    public DateTime? ModifiedDate { get; set; }
 
-    public Guid ModifiedBy { get; set; }
+    public Guid? ModifiedBy { get; set; }
 
     public virtual Activity Activity { get; set; }
     public virtual AppUser User { get; set; }

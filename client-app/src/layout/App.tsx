@@ -3,10 +3,13 @@ import { Outlet } from 'react-router-dom';
 import Spinner from '../components/spinner/Spinner';
 
 const App = () => {
+
     return (
         <div className='root-container'>
-          <Outlet></Outlet>
-          <Spinner></Spinner>
+            <div className='page-container'>
+                <Outlet></Outlet>
+            </div>
+            <Spinner></Spinner>
         </div>
     );
 }

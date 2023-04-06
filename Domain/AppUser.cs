@@ -41,7 +41,7 @@ public class AppUser : IBaseEntity<Guid>, IAuditEntity<Guid>
     [Required]
     public Guid CreatedBy { get; set; }
 
-    public DateTime ModifiedDate { get; set; }
+    public DateTime? ModifiedDate { get; set; }
 
-    public Guid ModifiedBy { get; set; }
+    public Guid? ModifiedBy { get; set; }
 }

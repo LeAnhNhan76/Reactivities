@@ -22,9 +22,9 @@ public class Follower : IBaseEntity<Guid>, IAuditEntity<Guid>
     [Required]
     public Guid CreatedBy { get; set; }
 
-    public DateTime ModifiedDate { get; set; }
+    public DateTime? ModifiedDate { get; set; }
 
-    public Guid ModifiedBy { get; set; }
+    public Guid? ModifiedBy { get; set; }
 
     public virtual AppUser UserFollower { get; set; }
     public virtual AppUser UserFollowing { get; set; }
