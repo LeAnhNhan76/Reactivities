@@ -1,21 +1,34 @@
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FrameworkCore.Constants;
 using MediatR;
 using Persistence;
+using System;
 
 namespace Application.Command
 {
-    public class RegisterCommandRequest: IRequest<bool> 
+    public class RegisterCommandRequest: IRequest<RegisterCommandResponse> 
     {
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string NickName { get; set; }
         public string Email { get; set; }
     }
 
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommandRequest, bool>
+    public class RegisterCommandResponse
+    {
+        public bool IsRegistered { get; set; }
+
+        public string ErrorMessage { get; set; }
+    }
+
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommandRequest, RegisterCommandResponse>
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -23,24 +36,62 @@ namespace Application.Command
         {
             this._dbContext = dbContext;
         }
-        public async Task<bool> Handle(RegisterCommandRequest request, CancellationToken cancellationToken)
+        public async Task<RegisterCommandResponse> Handle(RegisterCommandRequest request, CancellationToken cancellationToken)
         {
-            if (!ValidateRegisterInfo(request)) return false;
+            var (isValid, message) = ValidateRegisterInfo(request);
 
-            return true;
+            if (!isValid) return new RegisterCommandResponse {
+              IsRegistered = false,
+              ErrorMessage = message
+            };
+            
+            try
+            {
+              using(var hmac = new HMACSHA512()) 
+            {
+              var newUser = new AppUser 
+              {
+                Id = Guid.NewGuid(),
+                UserName = request.UserName,
+                Password = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.UserName)),
+                PasswordSalt = hmac.Key,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                NickName = request.NickName,
+                Email = request.Email,
+                CreatedBy = new Guid(Constant.SYSTEM_USER_ID),
+                CreatedDate = DateTime.Now
+              };
+
+              await this._dbContext.AppUsers.AddAsync(newUser);
+              await this._dbContext.SaveChangesAsync();
+
+              return new RegisterCommandResponse {
+                IsRegistered = true,
+                ErrorMessage = string.Empty
+              };
+            }
+            }
+            catch (Exception ex)
+            {
+              return new RegisterCommandResponse {
+                IsRegistered = false, 
+                ErrorMessage = ex.ToString()
+              };
+            }
         }
 
-        private bool ValidateRegisterInfo (RegisterCommandRequest info)
+        private (bool isValid, string message) ValidateRegisterInfo (RegisterCommandRequest info)
         {
-            if(info == null | string.IsNullOrEmpty(info.UserName) | string.IsNullOrEmpty(info.Password)) return false;
+            if(info == null | string.IsNullOrEmpty(info.UserName) | string.IsNullOrEmpty(info.Password)) return (false, "BadRequest");
 
-            var user = this._dbContext.AppUsers.FirstOrDefault(x => x.UserName == info.UserName);
+            var user = this._dbContext.AppUsers.FirstOrDefault(x => x.UserName == info.UserName || x.Email == info.Email);
 
-            if (user != null) return false;
+            if (user != null) return (false, "UserIsExisted");
 
-            if(!ValidatePassword(info.Password)) return false;
+            if(!ValidatePassword(info.Password)) return (false, "InvalidPassword");
 
-            return true;
+            return (true, string.Empty);
         }
 
         private bool ValidatePassword (string password)

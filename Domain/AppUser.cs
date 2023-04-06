@@ -14,10 +14,10 @@ public class AppUser : IBaseEntity<Guid>, IAuditEntity<Guid>
     public string UserName { get; set;}
 
     [Required]
-    public string Password { get; set;}
+    public byte[] Password { get; set;}
 
     [Required]
-    public string PasswordSalt { get; set;}
+    public byte[] PasswordSalt { get; set;}
     
     [StringLength(100)]
     public string FirstName { get; set; }
@@ -30,6 +30,7 @@ public class AppUser : IBaseEntity<Guid>, IAuditEntity<Guid>
 
     [Required]
     [Column(TypeName = "VARCHAR")]
+    [StringLength(320)]
     public string Email { get; set; }
 
     public DateTime? BirthDate { get; set; }

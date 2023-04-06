@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using Application.Command;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +15,13 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register() 
+        public async Task<IActionResult> Register([FromBody] RegisterCommandRequest request) 
         {
-            return Ok();
+            if (request == null || string.IsNullOrEmpty(request.UserName) 
+              || string.IsNullOrEmpty(request.Password)) return BadRequest();
+
+            var result = await this._mediator.Send(request);
+            return Ok(result);
         }
 
         [HttpPost("login")]
