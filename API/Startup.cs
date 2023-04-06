@@ -1,4 +1,5 @@
 using Application.Query.Activities;
+using Application.Service;
 using FrameworkCore.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -47,7 +48,9 @@ namespace API
                 );
             });
 
-            services.AddMediatR(typeof(GetAllActivityQueryHandler).GetTypeInfo().Assembly);
+            this.RegisterMediatR(services);
+
+            this.RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +78,16 @@ namespace API
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void RegisterMediatR(IServiceCollection services) 
+        {
+          services.AddMediatR(typeof(GetAllActivityQueryHandler).GetTypeInfo().Assembly);
+        }
+
+        public void RegisterServices(IServiceCollection services) 
+        {
+          services.AddTransient<ITokenService, TokenService>();
         }
     }
 }

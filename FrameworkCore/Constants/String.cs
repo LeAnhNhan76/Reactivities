@@ -1,14 +1,11 @@
-using System.Text.RegularExpressions;
-
 namespace FrameworkCore.Constants
 {
-    public partial class Constant
-    {
-        /// <summary>
-        /// DefaultConnection
-        /// </summary>
-        public const string DefaultConnection = "DefaultConnection";
+  public partial class Constant
+  {
+      public const string DefaultConnection = "DefaultConnection";
 
-        public const int MaxPasswordLength = 3;
-    }
+      public const string TokenKey = "TokenKey";
+
+      public const int MaxPasswordLength = 3;
+  }
 }
