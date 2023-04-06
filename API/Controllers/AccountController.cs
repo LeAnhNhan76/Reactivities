@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Application.Command;
+using Application.Command.Account;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,9 +25,13 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login() 
+        public async Task<IActionResult> Login([FromBody] LoginCommandRequest request) 
         {
-            return Ok();
+            if(request == null || string.IsNullOrEmpty(request.UserName) 
+              || string.IsNullOrEmpty(request.Password)) return BadRequest();
+
+            var result = await this._mediator.Send(request);
+            return Ok(result);
         }
     }
 }

@@ -9,7 +9,7 @@ using MediatR;
 using Persistence;
 using System;
 
-namespace Application.Command
+namespace Application.Command.Account
 {
     public class RegisterCommandRequest: IRequest<RegisterCommandResponse> 
     {
