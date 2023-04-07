@@ -2,6 +2,7 @@ using Application.Command.Activities;
 using Application.Query.Activities;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class ActivitiesController : ApiController
     {
         private readonly IMediator _mediator;

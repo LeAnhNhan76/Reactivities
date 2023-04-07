@@ -2,6 +2,7 @@ using Application.Query.Activities;
 using Application.Service;
 using FrameworkCore.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistence;
 using System.Reflection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API
 {
@@ -48,6 +51,18 @@ namespace API
                 );
             });
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(
+                authenticationScheme: JwtBearerDefaults.AuthenticationScheme,
+                configureOptions: options => {
+                  options.TokenValidationParameters = new TokenValidationParameters {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration[Constant.TokenKey])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                  };
+              });
+
             this.RegisterMediatR(services);
 
             this.RegisterServices(services);
@@ -61,7 +76,7 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
@@ -71,8 +86,10 @@ namespace API
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseCors("AllowCors");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -87,7 +104,7 @@ namespace API
 
         public void RegisterServices(IServiceCollection services) 
         {
-          services.AddTransient<ITokenService, TokenService>();
+          services.AddScoped<ITokenService, TokenService>();
         }
     }
 }
