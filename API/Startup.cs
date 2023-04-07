@@ -63,6 +63,8 @@ namespace API
                   };
               });
 
+            services.AddHttpContextAccessor();
+
             this.RegisterMediatR(services);
 
             this.RegisterServices(services);

@@ -17,7 +17,7 @@ namespace API.Controllers
     {
         private readonly IMediator _mediator;
 
-        public ActivitiesController(IMediator mediator)
+        public ActivitiesController(IHttpContextAccessor context, IMediator mediator): base(context)
         {
             this._mediator = mediator;
         }

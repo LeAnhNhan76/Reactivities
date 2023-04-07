@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers 
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class AccountController: ApiController 
+    public class AccountController: ControllerBase 
     {
         private IMediator _mediator;
         public AccountController(IMediator mediator)
