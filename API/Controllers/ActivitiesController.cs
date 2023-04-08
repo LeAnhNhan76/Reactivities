@@ -1,6 +1,6 @@
 using Application.Command.Activities;
 using Application.Query.Activities;
-using Domain;
+using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

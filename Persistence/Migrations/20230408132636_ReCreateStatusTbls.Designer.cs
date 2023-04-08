@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230408132636_ReCreateStatusTbls")]
+    partial class ReCreateStatusTbls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,8 +69,6 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Status");
-
                     b.ToTable("Activities");
                 });
 
@@ -105,8 +105,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
-
-                    b.HasIndex("Status");
 
                     b.HasIndex("UserId");
 
@@ -266,28 +264,11 @@ namespace Persistence.Migrations
                     b.ToTable("Followers");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Activity", b =>
-                {
-                    b.HasOne("Domain.Entities.ActivityStatus", "ActivityStatus")
-                        .WithMany()
-                        .HasForeignKey("Status")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ActivityStatus");
-                });
-
             modelBuilder.Entity("Domain.Entities.ActivityComment", b =>
                 {
                     b.HasOne("Domain.Entities.Activity", "Activity")
                         .WithMany()
                         .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.ActivityCommentStatus", "CommentStatus")
-                        .WithMany()
-                        .HasForeignKey("Status")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -298,8 +279,6 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Activity");
-
-                    b.Navigation("CommentStatus");
 
                     b.Navigation("User");
                 });

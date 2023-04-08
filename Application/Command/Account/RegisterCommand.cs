@@ -8,6 +8,7 @@ using FrameworkCore.Constants;
 using MediatR;
 using Persistence;
 using System;
+using Domain.Entities;
 
 namespace Application.Command.Account
 {

@@ -1,3 +1,5 @@
+using Domain.Entities;
+
 namespace Application.Service
 {
   public interface ITokenService
