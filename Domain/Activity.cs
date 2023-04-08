@@ -34,12 +34,12 @@ namespace Domain
         public byte Status { get; set; }
 
         [Required]
-        public DateTime CreatedDate { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
         
         [Required]
         public Guid CreatedBy { get; set; }
 
-        public DateTime? ModifiedDate { get; set; }
+        public DateTimeOffset? ModifiedDate { get; set; }
 
         public Guid? ModifiedBy { get; set; }
 

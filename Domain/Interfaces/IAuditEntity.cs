@@ -2,8 +2,8 @@ using System;
 
 public interface IAuditEntity<T> where T : struct
 {
-    public DateTime CreatedDate { get; set; }
+    public DateTimeOffset CreatedDate { get; set; }
     public T CreatedBy { get; set; }
-    public DateTime? ModifiedDate { get; set; }
+    public DateTimeOffset? ModifiedDate { get; set; }
     public T? ModifiedBy { get; set; }
 }
