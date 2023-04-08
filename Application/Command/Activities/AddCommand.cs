@@ -35,7 +35,8 @@ namespace Application.Command.Activities
                 Category = request.Category,
                 Date = request.Date,
                 City = request.City,
-                Venue = request.Venue
+                Venue = request.Venue,
+                Status = 1
             };
 
             await _dbContext.Activities.AddAsync(activity);
