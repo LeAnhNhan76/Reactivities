@@ -5,7 +5,7 @@ using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class Follower : AuditEntity<Guid>
+    public class Follower : AuditEntity
     {
         [Required]
         [ForeignKey("UserFollower"), Column(Order = 0)]
@@ -14,6 +14,11 @@ namespace Domain.Entities
         [Required]
         [ForeignKey("UserFollowing"), Column(Order = 1)]
         public Guid FollowingId { get; set; }
+
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+        public Guid? ModifiedBy { get; set; }        
 
         public virtual AppUser UserFollower { get; set; }
         public virtual AppUser UserFollowing { get; set; }

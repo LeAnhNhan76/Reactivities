@@ -5,7 +5,7 @@ using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class AppUser : AuditEntity<Guid>
+    public class AppUser : AuditEntity
     {
         [Required]
         [Column(TypeName = "VARCHAR")]
@@ -33,5 +33,10 @@ namespace Domain.Entities
         public string Email { get; set; }
 
         public DateTime? BirthDate { get; set; }
+
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+        public Guid? ModifiedBy { get; set; }        
     }
 }

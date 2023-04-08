@@ -5,7 +5,7 @@ using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class ActivityComment : AuditEntity<Guid>
+    public class ActivityComment : AuditEntity
     {
         [Required]
         
@@ -22,6 +22,11 @@ namespace Domain.Entities
         [Required]
         [ForeignKey("CommentStatus")]
         public byte Status { get; set;}
+
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+        public Guid? ModifiedBy { get; set; }
 
         public virtual Activity Activity { get; set;}
         public virtual AppUser User { get; set; }

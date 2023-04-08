@@ -5,7 +5,7 @@ using Domain.Abstracts;
 
 namespace Domain.Entities
 {
-    public class Activity: AuditEntity<Guid>
+    public class Activity: AuditEntity
     {
         [Required]
         [StringLength(200)]
@@ -29,6 +29,11 @@ namespace Domain.Entities
         [Required]
         [ForeignKey("ActivityStatus")]
         public byte Status { get; set; }
+
+        [Required]
+        public Guid CreatedBy { get; set; }
+
+        public Guid? ModifiedBy { get; set; }
 
         public virtual ActivityStatus ActivityStatus { get; set; }
     }
