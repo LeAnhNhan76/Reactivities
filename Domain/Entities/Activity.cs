@@ -28,12 +28,7 @@ namespace Domain.Entities
 
         [Required]
         [ForeignKey("ActivityStatus")]
-        public byte Status { get; set; }
-
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        public Guid? ModifiedBy { get; set; }
+        public byte Status { get; set; }    
 
         public virtual ActivityStatus ActivityStatus { get; set; }
     }

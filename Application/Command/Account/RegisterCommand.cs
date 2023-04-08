@@ -60,8 +60,7 @@ namespace Application.Command.Account
                   LastName = request.LastName,
                   NickName = request.NickName,
                   Email = request.Email,
-                  CreatedBy = new Guid(Constant.SYSTEM_USER_ID),
-                  CreatedDate = DateTime.Now
+                  CreatedBy = new Guid(Constant.SYSTEM_USER_ID)
                 };
 
                 await this._dbContext.AppUsers.AddAsync(newUser);

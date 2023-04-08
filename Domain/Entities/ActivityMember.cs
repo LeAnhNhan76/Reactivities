@@ -15,11 +15,6 @@ namespace Domain.Entities
         [ForeignKey("User")]
         public Guid MemberId { get; set; }
 
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        public Guid? ModifiedBy { get; set; }
-
         public virtual Activity Activity { get; set; }
         public virtual AppUser User { get; set; }
     }

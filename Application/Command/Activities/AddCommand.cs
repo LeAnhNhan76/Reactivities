@@ -9,7 +9,6 @@ namespace Application.Command.Activities
 {
     public class AddToActivityCommandRequest : IRequest<bool>
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
@@ -30,7 +29,7 @@ namespace Application.Command.Activities
         {
             var activity = new Activity
             {
-                Id = request.Id,
+                Id = Guid.NewGuid(),
                 Title = request.Title,
                 Description = request.Description,
                 Category = request.Category,
@@ -40,8 +39,8 @@ namespace Application.Command.Activities
             };
 
             await _dbContext.Activities.AddAsync(activity);
-            var success = await _dbContext.SaveChangesAsync() >  0;
-            return success;
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

@@ -13,12 +13,7 @@ namespace Domain.Entities
 
         [Required]
         [ForeignKey("UserFollowing"), Column(Order = 1)]
-        public Guid FollowingId { get; set; }
-
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        public Guid? ModifiedBy { get; set; }        
+        public Guid FollowingId { get; set; }     
 
         public virtual AppUser UserFollower { get; set; }
         public virtual AppUser UserFollowing { get; set; }

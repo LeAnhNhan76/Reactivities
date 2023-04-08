@@ -32,11 +32,6 @@ namespace Domain.Entities
         [StringLength(320)]
         public string Email { get; set; }
 
-        public DateTime? BirthDate { get; set; }
-
-        [Required]
-        public Guid CreatedBy { get; set; }
-
-        public Guid? ModifiedBy { get; set; }        
+        public DateTime? BirthDate { get; set; }      
     }
 }
