@@ -14,6 +14,8 @@ using Persistence;
 using System.Reflection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
+using API.AutoMapper;
 
 namespace API
 {
@@ -68,6 +70,8 @@ namespace API
             this.RegisterMediatR(services);
 
             this.RegisterServices(services);
+
+            this.RegisterAutoMapper(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,6 +111,16 @@ namespace API
         public void RegisterServices(IServiceCollection services) 
         {
           services.AddScoped<ITokenService, TokenService>();
+        }
+
+        public void RegisterAutoMapper(IServiceCollection services)
+        {
+            var mapperConfig = new MapperConfiguration(mc => {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
     }
 }

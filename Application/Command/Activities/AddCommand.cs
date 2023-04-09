@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using FrameworkCore.Enums;
 using MediatR;
 using Persistence;
 using System;
@@ -12,9 +13,10 @@ namespace Application.Command.Activities
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
+        public Guid? HostId { get; set; }
     }
 
     public class AddToActivityCommandHandler : IRequestHandler<AddToActivityCommandRequest, bool>
@@ -27,21 +29,32 @@ namespace Application.Command.Activities
 
         public async Task<bool> Handle(AddToActivityCommandRequest request, CancellationToken cancellationToken)
         {
-            var activity = new Activity
+            var currentDateTimeOffset = DateTimeOffset.UtcNow;
+            try
             {
-                Id = Guid.NewGuid(),
-                Title = request.Title,
-                Description = request.Description,
-                Category = request.Category,
-                Date = request.Date,
-                City = request.City,
-                Venue = request.Venue,
-                Status = 1
-            };
+                var activity = new Activity
+                {
+                    Id = Guid.NewGuid(),
+                    Title = request.Title,
+                    Description = request.Description,
+                    Category = request.Category,
+                    Date = request.Date,
+                    City = request.City,
+                    Venue = request.Venue,
+                    HostId = request.HostId,
+                    Status = request.Date > currentDateTimeOffset 
+                        ? (byte)ActivityStatusEnum.Pending 
+                        : (byte)ActivityStatusEnum.Active
+                };
 
-            await _dbContext.Activities.AddAsync(activity);
-            await _dbContext.SaveChangesAsync();
-            return true;
+                await _dbContext.Activities.AddAsync(activity);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
