@@ -2,10 +2,10 @@ namespace FrameworkCore.Enums
 {
     public enum ActivityStatusEnum 
     {
-        Pending = 0,
-        Active = 1,
-        Inactive = 2,
-        Draft = 3
+        Pending = 1,
+        Active = 2,
+        Inactive = 3,
+        Draft = 4
     }
 
     public enum ActivityCommentStatusEnum

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Domain.Entities;
 using FrameworkCore.Enums;
 
@@ -7,13 +8,14 @@ namespace Persistence
 {
   public class Seed
   {
-      public static void SeedData(ApplicationDbContext context)
+      public static async Task SeedData(ApplicationDbContext context)
       {
-       // SeedActivityStatuses(context);
-        SeedActivityCommentStatuses(context);
+        await SeedActivityStatuses(context);
+        await SeedActivityCommentStatuses(context);
+        await context.SaveChangesAsync();
       }
 
-      private static void SeedActivityStatuses(ApplicationDbContext context)
+      private static async Task SeedActivityStatuses(ApplicationDbContext context)
       {
         if (!context.ActivityStatuses.Any())
         {
@@ -24,22 +26,20 @@ namespace Persistence
             new ActivityStatus {Name = nameof(ActivityStatusEnum.Draft)}
           };
 
-          context.ActivityStatuses.AddRange(statuses);
-          context.SaveChanges();
+          await context.ActivityStatuses.AddRangeAsync(statuses);
         }
       }
 
-      private static void SeedActivityCommentStatuses(ApplicationDbContext context)
+      private static async Task SeedActivityCommentStatuses(ApplicationDbContext context)
       {
         if(!context.ActivityCommentStatuses.Any())
         {
-          var statuses = new List<ActivityCommentStatus>() {
+          var commentStatuses = new List<ActivityCommentStatus>() {
             new ActivityCommentStatus {Name = nameof(ActivityCommentStatusEnum.Active)},
             new ActivityCommentStatus {Name = nameof(ActivityCommentStatusEnum.Inactive)}
           };
 
-          context.ActivityCommentStatuses.AddRange(statuses);
-          context.SaveChanges();
+          await context.ActivityCommentStatuses.AddRangeAsync(commentStatuses);
         }
       }
   }
