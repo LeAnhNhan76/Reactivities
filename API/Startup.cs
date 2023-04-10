@@ -1,4 +1,3 @@
-using Application.Query.Activities;
 using Application.Service;
 using FrameworkCore.Constants;
 using MediatR;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistence;
-using System.Reflection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoMapper;
@@ -105,7 +103,9 @@ namespace API
 
         public void RegisterMediatR(IServiceCollection services) 
         {
-          services.AddMediatR(typeof(GetAllActivityQueryHandler).GetTypeInfo().Assembly);
+          var applicationAssembly = typeof(Application.AssemblyReference).Assembly;
+
+          services.AddMediatR(applicationAssembly);
         }
 
         public void RegisterServices(IServiceCollection services) 
