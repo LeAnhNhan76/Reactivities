@@ -14,6 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoMapper;
 using API.AutoMapper;
+using API.Middleware;
+using Application.Behaviors;
+using FluentValidation;
 
 namespace API
 {
@@ -65,6 +68,8 @@ namespace API
 
             services.AddHttpContextAccessor();
 
+            this.RegisterMiddleware(services);
+
             this.RegisterMediatR(services);
 
             this.RegisterServices(services);
@@ -79,6 +84,8 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -106,6 +113,10 @@ namespace API
           var applicationAssembly = typeof(Application.AssemblyReference).Assembly;
 
           services.AddMediatR(applicationAssembly);
+
+          services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+          services.AddValidatorsFromAssembly(applicationAssembly);
         }
 
         public void RegisterServices(IServiceCollection services) 
@@ -121,6 +132,11 @@ namespace API
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
+        }
+
+        public void RegisterMiddleware(IServiceCollection services)
+        {
+            services.AddTransient<ExceptionHandlingMiddleware>();
         }
     }
 }

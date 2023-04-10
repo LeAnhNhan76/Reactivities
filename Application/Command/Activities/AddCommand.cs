@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using FluentValidation;
 using FrameworkCore.Enums;
 using MediatR;
 using Persistence;
@@ -17,6 +18,15 @@ namespace Application.Command.Activities
         public string City { get; set; }
         public string Venue { get; set; }
         public Guid? HostId { get; set; }
+    }
+
+    public class AddToActivityCommandValidator: AbstractValidator<AddToActivityCommandRequest>
+    {
+        public AddToActivityCommandValidator()
+        {
+            RuleFor(x => x.Title).NotNull().NotEmpty();
+            RuleFor(x => x.Date).GreaterThanOrEqualTo(DateTimeOffset.Now);
+        }
     }
 
     public class AddToActivityCommandHandler : IRequestHandler<AddToActivityCommandRequest, bool>
