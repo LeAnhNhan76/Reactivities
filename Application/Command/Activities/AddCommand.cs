@@ -40,31 +40,24 @@ namespace Application.Command.Activities
         public async Task<bool> Handle(AddToActivityCommandRequest request, CancellationToken cancellationToken)
         {
             var currentDateTimeOffset = DateTimeOffset.UtcNow;
-            try
+            var activity = new Activity
             {
-                var activity = new Activity
-                {
-                    Id = Guid.NewGuid(),
-                    Title = request.Title,
-                    Description = request.Description,
-                    Category = request.Category,
-                    Date = request.Date,
-                    City = request.City,
-                    Venue = request.Venue,
-                    HostId = request.HostId,
-                    Status = request.Date > currentDateTimeOffset 
-                        ? (byte)ActivityStatusEnum.Pending 
-                        : (byte)ActivityStatusEnum.Active
-                };
+                Id = Guid.NewGuid(),
+                Title = request.Title,
+                Description = request.Description,
+                Category = request.Category,
+                Date = request.Date,
+                City = request.City,
+                Venue = request.Venue,
+                HostId = request.HostId,
+                Status = request.Date > currentDateTimeOffset 
+                    ? (byte)ActivityStatusEnum.Pending 
+                    : (byte)ActivityStatusEnum.Active
+            };
 
-                await _dbContext.Activities.AddAsync(activity);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            await _dbContext.Activities.AddAsync(activity);
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }
