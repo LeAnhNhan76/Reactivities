@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button, Header, Item, Label, Segment } from 'semantic-ui-react';
-import { IActivity } from '../../../models/activity';
+import { IActivity } from '../../../models/activity.model';
 import { formatDate } from '../../../utils/dateTime.utils';
 import { isValid } from '../../../utils/string.utils';
 

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Item } from 'semantic-ui-react';
-import { IActivity } from '../../../models/activity';
+import { IActivity } from '../../../models/activity.model';
 import ActivityItem from '../item/ActivityItem';
 
 const ActivityList = () => {

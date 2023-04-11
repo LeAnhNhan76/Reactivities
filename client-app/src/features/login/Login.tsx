@@ -1,11 +1,8 @@
 import { FormEvent, useState } from "react";
 import { Button, Container, Form, Header } from "semantic-ui-react";
 import './index.scss';
-
-export interface LoginModel {
-    userName: string;
-    password: string;
-}
+import { LoginModel } from "../../models/login.model";
+import agent from "../../api/agent";
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState<LoginModel>({
@@ -21,8 +18,11 @@ const Login = () => {
     });
   }
 
-  const onLogin = () => {
-    
+  const onLogin = async () => {
+    if (loginInfo) {
+      const loginResult = await agent.Account.login(loginInfo);
+      console.log('loginResult', loginResult);
+    }
   }
 
   return (
@@ -43,6 +43,7 @@ const Login = () => {
                     placeholder="Password"
                     onChange={handleInputChange}
                     value={loginInfo?.password}
+                    type="password"
                 />
                 <Button positive fluid onClick={onLogin}>
                     Login

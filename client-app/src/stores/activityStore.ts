@@ -1,6 +1,6 @@
 import { action, computed, observable } from 'mobx';
 import agent from '../api/agent';
-import { IActivity } from '../models/activity';
+import { IActivity } from '../models/activity.model';
 import BaseStore from './baseStore';
 export default class ActivityStore extends BaseStore {
 

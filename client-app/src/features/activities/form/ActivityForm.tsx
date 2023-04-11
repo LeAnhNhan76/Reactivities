@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { FormEvent, useState } from 'react';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { v4 as uuid } from 'uuid';
-import { IActivity } from '../../../models/activity';
+import { IActivity } from '../../../models/activity.model';
 import { useStore } from '../../../stores/store';
 
 const ActivityForm = () => {

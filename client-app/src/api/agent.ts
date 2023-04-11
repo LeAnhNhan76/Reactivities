@@ -1,28 +1,27 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { IActivity } from '../models/activity';
+import { IActivity } from '../models/activity.model';
 import { SystemConstants } from '../constants/setting.constanst';
+import { LoginModel, LoginResultModel } from '../models/login.model';
+import { apiUrl } from '../constants/url.constants';
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
+//axios.defaults.baseURL = 'https://localhost:5000/api';
 //axios.defaults.baseURL = 'https://localhost:44311/api';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api'
+  baseURL: 'https://localhost:5000/api'
 });
 
 axiosInstance.interceptors.request.use((
   config: AxiosRequestConfig) => {
-    config.headers = getAuthorizationHeaders();
-}, (error) => handleError);
+    const token = localStorage.getItem(SystemConstants.Token);
 
-const getAuthorizationHeaders = () => {
-  const token = localStorage.getItem(SystemConstants.Token);
-
-  console.log('token', token);
-
-  return {
-    Authorization: `Bearer ${token}`
-  }
-}
+    if(token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
 const responseBody = (response : AxiosResponse) => response.data;
 
@@ -49,8 +48,13 @@ const Activities = {
   delete: (id: string) => requests.del(`/activities/${id}`)
 }
 
+const Account = {
+  login: (model: LoginModel): Promise<LoginResultModel> => requests.post(`/${apiUrl.account}/login`, model)
+}
+
 const agent = {
-  Activities
+  Activities,
+  Account
 }
 
 export default agent;
