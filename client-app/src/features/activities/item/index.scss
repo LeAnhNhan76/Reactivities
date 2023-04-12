@@ -1,0 +1,13 @@
+@use '../../../assets/css/index.scss' as *;
+
+.item {
+    &.activity-item {
+        margin-bottom: 22px !important;
+        >.content {
+            >.header {
+                font-size: 14px !important;
+                color: $teal !important;
+            }
+        }
+    }
+}

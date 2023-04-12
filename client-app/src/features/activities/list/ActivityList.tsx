@@ -12,7 +12,7 @@ const ActivityList = () => {
   }, [])
 
   return (
-    <Item.Group >
+    <Item.Group>
       {activitiesByDate.map(activity => <ActivityItem activity={activity}></ActivityItem>)}
     </Item.Group>
   );

@@ -4,4 +4,5 @@ export const dateTimeFormat = {
     momentDateTimeFormat: "DD.MM.YYYY HH:mm",
     momentDateDatabaseFormat: "YYYY-MM-DD",
     momentDateDashFormat: "DD-MM-YYYY",
+    momentDateEventFormat:"DD MMM YYYY" 
 };
