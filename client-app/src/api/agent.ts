@@ -28,16 +28,11 @@ const responseBody = (response : AxiosResponse) => response.data;
 const sleep = (ms: number) => (response: AxiosResponse) =>
   new Promise<AxiosResponse>(resolve => setTimeout(() => resolve(response), ms));
 
-const handleError = (err: any) => {
-  console.log('ERROR APP: ', err);
-  return Promise.reject(err);
-}
-
 const requests = {
-  get : (url: string) => axiosInstance.get(url).then(sleep(1000)).then(responseBody).catch(handleError),
-  post : (url: string, body: {}) => axiosInstance.post(url, body).then(sleep(1000)).then(responseBody).catch(handleError),
-  put : (url: string, body: {}) => axiosInstance.put(url, body).then(sleep(1000)).then(responseBody).catch(handleError),
-  del : (url: string) => axiosInstance.delete(url).then(sleep(1000)).then(responseBody).catch(handleError)
+  get : (url: string) => axiosInstance.get(url).then(sleep(1000)).then(responseBody),
+  post : (url: string, body: {}) => axiosInstance.post(url, body).then(sleep(1000)).then(responseBody),
+  put : (url: string, body: {}) => axiosInstance.put(url, body).then(sleep(1000)).then(responseBody),
+  del : (url: string) => axiosInstance.delete(url).then(sleep(1000)).then(responseBody)
 }
 
 const Activities = {

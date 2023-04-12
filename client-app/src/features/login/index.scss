@@ -1,9 +1,15 @@
 @use '../../assets/css/index.scss' as *;
 
 .form-container {
+  &.login {
     >.container {
-        >.header {
-            color: $teal
-        }
+      width: 370px;
     }
+  }
+
+  >.container {
+    >.header {
+        color: $teal
+    }
+  }
 }

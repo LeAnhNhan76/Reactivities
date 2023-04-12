@@ -1,14 +1,22 @@
-import { FormEvent, useState } from "react";
-import { Button, Container, Form, Header } from "semantic-ui-react";
-import './index.scss';
+import { observer } from "mobx-react-lite";
+import { FormEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Container, Form, Header, Message } from "semantic-ui-react";
 import { LoginModel } from "../../models/login.model";
-import agent from "../../api/agent";
+import { useStore } from "../../stores/store";
+import './index.scss';
+
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState<LoginModel>({
     userName: '', 
     password: ''
   });
+
+  const { authStore } = useStore();
+  const {isLoading, loggedIn, login, isAlreadyLoggedIn} = authStore;
+
+  const navigate = useNavigate();
 
   const handleInputChange = (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = event.currentTarget;
@@ -20,13 +28,27 @@ const Login = () => {
 
   const onLogin = async () => {
     if (loginInfo) {
-      const loginResult = await agent.Account.login(loginInfo);
-      console.log('loginResult', loginResult);
+      await login(loginInfo);
     }
   }
 
+  useEffect(() => {
+    if (isAlreadyLoggedIn()) {
+      navigate('/activities');
+    }
+  }, [isAlreadyLoggedIn]);
+
+  useEffect(() => {
+    if (loggedIn === true) {
+      console.log('tree')
+      setTimeout(() => {
+        navigate('/activities');
+      }, 300);
+    }
+  }, [loggedIn, navigate]);
+
   return (
-    <div className="form-container">
+    <div className="form-container login">
         <Container>
             <Header as='h2'>
                 Login to Reactivities
@@ -45,14 +67,27 @@ const Login = () => {
                     value={loginInfo?.password}
                     type="password"
                 />
-                <Button positive fluid onClick={onLogin}>
+                <Button positive fluid onClick={onLogin} loading={isLoading}>
                     Login
                 </Button>
             </Form>
+            { loggedIn === false && <Form error>
+                <Message error
+                  header={'Login was failed'}
+                  content={'Invalid username or password'}
+                ></Message>
+              </Form>}
+            { loggedIn === true && <Form success>
+                <Message success
+                  header={'Login was successful'}
+                  content={'Welcome you back to Reactivities'}
+                ></Message>
+              </Form>}
+            
             <p>You don't have account? Register!</p>
         </Container>
     </div>
   )
 }
 
-export default Login;
+export default observer(Login);
