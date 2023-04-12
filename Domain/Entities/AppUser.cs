@@ -32,6 +32,19 @@ namespace Domain.Entities
         [StringLength(320)]
         public string Email { get; set; }
 
-        public DateTime? BirthDate { get; set; }      
+        public DateTime? BirthDate { get; set; }
+
+        [NotMapped]
+        public string DisplayName
+        {
+          get 
+          {
+            if (!string.IsNullOrEmpty(NickName)) return NickName;
+
+            if (string.IsNullOrEmpty(FirstName) && string.IsNullOrEmpty(LastName)) return Email;
+
+            return string.Concat(FirstName, " ", LastName);
+          }
+        }
     }
 }

@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { IActivity } from '../models/activity.model';
 import { SystemConstants } from '../constants/setting.constanst';
-import { LoginModel, LoginResultModel } from '../models/login.model';
+import { LoginModel, AuthInfoModel } from '../models/login.model';
 import { apiUrl } from '../constants/url.constants';
+import { getAuthInfo } from '../utils/localStorage.utils';
 
 //axios.defaults.baseURL = 'https://localhost:5000/api';
 //axios.defaults.baseURL = 'https://localhost:44311/api';
@@ -13,10 +14,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((
   config: AxiosRequestConfig) => {
-    const token = localStorage.getItem(SystemConstants.Token);
+    const authInfo = getAuthInfo()
 
-    if(token) {
-      config.headers.Authorization = `Bearer ${token}`
+    if(authInfo) {
+      config.headers.Authorization = `Bearer ${authInfo.token}`
     }
     return config;
 }, (error) => {
@@ -44,7 +45,7 @@ const Activities = {
 }
 
 const Account = {
-  login: (model: LoginModel): Promise<LoginResultModel> => requests.post(`/${apiUrl.account}/login`, model)
+  login: (model: LoginModel): Promise<AuthInfoModel> => requests.post(`/${apiUrl.account}/login`, model)
 }
 
 const agent = {

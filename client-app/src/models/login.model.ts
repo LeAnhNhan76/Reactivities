@@ -3,8 +3,9 @@ export interface LoginModel {
   password: string;
 }
 
-export interface LoginResultModel {
+export interface AuthInfoModel {
   userName: string;
+  displayName: string;
   isLoggedIn: boolean;
   token: string;
 }

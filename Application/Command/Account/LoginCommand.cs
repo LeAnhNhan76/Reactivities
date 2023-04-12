@@ -17,6 +17,7 @@ namespace Application.Command.Account
   public class LoginCommandResponse
   {
     public string UserName { get; set; }
+    public string DisplayName { get; set; }
     public bool IsLoggedIn { get; set;}
     public string Token { get; set; }
     
@@ -60,6 +61,7 @@ namespace Application.Command.Account
         if (!isValidPwd) return response;
 
         response.IsLoggedIn = true;
+        response.DisplayName = user.DisplayName;
         response.Token = this._tokenService.CreateToken(user);
 
         return response;

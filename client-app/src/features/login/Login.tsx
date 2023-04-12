@@ -40,7 +40,6 @@ const Login = () => {
 
   useEffect(() => {
     if (loggedIn === true) {
-      console.log('tree')
       setTimeout(() => {
         navigate('/activities');
       }, 300);
