@@ -1,27 +1,19 @@
 import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { Item } from 'semantic-ui-react';
-import { IActivity } from '../../../models/activity.model';
+import { useActivityStore } from '../../../stores/store';
 import ActivityItem from '../item/ActivityItem';
 
 const ActivityList = () => {
-
-  const activity : IActivity = {
-    id: '123',
-    title: 'New title',
-    description: 'New description',
-    category: 'Category',
-    date: new Date(),
-    city: 'HCMC',
-    venue: 'new valbeu'
-  }
+  const { activitiesByDate, loadActivities } = useActivityStore();
+  
+  useEffect(() => {
+    loadActivities();
+  }, [])
 
   return (
     <Item.Group >
-      <ActivityItem activity={activity}></ActivityItem>
-      <ActivityItem activity={activity}></ActivityItem>
-      <ActivityItem activity={activity}></ActivityItem>
-      <ActivityItem activity={activity}></ActivityItem>
-      <ActivityItem activity={activity}></ActivityItem>
+      {activitiesByDate.map(activity => <ActivityItem activity={activity}></ActivityItem>)}
     </Item.Group>
   );
 };

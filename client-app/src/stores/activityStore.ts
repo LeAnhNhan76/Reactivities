@@ -11,7 +11,7 @@ export default class ActivityStore extends BaseStore {
   @observable target: string | undefined;
   
   @computed get activitiesByDate() {
-    return this.activities;
+    return this.activities.sort((a: any, b: any) => a.date - b.date);
   }
 
   @action loadActivities = async () => {

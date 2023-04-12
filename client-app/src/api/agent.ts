@@ -1,8 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { IActivity } from '../models/activity.model';
-import { SystemConstants } from '../constants/setting.constanst';
-import { LoginModel, AuthInfoModel } from '../models/login.model';
 import { apiUrl } from '../constants/url.constants';
+import { IActivity } from '../models/activity.model';
+import { AuthInfoModel, LoginModel } from '../models/login.model';
 import { getAuthInfo } from '../utils/localStorage.utils';
 
 //axios.defaults.baseURL = 'https://localhost:5000/api';

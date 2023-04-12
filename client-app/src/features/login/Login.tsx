@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form, Header, Message } from "semantic-ui-react";
 import { LoginModel } from "../../models/login.model";
-import { useStore } from "../../stores/store";
+import { useAuthStore } from "../../stores/store";
 import './index.scss';
 
 
@@ -13,8 +13,11 @@ const Login = () => {
     password: ''
   });
 
-  const { authStore } = useStore();
-  const {isLoading, loggedIn, login, isAlreadyLoggedIn} = authStore;
+  const {isLoading, 
+    loggedIn, 
+    login, 
+    isAlreadyLoggedIn
+  } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -46,6 +49,30 @@ const Login = () => {
     }
   }, [loggedIn, navigate]);
 
+  const renderSucessLoginMessage = () => {
+    return <Form success>
+    <Message success
+      header={'Login was successful'}
+      content={'Welcome you back to Reactivities'}
+    ></Message>
+  </Form>
+  }
+
+  const renderFailLoginMessage = () => {
+    return <Form error>
+      <Message error
+        header={'Login was failed'}
+        content={'Invalid username or password'}
+      ></Message>
+    </Form>
+  }
+
+  const renderLoginMessage = () => {
+    if (loggedIn === true) return renderSucessLoginMessage();
+    else if (loggedIn === false) return renderFailLoginMessage();
+    else return <></>
+  }
+
   return (
     <div className="form-container login">
         <Container>
@@ -70,19 +97,7 @@ const Login = () => {
                     Login
                 </Button>
             </Form>
-            { loggedIn === false && <Form error>
-                <Message error
-                  header={'Login was failed'}
-                  content={'Invalid username or password'}
-                ></Message>
-              </Form>}
-            { loggedIn === true && <Form success>
-                <Message success
-                  header={'Login was successful'}
-                  content={'Welcome you back to Reactivities'}
-                ></Message>
-              </Form>}
-            
+            { renderLoginMessage() }
             <p>You don't have account? Register!</p>
         </Container>
     </div>

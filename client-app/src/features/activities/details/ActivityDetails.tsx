@@ -2,17 +2,16 @@ import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Card, Image } from 'semantic-ui-react';
-import { useStore } from '../../../stores/store';
+import { useActivityStore } from '../../../stores/store';
 import { formatDate } from '../../../utils/dateTime.utils';
 
 const ActivityDetails = () => {
-  const {activityStore} = useStore();
   const {
     selectedActivity: activity,
     setEditMode,
     loadActivity,
     cancelSelectedActivity
-  } = activityStore;
+  } = useActivityStore();
 
   const {id} = useParams();
 

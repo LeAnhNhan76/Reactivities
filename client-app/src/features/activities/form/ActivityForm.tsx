@@ -3,17 +3,16 @@ import { FormEvent, useState } from 'react';
 import { Button, Form, Segment } from 'semantic-ui-react';
 import { v4 as uuid } from 'uuid';
 import { IActivity } from '../../../models/activity.model';
-import { useStore } from '../../../stores/store';
+import { useActivityStore } from '../../../stores/store';
 
 const ActivityForm = () => {
-  const {activityStore} = useStore();
   const {
     createActivity,
     selectedActivity,
     setEditMode,
     submitting,
     editActivity
-  } = activityStore;
+  } = useActivityStore();
 
   const [activity, setActivity] = useState<IActivity | undefined> (() => {
     if(selectedActivity !== undefined) {

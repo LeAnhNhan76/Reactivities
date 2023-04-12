@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import { NavLink } from 'react-router-dom';
 import { Button, Container, Menu } from 'semantic-ui-react';
-import { useStore } from '../../stores/store';
+import { useActivityStore } from '../../stores/store';
 
 const NavBar = () => {
-    const {activityStore} = useStore();
+    const { openForm } = useActivityStore();
     return (
         <Menu fixed='top' inverted>
           <Container>
@@ -17,7 +17,7 @@ const NavBar = () => {
               <Button 
                 as={NavLink}
                 to='/createActivities'
-                onClick={() => activityStore.openForm()} 
+                onClick={() => openForm()} 
                 positive content='Create a new Activity'/>
             </Menu.Item>
           </Container>

@@ -17,3 +17,11 @@ export const StoreContext = createContext(store);
 export function useStore() {
   return useContext(StoreContext);
 }
+
+export function useActivityStore() {
+  return useContext(StoreContext)?.activityStore;
+}
+
+export function useAuthStore() {
+  return useContext(StoreContext)?.authStore;
+}
