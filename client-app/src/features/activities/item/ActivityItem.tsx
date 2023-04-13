@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Confirm, Container, Header, Icon, Item, Label, Segment } from 'semantic-ui-react';
+import { Button, Confirm, Container, Divider, Header, Icon, Item, Label, Segment } from 'semantic-ui-react';
 import { dateTimeFormat } from '../../../constants/dateTime.constants';
 import { IActivity } from '../../../models/activity.model';
 import { useActivityStore } from '../../../stores/store';
@@ -32,19 +32,36 @@ const ActivityItem = (props: IActivityItemProps) => {
                           size={AvatarSizes.SMALL}
                         ></Avatar>
                         <div className='title'>
-                          <Header as={'h3'}>{activity.title}</Header>
+                          <Header as={'h4'}>{activity.title}</Header>
                           <p>Hosted by <span className='host-name'>{activity.city}</span></p>
                           <Button inverted color='green'>You are going to this activity</Button>
                         </div>
                     </Item.Meta>
                     <Item.Description>
                       <div className='join-info'>
-                        <Icon disabled name='clock' />
+                        <Icon name='clock' />
                         <span>{formatDate(activity.date)}</span>
                         <Icon name='map marker'></Icon>
                         <span>{`${activity.venue} - ${activity.city}`}</span>
                       </div>
-                      <div className='participant'></div>
+                      <div className='participant'>
+                        <Avatar 
+                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                          size={AvatarSizes.TINY}
+                        ></Avatar>
+                        <Avatar 
+                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                          size={AvatarSizes.TINY}
+                        ></Avatar>
+                        <Avatar 
+                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                          size={AvatarSizes.TINY}
+                        ></Avatar>
+                        <Avatar 
+                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                          size={AvatarSizes.TINY}
+                        ></Avatar>
+                      </div>
                     </Item.Description>
                     <Item.Extra>
                         <Button
@@ -52,16 +69,16 @@ const ActivityItem = (props: IActivityItemProps) => {
                             to={`/activities/${activity.id}`}
                             floated="right"
                             content="View"
-                            color="blue"
+                            color="teal"
                         />
-                        <Button
+                        {/* <Button
                             name={activity.id}
                             loading={target === activity.id && submitting}
                             onClick={() => setOpenConfirm(true)}
                             floated="right"
                             content="Delete"
                             color="red"
-                        />
+                        /> */}
                         <Label basic content={activity.category} />
                         <Confirm
                           open={openConfirm}
