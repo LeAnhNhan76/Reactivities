@@ -2,6 +2,7 @@ import { action, computed, observable } from 'mobx';
 import agent from '../api/agent';
 import { IActivity } from '../models/activity.model';
 import BaseStore from './baseStore';
+
 export default class ActivityStore extends BaseStore {
 
   @observable activities: IActivity[] = [];
@@ -15,16 +16,12 @@ export default class ActivityStore extends BaseStore {
   }
 
   @action loadActivities = async () => {
-      try {
-        this.showLoading();
+      this.performAnApiAction(async () => {
         const data = await agent.Activities.list();
         if(data) {
           this.activities = [...data];
         }
-        this.hideLoading();
-      } catch (error) {
-        this.hideLoading();
-      }
+      });
   }
   
   @action loadActivity = async (id: string) => {
@@ -33,12 +30,12 @@ export default class ActivityStore extends BaseStore {
       this.selectedActivity = item;
     }
     else {
-      this.showLoading();
-      const data = await agent.Activities.details(id);
-      if(data !== undefined && data !== null) {
-        this.selectedActivity = data;
-      }
-      this.hideLoading();
+      this.performAnApiActionWithLoading(async () => {
+        const data = await agent.Activities.details(id);
+        if(data !== undefined && data !== null) {
+          this.selectedActivity = data;
+        }
+      })
     }
   }
 
@@ -81,9 +78,13 @@ export default class ActivityStore extends BaseStore {
     this.cancelSelectedActivity();
   }
   @action deleteActivity = async (id: string) => {
-    await agent.Activities.delete(id).then((result) => {
-      this.activities = [...this.activities.filter(x => x.id !== id)];
-    });
+    this.performAnApiAction(async() => {
+      this.target = id;
+      this.setSubmitting(true);
+      await agent.Activities.delete(id).then((result) => {
+        this.activities = [...this.activities.filter(x => x.id !== id)];
+      });
+    })
   }
 
   public setEditMode = (state: boolean) => this.editMode = state;

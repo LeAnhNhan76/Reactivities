@@ -10,9 +10,7 @@ export default class AuthStore extends BaseStore {
   @observable loggedIn: boolean | undefined = undefined;
 
   @action login = async (model: LoginModel) => {
-    this.showLoading();
-    try 
-    {
+    this.performAnApiActionWithLoading(async () => {
       const authInfo = await agent.Account.login(model);
 
       this.loggedIn = authInfo && authInfo.isLoggedIn && authInfo.token !== '';
@@ -20,12 +18,9 @@ export default class AuthStore extends BaseStore {
       if(this.loggedIn) {
         localStorage.setItem(SystemConstants.AuthInfo, JSON.stringify(authInfo));
       }
-      this.hideLoading();
-    }
-    catch(err) {
+    }, () => {
       this.loggedIn = false;
-      this.hideLoading();
-    }
+    })
   }
 
   @action isAlreadyLoggedIn = () => {
