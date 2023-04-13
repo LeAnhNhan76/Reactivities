@@ -3,6 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import { router } from './router/Routes';
 import { store, StoreContext } from './stores/store';
+import 'react-calendar/dist/Calendar.css';
 import './assets/css/_global.scss'
 
 ReactDOM.render(

@@ -1,0 +1,38 @@
+@use '../../../assets/css/index.scss' as *;
+
+.activity-filter {
+    height: 500px;
+    padding-top: 30px;
+    font-size: 12px;
+    font-weight: bold;
+
+    .segment {
+        padding: 0px;
+        &.filters {
+            .item{
+                padding: 12px !important;
+                cursor: pointer;
+                >.icon {
+                    @include flex-align-center;
+                    color: $teal;
+                    span {
+                        font-size: 10px;
+                    }
+                }
+                &.active {
+                    background-color: $background-white-color;
+                }
+            }
+
+            .item:hover {
+                background-color: $background-white-color;
+            }
+        }
+        &.calendar {
+            >.react-calendar {
+                width: 100%;
+                border: none;
+            }
+        }
+    }
+}
