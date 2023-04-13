@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Confirm, Item, Label, Segment } from 'semantic-ui-react';
+import { Button, Confirm, Container, Header, Icon, Item, Label, Segment } from 'semantic-ui-react';
 import { dateTimeFormat } from '../../../constants/dateTime.constants';
 import { IActivity } from '../../../models/activity.model';
 import { useActivityStore } from '../../../stores/store';
 import { formatDate } from '../../../utils/dateTime.utils';
 import { isValid } from '../../../utils/string.utils';
 import './index.scss';
+import Avatar, { AvatarSizes } from '../../../components/avatar/Avatar';
 
 export interface IActivityItemProps {
     activity: IActivity
@@ -26,18 +27,24 @@ const ActivityItem = (props: IActivityItemProps) => {
                 </Item.Header>
                 <Segment>
                     <Item.Meta>
-                        <Item.Image size='mini' centered circular
-                            src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600'>
-                        </Item.Image>
-                        {activity.title}
+                        <Avatar 
+                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                          size={AvatarSizes.SMALL}
+                        ></Avatar>
+                        <div className='title'>
+                          <Header as={'h3'}>{activity.title}</Header>
+                          <p>Hosted by <span className='host-name'>{activity.city}</span></p>
+                          <Button inverted color='green'>You are going to this activity</Button>
+                        </div>
                     </Item.Meta>
                     <Item.Description>
-                      {formatDate(activity.date)}
-                      <div>{activity.description}</div>
-                      <div>
-                          {activity.city}
-                          {isValid(activity.venue) ? `, ${activity.venue}`: ''}
+                      <div className='join-info'>
+                        <Icon disabled name='clock' />
+                        <span>{formatDate(activity.date)}</span>
+                        <Icon name='map marker'></Icon>
+                        <span>{`${activity.venue} - ${activity.city}`}</span>
                       </div>
+                      <div className='participant'></div>
                     </Item.Description>
                     <Item.Extra>
                         <Button

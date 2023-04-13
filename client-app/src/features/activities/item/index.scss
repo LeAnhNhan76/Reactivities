@@ -8,6 +8,44 @@
                 font-size: 14px !important;
                 color: $teal !important;
             }
+            >.ui {
+              padding: 0px;
+              >.meta {
+                padding: 12px;
+                @include flex-align-center;
+                gap: 10px;
+                border-bottom: 3px solid $light-gray;
+                margin: 0px;
+                >.title {
+                  >.header {
+                    margin-bottom: 8px;
+                  }
+                  p {
+                    font-weight: 700;
+                    >.host-name {
+                      color: $teal;
+                      font-weight: bolder;
+                    }
+                  }
+                  
+                }
+              }
+              >.description{
+                font-weight: bold;
+                font-size: 13px;
+                padding: 5px 0px;
+                >.join-info {
+                  border-bottom: 3px solid $light-gray;
+                  padding: 7px;
+                }
+                >.participant{
+
+                }
+              }
+              >.extra {
+                padding: 5px 12px;
+              }
+            }
         }
     }
 }
