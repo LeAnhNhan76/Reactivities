@@ -7,11 +7,11 @@
 }
   
 body {
-  background-color: $background-white-color !important;
+  background-color: $backgroundLightPrimary !important;
 }
 
 .ui.inverted.top.fixed.menu {
-  background-image: $background-image-color !important;
+  background-image: $backgroundGradientPrimary !important;
 }
 
 .root-container {
@@ -34,7 +34,7 @@ body {
   @include flex-center;
 
   .container {
-    background-color: $background-white-color;
+    background-color: $backgroundLightPrimary;
     padding: 25px;
     border: none;
     border-radius: 5px;
@@ -51,5 +51,12 @@ body {
     p {
       font-size: 16px;
     }
+  }
+}
+
+.ui {
+  &.dimmer {
+    background-color: $light-gray !important;
+    opacity: 0.6 !important;
   }
 }

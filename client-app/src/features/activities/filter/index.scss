@@ -2,7 +2,7 @@
 
 .activity-filter {
     height: 500px;
-    padding-top: 30px;
+    padding-top: 33px;
     font-size: 12px;
     font-weight: bold;
 
@@ -20,12 +20,12 @@
                     }
                 }
                 &.active {
-                    background-color: $background-white-color;
+                    background-color: $backgroundLightPrimary;
                 }
             }
 
             .item:hover {
-                background-color: $background-white-color;
+                background-color: $backgroundLightPrimary;
             }
         }
         &.calendar {

@@ -8,14 +8,14 @@ interface ISpinnerProps{
 }
 
 const Spinner = (props: ISpinnerProps) => {
-  const { inverted, content } = props;
+  const inverted = props.inverted??true;
   const { isLoading } = useActivityStore();
 
-  if(!isLoading) return <></>
+  if(!isLoading) return <></>;
 
   return (
     <Dimmer active inverted={inverted}>
-      <Loader content={content}></Loader>
+      <Loader content={props.content} inverted></Loader>
     </Dimmer>
   );
 };

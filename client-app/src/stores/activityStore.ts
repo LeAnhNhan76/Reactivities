@@ -16,7 +16,7 @@ export default class ActivityStore extends BaseStore {
   }
 
   @action loadActivities = async () => {
-      this.performAnApiAction(async () => {
+      this.performAnApiActionWithLoading(async () => {
         const data = await agent.Activities.list();
         if(data) {
           this.activities = [...data];

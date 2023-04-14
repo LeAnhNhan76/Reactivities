@@ -2,7 +2,7 @@
 
 .home {
     @include flex-col-center;
-    background-image: $background-image-color;
+    background-image: $backgroundGradientPrimary;
     height: inherit;
     color: $white;
 

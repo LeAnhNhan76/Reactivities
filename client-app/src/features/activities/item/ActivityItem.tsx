@@ -1,13 +1,10 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Confirm, Container, Divider, Header, Icon, Item, Label, Segment } from 'semantic-ui-react';
+import { Button, Header, Icon, Item, Label, Segment } from 'semantic-ui-react';
+import Avatar, { AvatarSizes } from '../../../components/avatar/Avatar';
 import { dateTimeFormat } from '../../../constants/dateTime.constants';
 import { IActivity } from '../../../models/activity.model';
-import { useActivityStore } from '../../../stores/store';
 import { formatDate } from '../../../utils/dateTime.utils';
-import { isValid } from '../../../utils/string.utils';
 import './index.scss';
-import Avatar, { AvatarSizes } from '../../../components/avatar/Avatar';
 
 export interface IActivityItemProps {
     activity: IActivity
@@ -15,9 +12,6 @@ export interface IActivityItemProps {
 
 const ActivityItem = (props: IActivityItemProps) => {
     const { activity } = props;
-    const {deleteActivity, target, submitting} = useActivityStore();
-
-    const [openConfirm, setOpenConfirm] = useState(false);
 
     return (
         <Item key={activity.id} className='activity-item'>
@@ -32,15 +26,15 @@ const ActivityItem = (props: IActivityItemProps) => {
                           size={AvatarSizes.SMALL}
                         ></Avatar>
                         <div className='title'>
-                          <Header as={'h4'}>{activity.title}</Header>
+                          <Header as={'h3'}>{activity.title}</Header>
                           <p>Hosted by <span className='host-name'>{activity.city}</span></p>
                           <Button inverted color='green'>You are going to this activity</Button>
                         </div>
                     </Item.Meta>
                     <Item.Description>
                       <div className='join-info'>
-                        <Icon name='clock' />
-                        <span>{formatDate(activity.date)}</span>
+                        <Icon color='black' name='clock' />
+                        <span>{formatDate(activity.date, dateTimeFormat.momentDateLocaleFormat)}</span>
                         <Icon name='map marker'></Icon>
                         <span>{`${activity.venue} - ${activity.city}`}</span>
                       </div>
@@ -80,15 +74,6 @@ const ActivityItem = (props: IActivityItemProps) => {
                             color="red"
                         /> */}
                         <Label basic content={activity.category} />
-                        <Confirm
-                          open={openConfirm}
-                          content='Are you sure delete this activity?'
-                          onCancel={() => setOpenConfirm(false)}
-                          onConfirm={() => { 
-                            setOpenConfirm(false);
-                            deleteActivity(activity.id);
-                          }}
-                        ></Confirm>
                     </Item.Extra>
                 </Segment>
             </Item.Content>
