@@ -22,7 +22,7 @@ const ActivityItem = (props: IActivityItemProps) => {
                 <Segment>
                     <Item.Meta>
                         <Avatar 
-                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                          src='https://localhost:5000/api/Files?path=user%2Favatars%2Favatar-steven-avatar-nhan-le-20230414074832454.png' 
                           size={AvatarSizes.SMALL}
                         ></Avatar>
                         <div className='title'>

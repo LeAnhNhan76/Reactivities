@@ -8,5 +8,6 @@ namespace FrameworkCore.Constants
     public static int MB => (int)Math.Pow(Byte, 2);
     public static string BaseDirectory = "UploadFiles";
     public static string UserAvatarsFolder = "User/Avatars";
+    public static string MimeTypeImage = "application/octet-stream";
   }
 }
