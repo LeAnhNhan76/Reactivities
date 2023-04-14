@@ -34,6 +34,9 @@ namespace Domain.Entities
 
         public DateTime? BirthDate { get; set; }
 
+        [Column(TypeName = "VARCHAR")]
+        public string Avatar { get; set; }
+
         [NotMapped]
         public string DisplayName
         {
