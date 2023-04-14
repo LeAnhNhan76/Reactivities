@@ -123,6 +123,7 @@ namespace API
         public void RegisterServices(IServiceCollection services) 
         {
           services.AddScoped<ITokenService, TokenService>();
+          services.AddScoped<IFileService, FileService>();
         }
 
         public void RegisterAutoMapper(IServiceCollection services)
