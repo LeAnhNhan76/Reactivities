@@ -1,4 +1,4 @@
-using Application.Service;
+using Application.Services;
 using FrameworkCore.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +17,7 @@ using API.AutoMapper;
 using API.Middleware;
 using Application.Behaviors;
 using FluentValidation;
+using Application.Services.Interfaces;
 
 namespace API
 {

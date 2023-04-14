@@ -7,8 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Domain.Entities;
+using Application.Services.Interfaces;
 
-namespace Application.Service
+namespace Application.Services
 {
   public class TokenService : ITokenService
   {

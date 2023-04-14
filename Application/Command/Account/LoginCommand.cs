@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Service;
+using Application.Services.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
