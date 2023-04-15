@@ -3,8 +3,10 @@ using Application.Command.Activities;
 using Application.Query.Activities;
 using AutoMapper;
 using Domain.Entities;
+using FrameworkCore.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,7 +23,7 @@ namespace API.Controllers
         private readonly IMapper _mapper;
 
         public ActivitiesController(IHttpContextAccessor context,
-         IMediator mediator, IMapper mapper): base(context)
+         IMediator mediator, IMapper mapper, IWebHostEnvironment env): base(context)
         {
             this._mediator = mediator;
             this._mapper = mapper;
@@ -32,7 +34,9 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAll()
         {
-            var request = new GetAllActivityQueryRequest();
+            var request = new GetAllActivityQueryRequest() {
+                Hosting = Request.GetFullHostServer()
+            };
 
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
 

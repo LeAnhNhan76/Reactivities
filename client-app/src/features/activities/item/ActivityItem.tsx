@@ -27,7 +27,7 @@ const ActivityItem = (props: IActivityItemProps) => {
                         ></Avatar>
                         <div className='title'>
                           <Header as={'h3'}>{activity.title}</Header>
-                          <p>Hosted by <span className='host-name'>{activity.city}</span></p>
+                          <p>Hosted by <span className='host-name'>{activity.hostName}</span></p>
                           <Button inverted color='green'>You are going to this activity</Button>
                         </div>
                     </Item.Meta>

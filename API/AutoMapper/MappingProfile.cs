@@ -1,6 +1,7 @@
 using API.Dto;
 using Application.Command.Activities;
 using AutoMapper;
+using Domain.Entities;
 
 namespace API.AutoMapper
 {
@@ -8,7 +9,14 @@ namespace API.AutoMapper
     {
         public MappingProfile()
         {
+            # region DTO & Request
             CreateMap<AddToActivityDto, AddToActivityCommandRequest>();
+
+            #endregion
+
+            #region  DTO & Entity
+            
+            #endregion
         }
     }
 }

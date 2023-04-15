@@ -9,5 +9,6 @@ namespace FrameworkCore.Constants
     public static string BaseDirectory = "UploadFiles";
     public static string UserAvatarsFolder = "User/Avatars";
     public static string MimeTypeImage = "application/octet-stream";
+    public static string FilesController = "api/files";
   }
 }
