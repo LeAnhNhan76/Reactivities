@@ -3,6 +3,7 @@ import { apiUrl } from '../constants/url.constants';
 import { IActivity } from '../models/activity.model';
 import { AuthInfoModel, LoginModel } from '../models/login.model';
 import { getAuthInfo } from '../utils/localStorage.utils';
+import { IAddActivity } from '../models/add-activity.model';
 
 //axios.defaults.baseURL = 'https://localhost:5000/api';
 //axios.defaults.baseURL = 'https://localhost:44311/api';
@@ -38,7 +39,7 @@ const requests = {
 const Activities = {
   list: () : Promise<IActivity[]> => requests.get('/activities'),
   details: (id: string) => requests.get(`/activities/${id}`),
-  create: (activity: IActivity) => requests.post('/activities', activity),
+  create: (activity: IAddActivity) => requests.post('/activities', activity),
   update: (activity: IActivity) => requests.put(`/activities/${activity.id}`, activity),
   delete: (id: string) => requests.del(`/activities/${id}`)
 }

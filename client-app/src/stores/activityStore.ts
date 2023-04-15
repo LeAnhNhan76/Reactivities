@@ -2,6 +2,7 @@ import { action, computed, observable } from 'mobx';
 import agent from '../api/agent';
 import { IActivity } from '../models/activity.model';
 import BaseStore from './baseStore';
+import { IAddActivity } from '../models/add-activity.model';
 
 export default class ActivityStore extends BaseStore {
 
@@ -52,11 +53,10 @@ export default class ActivityStore extends BaseStore {
     this.target = undefined;
     this.setEditMode(false);
   }
-  @action createActivity = async (activity: IActivity) => {
-    this.setSubmitting(true);
-    await agent.Activities.create(activity);
-    this.activities.push(activity);
-    this.setSubmitting(false);
+  @action createActivity = async (activity: IAddActivity) => {
+    this.performAnApiActionWithLoading(async () => {
+      await agent.Activities.create(activity);
+    });
     this.setEditMode(false);
   }
   @action editActivity = async (activity: IActivity) => {
