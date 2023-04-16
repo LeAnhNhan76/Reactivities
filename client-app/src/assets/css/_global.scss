@@ -29,8 +29,6 @@ body {
 }
 
 .form-container {
-  height: inherit;
-  background-color: $black;
   @include flex-center;
 
   .container {
@@ -54,9 +52,12 @@ body {
   }
 }
 
-.ui {
-  &.dimmer {
+.ui.spinner.dimmer {
     background-color: $light-gray !important;
     opacity: 0.6 !important;
-  }
+}
+
+.ui.modal {
+  top: 37%;
+  background-color: transparent;
 }

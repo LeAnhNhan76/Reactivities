@@ -1,12 +1,17 @@
-import { Button, Container, Divider, Header, Icon } from "semantic-ui-react"
-import { Logo } from "../../components/logo/Logo"
-import { NavLink, useNavigate } from "react-router-dom"
+import { Button, Container, Divider, Header, Icon } from "semantic-ui-react";
+import { Logo } from "../../components/logo/Logo";
+import { useModalStore } from "../../stores/store";
+import Login from "../login/Login";
 
 const Welcome = () => {
-  const navigate = useNavigate();
+  const {openModal} = useModalStore();
 
   const onLogin = () => {
-    navigate("/login", {replace: true});
+    openModal(<Login></Login>)
+  }
+
+  const onRegister = () => {
+    console.log('Registered!')
   }
 
   return (
@@ -17,7 +22,7 @@ const Welcome = () => {
         </Header>
         <div>
             <Button inverted onClick={onLogin}>Login</Button>
-            <Button inverted as={NavLink} to='/register'>Register!</Button>
+            <Button inverted onClick={onRegister}>Register!</Button>
         </div>
         <Divider horizontal>OR</Divider>
         <Button color="facebook">

@@ -14,7 +14,7 @@ const Spinner = (props: ISpinnerProps) => {
   if(!isLoading) return <></>;
 
   return (
-    <Dimmer active inverted={inverted}>
+    <Dimmer active inverted={inverted} className={'spinner'}>
       <Loader content={props.content} inverted></Loader>
     </Dimmer>
   );

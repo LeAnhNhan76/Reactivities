@@ -3,8 +3,6 @@ import ActivityDashboard from "../features/activities/dashboard/ActivityDashboar
 import ActivityDetails from "../features/activities/details/ActivityDetails";
 import ActivityForm from "../features/activities/form/ActivityForm";
 import App from "../layout/App";
-import Login from "../features/login/Login";
-import Register from "../features/register/Register";
 
 export const routes: RouteObject[] = [
     {
@@ -13,9 +11,7 @@ export const routes: RouteObject[] = [
         children: [
             {path: 'activities', element: <ActivityDashboard />},
             {path: 'activities/:id', element: <ActivityDetails />},
-            {path: 'createActivities', element: <ActivityForm />},
-            {path: 'login', element: <Login />},
-            {path: 'register', element: <Register />}
+            {path: 'createActivities', element: <ActivityForm />}
         ]
     }
 ];

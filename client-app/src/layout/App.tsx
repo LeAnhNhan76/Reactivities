@@ -4,6 +4,7 @@ import Spinner from '../components/spinner/Spinner';
 import { HomePage } from '../features/home/HomePage';
 import NavBar from '../components/nav/NavBar';
 import { Container } from 'semantic-ui-react';
+import Modal from '../components/modal/Modal';
 
 const App = () => {
     const location = useLocation();
@@ -18,8 +19,9 @@ const App = () => {
                     </Container>
                   </>
                 }
+                <Modal></Modal>
+                <Spinner></Spinner>
             </div>
-            <Spinner></Spinner>
         </div>
     );
 }
