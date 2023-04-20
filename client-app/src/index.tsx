@@ -4,7 +4,8 @@ import reportWebVitals from './reportWebVitals';
 import { router } from './router/Routes';
 import { store, StoreContext } from './stores/store';
 import 'react-calendar/dist/Calendar.css';
-import './assets/css/_global.scss'
+import './assets/css/_global.scss';
+import 'react-semantic-toasts/styles/react-semantic-alert.css';
 
 ReactDOM.render(
   <StoreContext.Provider value={store}>

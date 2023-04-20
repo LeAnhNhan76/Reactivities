@@ -4,6 +4,7 @@ import { Button, Container, DropdownItemProps, DropdownProps, Form, Header, Segm
 import { IAddActivity } from '../../../models/add-activity.model';
 import { useActivityStore } from '../../../stores/store';
 import './index.scss';
+import { toast } from 'react-semantic-toasts'
 
 const ActivityForm = () => {
   const {
@@ -48,9 +49,18 @@ const ActivityForm = () => {
     { key: 'tra', text: 'Travel', value: 'travel'},
   ]
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if(activity) {
-      createActivity(activity);
+      const createResult = await createActivity(activity);
+      console.log('create', createResult)
+      if (createResult === true) {
+        toast({
+          title: 'New activity',
+          description: 'Your activity create sucessfully!',
+          type:'success',
+          animation: 'fade right',
+        })
+      }
     }
   };
 

@@ -5,9 +5,11 @@ import { HomePage } from '../features/home/HomePage';
 import NavBar from '../components/nav/NavBar';
 import { Container } from 'semantic-ui-react';
 import Modal from '../components/modal/Modal';
+import { SemanticToastContainer} from 'react-semantic-toasts';
 
 const App = () => {
     const location = useLocation();
+
     return (
         <div className='root-container'>
             <div className='page-container'>
@@ -21,6 +23,7 @@ const App = () => {
                 }
                 <Modal></Modal>
                 <Spinner></Spinner>
+                <SemanticToastContainer></SemanticToastContainer>
             </div>
         </div>
     );

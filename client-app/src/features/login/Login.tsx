@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Form, Header, Message } from "semantic-ui-react";
 import { LoginModel } from "../../models/login.model";
-import { useAuthStore } from "../../stores/store";
+import { useAuthStore, useModalStore } from "../../stores/store";
 import './index.scss';
 
 
@@ -18,6 +18,8 @@ const Login = () => {
     login, 
     isAlreadyLoggedIn
   } = useAuthStore();
+
+  const { closeModal} = useModalStore();
 
   const navigate = useNavigate();
 
@@ -37,17 +39,22 @@ const Login = () => {
 
   useEffect(() => {
     if (isAlreadyLoggedIn()) {
-      navigate('/activities');
+      handleLoggedIn();
     }
   }, [isAlreadyLoggedIn]);
 
   useEffect(() => {
     if (loggedIn === true) {
       setTimeout(() => {
-        navigate('/activities');
+        handleLoggedIn();
       }, 300);
     }
   }, [loggedIn, navigate]);
+
+  const handleLoggedIn = () => {
+    closeModal();
+    navigate('/activities');
+  }
 
   const renderSucessLoginMessage = () => {
     return <Form success>
