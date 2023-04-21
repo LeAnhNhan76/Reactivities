@@ -38,7 +38,7 @@ namespace Application.Query.Activities
         
         public string HostName { get; set; }
 
-        public string AvatarUrl { get; set; }
+        public string Avatar { get; set; }
     }
 
     public class GetAllActivityQueryHandler : IRequestHandler<GetAllActivityQueryRequest, IEnumerable<ActivityQueryResponse>>
@@ -67,9 +67,7 @@ namespace Application.Query.Activities
                     HostId = a.HostId,
                     Status = a.Status,
                     HostName = au.DisplayName,
-                    AvatarUrl = string.IsNullOrEmpty(au.Avatar)
-                        ? string.Empty : string.Concat(request.Hosting, "/", FileConstants.FilesController, "?path="
-                            , FileConstants.UserAvatarsFolder, "/", au.Avatar)
+                    Avatar = au.Avatar
                 })
                 .OrderByDescending(x => x.Date)
                 .ToListAsync(cancellationToken);

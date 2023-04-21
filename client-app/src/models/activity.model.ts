@@ -9,5 +9,5 @@ export interface IActivity{
   hostId?: string;
   status: number;
   hostName?: string;
-  avatarUrl?: string;
+  avatar?: string;
 }

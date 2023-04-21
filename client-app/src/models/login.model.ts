@@ -8,4 +8,5 @@ export interface AuthInfoModel {
   displayName: string;
   isLoggedIn: boolean;
   token: string;
+  avatar: string;
 }

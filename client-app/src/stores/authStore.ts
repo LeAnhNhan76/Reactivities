@@ -23,6 +23,11 @@ export default class AuthStore extends BaseStore {
     })
   }
 
+  @action signOut = async () => {
+    localStorage.removeItem(SystemConstants.AuthInfo);
+    this.loggedIn = undefined;
+  }
+
   @action isAlreadyLoggedIn = () => {
     const authInfo = getAuthInfo();
 

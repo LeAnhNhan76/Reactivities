@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { apiUrl } from '../constants/url.constants';
+import { apiUrl, baseAPIURL } from '../constants/url.constants';
 import { IActivity } from '../models/activity.model';
 import { AuthInfoModel, LoginModel } from '../models/login.model';
 import { getAuthInfo } from '../utils/localStorage.utils';
@@ -9,7 +9,7 @@ import { IAddActivity } from '../models/add-activity.model';
 //axios.defaults.baseURL = 'https://localhost:44311/api';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://localhost:5000/api'
+  baseURL: baseAPIURL
 });
 
 axiosInstance.interceptors.request.use((

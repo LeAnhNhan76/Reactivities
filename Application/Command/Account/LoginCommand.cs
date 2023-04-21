@@ -20,7 +20,7 @@ namespace Application.Command.Account
     public string DisplayName { get; set; }
     public bool IsLoggedIn { get; set;}
     public string Token { get; set; }
-    
+    public string Avatar { get; set; }
   }
 
   public class LoginCommandHandler : IRequestHandler<LoginCommandRequest, LoginCommandResponse>
@@ -62,8 +62,8 @@ namespace Application.Command.Account
 
         response.IsLoggedIn = true;
         response.DisplayName = user.DisplayName;
+        response.Avatar = user.Avatar;
         response.Token = this._tokenService.CreateToken(user);
-
         return response;
       }
     }
