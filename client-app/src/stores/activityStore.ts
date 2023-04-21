@@ -53,11 +53,13 @@ export default class ActivityStore extends BaseStore {
     this.target = undefined;
     this.setEditMode(false);
   }
-  @action createActivity = async (activity: IAddActivity) => {
-    this.performAnApiActionWithLoading(async () => {
-      await agent.Activities.create(activity);
+  @action createActivity = async (activity: IAddActivity): Promise<any> => {
+    let createResult = false;
+    await this.performAnApiActionWithLoading(async () => {
+      createResult =  await agent.Activities.create(activity);
     });
     this.setEditMode(false);
+    return createResult;
   }
   @action editActivity = async (activity: IActivity) => {
     this.setSubmitting(true);
