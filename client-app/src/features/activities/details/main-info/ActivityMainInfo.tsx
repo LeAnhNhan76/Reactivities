@@ -2,10 +2,11 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Form, useParams } from "react-router-dom";
 import { Button, Card, CardContent, CardHeader, Header, Image, List, ListContent, ListIcon, ListItem, TextArea } from "semantic-ui-react";
-import { useActivityStore } from "../../../../stores/store";
-import { formatDate } from "../../../../utils/dateTime.utils";
-import './index.scss';
+import { dateTimeFormat } from "../../../../constants/dateTime.constants";
 import { colors } from "../../../../constants/style.constants";
+import { useActivityStore } from "../../../../stores/store";
+import { formatDate, formatDateTimeUntilNow } from "../../../../utils/dateTime.utils";
+import './index.scss';
 
 const ActivityMainInfo = () => {
     const {
@@ -26,12 +27,11 @@ const ActivityMainInfo = () => {
         <Card fluid className="banner">
             <Image src={`/assets/categoryImages/${activity?.category}.jpg`}></Image>
             <Card.Content className="banner-info">
-                <Card.Header>{activity?.title}</Card.Header>
+                <Card.Header as={'h2'}>{activity?.title}</Card.Header>
                 <Card.Meta>
-                    <span>Date</span>
+                    {formatDate(activity?.date, dateTimeFormat.momentDateEventFormat)}
                 </Card.Meta>
-                {formatDate(activity?.date)}
-                <Card.Description>{activity?.description}</Card.Description>
+                <Card.Description>Host by <span className="host-name">{activity?.hostName}</span></Card.Description>
             </Card.Content>
             <Card.Content extra>
                 <Button
@@ -51,19 +51,19 @@ const ActivityMainInfo = () => {
                 <ListItem>
                     <ListIcon name="info" color="teal" verticalAlign="middle"></ListIcon>
                     <ListContent verticalAlign="middle">
-                        Activity in 5 months in future
+                        Activity {formatDateTimeUntilNow(activity?.date)}
                     </ListContent>
                 </ListItem>
                 <ListItem>
                     <ListIcon name="calendar" color="teal" verticalAlign="middle"></ListIcon>
                     <ListContent verticalAlign="middle">
-                        {activity?.date}
+                        {formatDate(activity?.date, dateTimeFormat.momentDateTimeFormatAMPM)}
                     </ListContent>
                 </ListItem>
                 <ListItem>
                     <ListIcon name="map marker" color="teal" verticalAlign="middle"></ListIcon>
                     <ListContent verticalAlign="middle">
-                        {activity?.city}
+                        {`${activity?.venue}, ${activity?.city}}`}
                     </ListContent>
                 </ListItem>
             </List>

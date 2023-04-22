@@ -5,5 +5,6 @@ export const dateTimeFormat = {
     momentDateDatabaseFormat: "YYYY-MM-DD",
     momentDateDashFormat: "DD-MM-YYYY",
     momentDateEventFormat:"DD MMM YYYY",
-    momentDateLocaleFormat: "llll" 
+    momentDateLocaleFormat: "llll",
+    momentDateTimeFormatAMPM: "DD MMM YYYY HH:mm A"
 };

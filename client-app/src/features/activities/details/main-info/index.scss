@@ -16,6 +16,16 @@
                     >.header, >.meta, >.description {
                         color: $white;
                     }
+                    >.meta {
+                        font-size: 13px;
+                    }
+
+                    >.description {
+                        >.host-name {
+                            color: $primary;
+                            font-weight: bold;
+                        }
+                    }
                 }
             }
         }

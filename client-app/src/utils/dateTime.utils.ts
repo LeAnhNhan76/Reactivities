@@ -13,3 +13,5 @@ export const formatDate = (
   
   export const formatDateTimeForAPI = (date: any) =>
     date ? moment(date).utc().format() : date;
+
+  export const formatDateTimeUntilNow = (date: any) => date ? moment(date).fromNow(): date;
