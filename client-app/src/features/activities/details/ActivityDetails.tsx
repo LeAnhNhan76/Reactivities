@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Grid, GridColumn } from 'semantic-ui-react';
-import ActivityMembers from './followers/ActivityMembers';
+import ActivityMembers from './members/ActivityMembers';
 import ActivityMainInfo from './main-info/ActivityMainInfo';
 
 const ActivityDetails = () => {

@@ -17,7 +17,7 @@
                 @include flex-align-center;
                 gap: 10px;
                 margin: 0px;
-                border-bottom: 1px solid $light-gray;
+                border-bottom: 1px solid $lightGray;
                 >.title {
                   >.header {
                     margin-bottom: 8px;
@@ -38,16 +38,16 @@
                 padding: 5px 0px;
                 >.join-info {
                   padding: 7px;
-                  border-bottom: 2px solid $light-gray;
+                  border-bottom: 2px solid $lightGray;
                 }
                 >.participant{
                   padding: 10px;
                   background-color: $backgroundLightPrimary;
                   @include flex-align-center;
                   gap: 5px;
-                  border-bottom: 2px solid $light-gray;
+                  border-bottom: 2px solid $lightGray;
                   >.avatar {
-                    border: 1px solid $light-gray;
+                    border: 1px solid $lightGray;
                   }
                 }
               }

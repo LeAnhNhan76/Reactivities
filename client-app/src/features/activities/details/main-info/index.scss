@@ -41,10 +41,14 @@
                 textarea {
                     width: 100%;
                     padding: 10px;
-                    border: 1px solid $light-gray;
+                    border: 1px solid $lightGray;
                 }
                 ::placeholder {
-                    color: $light-gray;
+                    color: $lightGray;
+                }
+                :focus {
+                    outline: none;
+                    border: 1px solid $teal !important;
                 }
             }
         }
