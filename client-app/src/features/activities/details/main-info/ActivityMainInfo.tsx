@@ -1,26 +1,44 @@
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Form, useParams } from "react-router-dom";
-import { Button, Card, CardContent, CardHeader, Header, Image, List, ListContent, ListIcon, ListItem, TextArea } from "semantic-ui-react";
+import { Button, Card, CardContent, CardHeader, Confirm, Header, Image, List, ListContent, ListIcon, ListItem, TextArea } from "semantic-ui-react";
 import { dateTimeFormat } from "../../../../constants/dateTime.constants";
 import { colors } from "../../../../constants/style.constants";
 import { useActivityStore } from "../../../../stores/store";
 import { formatDate, formatDateTimeUntilNow } from "../../../../utils/dateTime.utils";
+import { toast } from 'react-semantic-toasts';
 import './index.scss';
 
 const ActivityMainInfo = () => {
-    const {
-        selectedActivity: activity,
-        loadActivity,
-      } = useActivityStore();
-    
-      const {id} = useParams();
-    
-      useEffect(() => {
-        if (id) {
+  const {
+      selectedActivity: activity,
+      loadActivity,
+      cancelActivity,
+      isLoading
+  } = useActivityStore();
+  
+  const {id} = useParams();
+  
+  useEffect(() => {
+      if (id) {
           loadActivity(id);
-        }
-      }, [id, loadActivity]);
+      }
+  }, [id, loadActivity]);
+  
+  const [isConfirmCancel, setIsConfirmCancel] = useState<boolean>(false);
+  
+  const onCancel = async () => {
+    setIsConfirmCancel(false);
+    const result = await cancelActivity();
+    console.log('result', result);
+    if (result === true) {
+        toast({
+            type: 'success',
+            title: 'Cancel Activity',
+            description: 'You canceled this activity sucessfully'
+        });
+    }
+  }
 
   return (
     <div className="activity-main-info">
@@ -38,12 +56,22 @@ const ActivityMainInfo = () => {
                     basic
                     color="orange"
                     content="Cancel Activity"
+                    loading={isLoading}
+                    onClick={() => setIsConfirmCancel(true)}
                 />
                 <Button
                     color="orange"
                     content="Manage Event"
                     floated="right"
                 />
+                <Confirm
+                    open={isConfirmCancel}
+                    header='Cancel Activity'
+                    content='Are you sure cancel this activity'
+                    onCancel={() => setIsConfirmCancel(false)}
+                    onConfirm={onCancel}
+                >
+                </Confirm>
             </Card.Content>
         </Card>
         <Card fluid className="main-info">
@@ -51,7 +79,7 @@ const ActivityMainInfo = () => {
                 <ListItem>
                     <ListIcon name="info" color="teal" verticalAlign="middle"></ListIcon>
                     <ListContent verticalAlign="middle">
-                        Activity {formatDateTimeUntilNow(activity?.date)}
+                        Activity in {formatDateTimeUntilNow(activity?.date)}
                     </ListContent>
                 </ListItem>
                 <ListItem>

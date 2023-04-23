@@ -92,11 +92,11 @@ namespace API.Controllers
             return Ok(response);
         }
 
-        [HttpPatch("cancel")]
-        public async Task<IActionResult> CancelActivity([FromBody] Guid activityId)
+        [HttpPatch("{id:guid}/cancel")]
+        public async Task<IActionResult> CancelActivity(Guid id)
         {
             var request = new CancelActivityCommandRequest {
-                ActivityId = activityId,
+                ActivityId = id,
                 UserId = CurrentLoginUser.UserId
             };
 

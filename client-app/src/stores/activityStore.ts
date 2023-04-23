@@ -88,7 +88,15 @@ export default class ActivityStore extends BaseStore {
       });
     })
   }
-
+  @action cancelActivity = async () => {
+    let result = false;
+    await this.performAnApiActionWithLoading(async () => {
+      if (this.selectedActivity !== null && this.selectedActivity !== undefined) {
+        result = await agent.Activities.cancel(this.selectedActivity.id);
+      }
+    })
+    return result;
+  }
   public setEditMode = (state: boolean) => this.editMode = state;
   private setSubmitting = (state: boolean) => this.submitting = state;
 }

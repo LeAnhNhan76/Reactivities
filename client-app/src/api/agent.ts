@@ -31,9 +31,10 @@ const sleep = (ms: number) => (response: AxiosResponse) =>
 
 const requests = {
   get : (url: string) => axiosInstance.get(url).then(sleep(1000)).then(responseBody),
-  post : (url: string, body: {}) => axiosInstance.post(url, body).then(sleep(1000)).then(responseBody),
-  put : (url: string, body: {}) => axiosInstance.put(url, body).then(sleep(1000)).then(responseBody),
-  del : (url: string) => axiosInstance.delete(url).then(sleep(1000)).then(responseBody)
+  post : (url: string, body?: {}) => axiosInstance.post(url, body).then(sleep(1000)).then(responseBody),
+  put : (url: string, body?: {}) => axiosInstance.put(url, body).then(sleep(1000)).then(responseBody),
+  patch: (url: string, body?: {}) => axiosInstance.patch(url, body).then(sleep(1000)).then(responseBody),
+  del : (url: string) => axiosInstance.delete(url).then(sleep(1000)).then(responseBody),
 }
 
 const Activities = {
@@ -41,7 +42,8 @@ const Activities = {
   details: (id: string) => requests.get(`/activities/${id}`),
   create: (activity: IAddActivity) => requests.post('/activities', activity),
   update: (activity: IActivity) => requests.put(`/activities/${activity.id}`, activity),
-  delete: (id: string) => requests.del(`/activities/${id}`)
+  delete: (id: string) => requests.del(`/activities/${id}`),
+  cancel: (id: string) => requests.patch(`/activities/${id}/cancel`)
 }
 
 const Account = {
