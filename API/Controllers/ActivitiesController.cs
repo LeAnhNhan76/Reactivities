@@ -1,4 +1,5 @@
 using API.Dto;
+using Application.Command;
 using Application.Command.Activities;
 using Application.Query.Activities;
 using AutoMapper;
@@ -88,6 +89,18 @@ namespace API.Controllers
             var request = new DeleteActivityCommandRequest { Id = id };
 
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
+            return Ok(response);
+        }
+
+        [HttpPatch("cancel")]
+        public async Task<IActionResult> CancelActivity([FromBody] Guid activityId)
+        {
+            var request = new CancelActivityCommandRequest {
+                ActivityId = activityId,
+                UserId = CurrentLoginUser.UserId
+            };
+
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
     }

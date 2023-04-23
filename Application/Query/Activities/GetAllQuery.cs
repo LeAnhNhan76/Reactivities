@@ -1,4 +1,5 @@
 using FrameworkCore.Constants;
+using FrameworkCore.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -52,7 +53,11 @@ namespace Application.Query.Activities
 
         public async Task<IEnumerable<ActivityQueryResponse>> Handle(GetAllActivityQueryRequest request, CancellationToken cancellationToken)
         {
+            var validStatuses = new List<byte> {
+                (byte)ActivityStatusEnum.Pending, (byte)ActivityStatusEnum.Active
+            };
             var data = await _context.Activities
+                .Where(x => validStatuses.Contains(x.Status))
                 .Join(_context.AppUsers
                 , a => a.HostId
                 , au => au.Id
