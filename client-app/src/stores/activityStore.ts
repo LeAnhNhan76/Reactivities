@@ -3,6 +3,7 @@ import agent from '../api/agent';
 import { IActivity } from '../models/activity.model';
 import BaseStore from './baseStore';
 import { IAddActivity } from '../models/add-activity.model';
+import { ActivityStatusEnum } from '../enums/common.enums';
 
 export default class ActivityStore extends BaseStore {
 
@@ -93,6 +94,17 @@ export default class ActivityStore extends BaseStore {
     await this.performAnApiActionWithLoading(async () => {
       if (this.selectedActivity !== null && this.selectedActivity !== undefined) {
         result = await agent.Activities.cancel(this.selectedActivity.id);
+        if (result === true) {
+          this.selectedActivity.status = ActivityStatusEnum.InActive;
+          const newActivities = this.activities.map((item) => {
+            if (item.id === this.selectedActivity?.id) {
+              return {...item, status: ActivityStatusEnum.InActive}
+            }
+            else 
+              return item;
+          });
+          this.activities = [...newActivities];
+        }
       }
     })
     return result;

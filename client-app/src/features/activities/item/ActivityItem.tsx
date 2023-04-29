@@ -5,6 +5,7 @@ import { dateTimeFormat } from '../../../constants/dateTime.constants';
 import { IActivity } from '../../../models/activity.model';
 import { formatDate } from '../../../utils/dateTime.utils';
 import './index.scss';
+import { ActivityHelper } from '../../../helpers/activity.helper';
 
 export interface IActivityItemProps {
     activity: IActivity
@@ -20,6 +21,8 @@ const ActivityItem = (props: IActivityItemProps) => {
                     {formatDate(activity.date, dateTimeFormat.momentDateEventFormat)}
                 </Item.Header>
                 <Segment>
+                    <Label as={'a'} color={ActivityHelper.getStatusColor(activity.status)} 
+                      ribbon={'right'} className='status-ribbon'>{ActivityHelper.getStatusText(activity.status)}</Label>
                     <Item.Meta>
                         <Avatar 
                           src='https://localhost:5000/api/Files?path=user%2Favatars%2Favatar-steven-avatar-nhan-le-20230414074832454.png' 

@@ -8,6 +8,8 @@ import { useActivityStore } from "../../../../stores/store";
 import { formatDate, formatDateTimeUntilNow } from "../../../../utils/dateTime.utils";
 import { toast } from 'react-semantic-toasts';
 import './index.scss';
+import { ActivityHelper } from "../../../../helpers/activity.helper";
+import { ActivityStatusEnum } from "../../../../enums/common.enums";
 
 const ActivityMainInfo = () => {
   const {
@@ -39,6 +41,10 @@ const ActivityMainInfo = () => {
         });
     }
   }
+
+  if (activity === null || activity === undefined) return <></>;
+
+  const statusColor = ActivityHelper.getStatusColor(activity.status);
 
   return (
     <div className="activity-main-info">
@@ -77,19 +83,25 @@ const ActivityMainInfo = () => {
         <Card fluid className="main-info">
             <List divided relaxed >
                 <ListItem>
-                    <ListIcon name="info" color="teal" verticalAlign="middle"></ListIcon>
+                    <ListIcon name="wait" color={statusColor} verticalAlign="middle"></ListIcon>
+                    <ListContent verticalAlign="middle">
+                        {ActivityHelper.getStatusText(activity.status)}
+                    </ListContent>
+                </ListItem>
+                <ListItem>
+                    <ListIcon name="info" color={statusColor} verticalAlign="middle"></ListIcon>
                     <ListContent verticalAlign="middle">
                         Activity in {formatDateTimeUntilNow(activity?.date)}
                     </ListContent>
                 </ListItem>
                 <ListItem>
-                    <ListIcon name="calendar" color="teal" verticalAlign="middle"></ListIcon>
+                    <ListIcon name="calendar" color={statusColor} verticalAlign="middle"></ListIcon>
                     <ListContent verticalAlign="middle">
                         {formatDate(activity?.date, dateTimeFormat.momentDateTimeFormatAMPM)}
                     </ListContent>
                 </ListItem>
                 <ListItem>
-                    <ListIcon name="map marker" color="teal" verticalAlign="middle"></ListIcon>
+                    <ListIcon name="map marker" color={statusColor} verticalAlign="middle"></ListIcon>
                     <ListContent verticalAlign="middle">
                         {`${activity?.venue}, ${activity?.city}}`}
                     </ListContent>
