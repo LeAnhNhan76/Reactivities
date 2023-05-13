@@ -21,6 +21,8 @@ axiosInstance.interceptors.request.use((
     }
     return config;
 }, (error) => {
+  console.log('error', error);
+
   return Promise.reject(error);
 });
 
@@ -48,6 +50,10 @@ const Activities = {
 
 const Account = {
   login: (model: LoginModel): Promise<AuthInfoModel> => requests.post(`/${apiUrl.account}/login`, model)
+}
+
+const Setting = {
+  ping: () => requests.get(`/${apiUrl.setting}/ping`)
 }
 
 const agent = {
