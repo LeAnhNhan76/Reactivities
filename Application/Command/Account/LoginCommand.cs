@@ -1,3 +1,4 @@
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace Application.Command.Account
   }
   public class LoginCommandResponse
   {
+    public Guid UserId { get; set; }
     public string UserName { get; set; }
     public string DisplayName { get; set; }
     public bool IsLoggedIn { get; set;}
@@ -64,6 +66,8 @@ namespace Application.Command.Account
         response.DisplayName = user.DisplayName;
         response.Avatar = user.Avatar;
         response.Token = this._tokenService.CreateToken(user);
+        response.UserId = user.Id;
+        
         return response;
       }
     }

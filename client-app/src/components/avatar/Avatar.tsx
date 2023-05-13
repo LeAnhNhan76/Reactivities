@@ -17,7 +17,7 @@ export const AvatarSizes = {
 
 export const AvartarWidthBySize = new Map<string, string> ([
   [AvatarSizes.MINI, '50px'],
-  [AvatarSizes.SMALL, '80px'],
+  [AvatarSizes.SMALL, '70px'],
   [AvatarSizes.MEDIUM, '110px'],
   [AvatarSizes.LARGE, '130px'],
 ]);

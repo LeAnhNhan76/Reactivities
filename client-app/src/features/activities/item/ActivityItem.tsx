@@ -6,6 +6,8 @@ import { IActivity } from '../../../models/activity.model';
 import { formatDate } from '../../../utils/dateTime.utils';
 import './index.scss';
 import { ActivityHelper } from '../../../helpers/activity.helper';
+import { getAvatar } from '../../../helpers/file.helper';
+import { getAuthInfo } from '../../../utils/localStorage.utils';
 
 export interface IActivityItemProps {
     activity: IActivity
@@ -14,8 +16,11 @@ export interface IActivityItemProps {
 const ActivityItem = (props: IActivityItemProps) => {
     const { activity } = props;
 
+    const isHost = activity?.hostId === getAuthInfo()?.userId;
+    console.log('host', isHost)
+
     return (
-        <Item key={activity.id} className='activity-item'>
+        <Item className='activity-item'>
             <Item.Content>
                 <Item.Header as={'h6'}>
                     {formatDate(activity.date, dateTimeFormat.momentDateEventFormat)}
@@ -25,13 +30,15 @@ const ActivityItem = (props: IActivityItemProps) => {
                       ribbon={'right'} className='status-ribbon'>{ActivityHelper.getStatusText(activity.status)}</Label>
                     <Item.Meta>
                         <Avatar 
-                          src='https://localhost:5000/api/Files?path=user%2Favatars%2Favatar-steven-avatar-nhan-le-20230414074832454.png' 
+                          src={getAvatar(activity.avatar)}
                           size={AvatarSizes.SMALL}
                         ></Avatar>
                         <div className='title'>
                           <Header as={'h3'}>{activity.title}</Header>
                           <p>Hosted by <span className='host-name'>{activity.hostName}</span></p>
-                          <Button inverted color='green'>You are going to this activity</Button>
+                          <Button size='tiny' color={isHost ? 'orange' : 'green'}>
+                            You are {isHost ? 'hosting': 'going'} to this activity
+                          </Button>
                         </div>
                     </Item.Meta>
                     <Item.Description>

@@ -6,6 +6,7 @@ import { getAvatarUrl } from '../../constants/files.constants';
 import { useActivityStore, useAuthStore } from '../../stores/store';
 import { getAuthInfo } from '../../utils/localStorage.utils';
 import Avatar, { AvatarSizes } from '../avatar/Avatar';
+import { getAvatar } from '../../helpers/file.helper';
 
 const NavBar = () => {
     const { openForm } = useActivityStore();
@@ -49,8 +50,8 @@ const NavBar = () => {
             </Menu.Item>
             { isAlreadyLoggedIn() === true && <>
               <Menu.Item position='right'>
-                <Avatar src={getAvatarUrl(authInfo?.avatar)} size={AvatarSizes.TINY}></Avatar>
-                {authInfo?.displayName}
+                <Avatar src={getAvatar(authInfo?.avatar)} size={AvatarSizes.TINY}></Avatar>
+                <span style={{paddingLeft: '5px'}}>{authInfo?.displayName}</span>
                 <span>
                   <Dropdown>
                     <DropdownMenu>

@@ -10,10 +10,10 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
-    public class ActivityMembersControler : ApiController
+    public class ActivityMembersController : ApiController
     {
         private readonly IMediator _mediator;
-        public ActivityMembersControler(IHttpContextAccessor context
+        public ActivityMembersController(IHttpContextAccessor context
           , IMediator mediator  
         ) : base(context)
         {
@@ -21,15 +21,17 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMemberToActivityAsync ([FromBody] Guid activityId)
+        public async Task<IActionResult> AddMemberToActivityAsync ([FromBody] AddMemberToActivityRequest model)
         {
             var request = new AddMemberToActivityCommandRequest() {
-                ActivityId = activityId,
+                ActivityId = model.ActivityId,
                 UserId = CurrentLoginUser.UserId
             };
 
             var result = await _mediator.Send(request);
             return Ok(result);
         }
+
+        
     }
 }

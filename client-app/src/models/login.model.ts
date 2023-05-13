@@ -9,4 +9,5 @@ export interface AuthInfoModel {
   isLoggedIn: boolean;
   token: string;
   avatar: string;
+  userId: string;
 }

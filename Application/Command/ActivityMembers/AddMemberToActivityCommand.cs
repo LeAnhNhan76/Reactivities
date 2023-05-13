@@ -12,6 +12,10 @@ using Persistence;
 
 namespace Application.Command
 {
+    public class AddMemberToActivityRequest 
+    {
+        public Guid ActivityId { get; set; }
+    }
     public class AddMemberToActivityCommandRequest: IRequest<bool>
     {
         public Guid ActivityId { get; set; }
@@ -50,6 +54,7 @@ namespace Application.Command
                 throw new DomainException("Activity status is invalid");
 
             var activityMember = new ActivityMember() {
+                Id = Guid.NewGuid(),
                 ActivityId = request.ActivityId,
                 MemberId = request.UserId
             };

@@ -20,13 +20,15 @@
                 border-bottom: 1px solid $lightGray;
                 >.title {
                   >.header {
-                    margin-bottom: 8px;
+                    margin-bottom: 2px;
                   }
                   p {
                     font-weight: bolder;
-                    font-size: 13px;
+                    font-size: 11px;
                     >.host-name {
                       color: $teal;
+                      font-weight: 700;
+                      font-size: 13px;
                     }
                   }
                   
