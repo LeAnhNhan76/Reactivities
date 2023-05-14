@@ -21,8 +21,8 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{activityId:guid}")]
-        public async Task<IActionResult> GetMembersJoinActivity(Guid activityId) 
+        [HttpGet]
+        public async Task<IActionResult> GetMembersJoinActivity([FromQuery]Guid activityId) 
         {
             var request = new GetMembersJoinActivityRequest() {
                 ActivityId = activityId

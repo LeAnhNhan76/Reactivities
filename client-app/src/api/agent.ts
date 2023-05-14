@@ -56,9 +56,17 @@ const Setting = {
   ping: () => requests.get(`/${apiUrl.setting}/ping`)
 }
 
+const Followers = {
+  followUser: (userId: string): Promise<boolean> => requests.post(`/${apiUrl.followers}`, {
+    userId
+  }),
+  unFollowUser: (userId: string): Promise<boolean> => requests.del(`/${apiUrl.followers}?userId=${userId}`)
+}
+
 const agent = {
   Activities,
-  Account
+  Account,
+  Followers
 }
 
 export default agent;

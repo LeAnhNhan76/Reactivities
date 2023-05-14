@@ -67,10 +67,10 @@ const ActivityItem = (props: IActivityItemProps) => {
                       </div>
                       <div className='participant'>
                         {activity.members?.map((item, index) => {
-                          return <Popup key={index} 
+                          return <Popup key={index} flowing hoverable
                             trigger={<Image src={getAvatar(item.avatar)} avatar></Image>
                           }
-                          content={<UserCard user={item} />}/>
+                          content={<UserCard user={item} activityId={activity?.id} />}/>
                         })}
                       </div>
                     </Item.Description>

@@ -1,9 +1,10 @@
 import { action, computed, observable } from 'mobx';
 import agent from '../api/agent';
-import { IActivity } from '../models/activity.model';
-import BaseStore from './baseStore';
-import { IAddActivity } from '../models/add-activity.model';
 import { ActivityStatusEnum } from '../enums/common.enums';
+import { IActivity } from '../models/activity.model';
+import { IAddActivity } from '../models/add-activity.model';
+import { getCurrentUserId } from '../utils/localStorage.utils';
+import BaseStore from './baseStore';
 
 export default class ActivityStore extends BaseStore {
 
@@ -16,7 +17,6 @@ export default class ActivityStore extends BaseStore {
   @computed get activitiesByDate() {
     return this.activities.sort((a: any, b: any) => a.date - b.date);
   }
-
   @action loadActivities = async () => {
       this.performAnApiActionWithLoading(async () => {
         const data = await agent.Activities.list();
@@ -25,7 +25,6 @@ export default class ActivityStore extends BaseStore {
         }
       });
   }
-  
   @action loadActivity = async (id: string) => {
     this.performAnApiActionWithLoading(async () => {
       const data = await agent.Activities.details(id);
@@ -34,7 +33,6 @@ export default class ActivityStore extends BaseStore {
       }
     });
   }
-
   private getActivity = (id: string) => {
     return this.activities.find((x) => x.id === id);
   }
@@ -102,6 +100,17 @@ export default class ActivityStore extends BaseStore {
       }
     })
     return result;
+  }
+  @action addFollwer = (activityId: string, userId: string) => {
+    const newActivities = this.activities.map(a => a.id === activityId ? {
+      ...a,
+      ...a.members?.map(m => m.userId === userId ? {
+        ...m,
+        followers: [...m.followers, getCurrentUserId()]
+      }: m)
+    } : a);
+
+    this.activities = newActivities;
   }
   public setEditMode = (state: boolean) => this.editMode = state;
   private setSubmitting = (state: boolean) => this.submitting = state;

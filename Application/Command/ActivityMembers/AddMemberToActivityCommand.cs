@@ -53,6 +53,12 @@ namespace Application.Command
             if (!validStatuses.Contains(activity.Status))
                 throw new DomainException("Activity status is invalid");
 
+            var isExisted = await _context.ActivityMembers.AnyAsync(x => x.ActivityId == request.ActivityId && 
+                x.MemberId == request.UserId);
+
+            if (isExisted == true) 
+                throw new DomainException("This activity is joined");
+
             var activityMember = new ActivityMember() {
                 Id = Guid.NewGuid(),
                 ActivityId = request.ActivityId,
