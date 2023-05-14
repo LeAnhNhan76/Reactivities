@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Application.Command;
+using Application.Query;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,18 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet("{activityId:guid}")]
+        public async Task<IActionResult> GetMembersJoinActivity(Guid activityId) 
+        {
+            var request = new GetMembersJoinActivityRequest() {
+                ActivityId = activityId
+            };
+
+            var result = await _mediator.Send(request);
+            
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddMemberToActivityAsync ([FromBody] AddMemberToActivityRequest model)
         {
@@ -31,7 +44,5 @@ namespace API.Controllers
             var result = await _mediator.Send(request);
             return Ok(result);
         }
-
-        
     }
 }

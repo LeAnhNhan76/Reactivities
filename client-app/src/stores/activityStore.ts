@@ -27,18 +27,12 @@ export default class ActivityStore extends BaseStore {
   }
   
   @action loadActivity = async (id: string) => {
-    let item = this.getActivity(id);
-    if(item !== undefined && item !== null) {
-      this.selectedActivity = item;
-    }
-    else {
-      this.performAnApiActionWithLoading(async () => {
-        const data = await agent.Activities.details(id);
-        if(data !== undefined && data !== null) {
-          this.selectedActivity = data;
-        }
-      })
-    }
+    this.performAnApiActionWithLoading(async () => {
+      const data = await agent.Activities.details(id);
+      if(data !== undefined && data !== null) {
+        this.selectedActivity = data;
+      }
+    });
   }
 
   private getActivity = (id: string) => {

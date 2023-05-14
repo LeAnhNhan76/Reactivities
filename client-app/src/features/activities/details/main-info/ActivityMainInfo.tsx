@@ -9,23 +9,13 @@ import { formatDate, formatDateTimeUntilNow } from "../../../../utils/dateTime.u
 import { toast } from 'react-semantic-toasts';
 import './index.scss';
 import { ActivityHelper } from "../../../../helpers/activity.helper";
-import { ActivityStatusEnum } from "../../../../enums/common.enums";
 
 const ActivityMainInfo = () => {
   const {
       selectedActivity: activity,
-      loadActivity,
       cancelActivity,
       isLoading
   } = useActivityStore();
-  
-  const {id} = useParams();
-  
-  useEffect(() => {
-      if (id) {
-          loadActivity(id);
-      }
-  }, [id, loadActivity]);
   
   const [isConfirmCancel, setIsConfirmCancel] = useState<boolean>(false);
   
@@ -59,8 +49,7 @@ const ActivityMainInfo = () => {
             </Card.Content>
             <Card.Content extra>
                 <Button
-                    basic
-                    color="orange"
+                    basic color='orange'
                     content="Cancel Activity"
                     loading={isLoading}
                     onClick={() => setIsConfirmCancel(true)}
@@ -120,7 +109,7 @@ const ActivityMainInfo = () => {
             </CardHeader>
             <CardContent>
                 <Form>
-                    <TextArea placeholder='Enter your comment (Enter to submit, SHIFT + enter to new line)' fluid>
+                    <TextArea placeholder='Enter your comment (Enter to submit, SHIFT + enter to new line)' fluid='1'>
                     </TextArea>
                 </Form>
             </CardContent>

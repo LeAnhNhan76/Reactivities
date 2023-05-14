@@ -1,13 +1,19 @@
-import { Link } from 'react-router-dom';
-import { Button, Header, Icon, Item, Label, Segment } from 'semantic-ui-react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  Button, Header, Icon,
+  Image,
+  Item, Label, Popup, Segment
+} from 'semantic-ui-react';
 import Avatar, { AvatarSizes } from '../../../components/avatar/Avatar';
+import UserCard from '../../../components/usercard/UserCard';
 import { dateTimeFormat } from '../../../constants/dateTime.constants';
-import { IActivity } from '../../../models/activity.model';
-import { formatDate } from '../../../utils/dateTime.utils';
-import './index.scss';
 import { ActivityHelper } from '../../../helpers/activity.helper';
 import { getAvatar } from '../../../helpers/file.helper';
+import { IActivity } from '../../../models/activity.model';
+import { formatDate } from '../../../utils/dateTime.utils';
 import { getAuthInfo } from '../../../utils/localStorage.utils';
+import './index.scss';
+import { useActivityStore } from '../../../stores/store';
 
 export interface IActivityItemProps {
     activity: IActivity
@@ -16,8 +22,19 @@ export interface IActivityItemProps {
 const ActivityItem = (props: IActivityItemProps) => {
     const { activity } = props;
 
+    const navigate = useNavigate();
+    const {loadActivity} = useActivityStore();
+
     const isHost = activity?.hostId === getAuthInfo()?.userId;
-    console.log('host', isHost)
+
+    const viewDetails = async () => {
+      
+      const id = activity.id;
+      if (id) {
+        await loadActivity(id);
+        navigate(`/activities/${id}`);
+      }
+    }
 
     return (
         <Item className='activity-item'>
@@ -49,40 +66,21 @@ const ActivityItem = (props: IActivityItemProps) => {
                         <span>{`${activity.venue} - ${activity.city}`}</span>
                       </div>
                       <div className='participant'>
-                        <Avatar 
-                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
-                          size={AvatarSizes.TINY}
-                        ></Avatar>
-                        <Avatar 
-                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
-                          size={AvatarSizes.TINY}
-                        ></Avatar>
-                        <Avatar 
-                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
-                          size={AvatarSizes.TINY}
-                        ></Avatar>
-                        <Avatar 
-                          src='https://images.pexels.com/photos/1462636/pexels-photo-1462636.jpeg?auto=compress&cs=tinysrgb&w=600' 
-                          size={AvatarSizes.TINY}
-                        ></Avatar>
+                        {activity.members?.map((item, index) => {
+                          return <Popup key={index} 
+                            trigger={<Image src={getAvatar(item.avatar)} avatar></Image>
+                          }
+                          content={<UserCard user={item} />}/>
+                        })}
                       </div>
                     </Item.Description>
                     <Item.Extra>
                         <Button
-                            as={Link}
-                            to={`/activities/${activity.id}`}
+                            onClick={viewDetails}
                             floated="right"
                             content="View"
                             color="teal"
                         />
-                        {/* <Button
-                            name={activity.id}
-                            loading={target === activity.id && submitting}
-                            onClick={() => setOpenConfirm(true)}
-                            floated="right"
-                            content="Delete"
-                            color="red"
-                        /> */}
                         <Label basic content={activity.category} />
                     </Item.Extra>
                 </Segment>

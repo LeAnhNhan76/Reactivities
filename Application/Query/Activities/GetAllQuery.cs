@@ -40,6 +40,15 @@ namespace Application.Query.Activities
         public string HostName { get; set; }
 
         public string Avatar { get; set; }
+        public List<MemberJoinInfo> Members { get; set; }
+    }
+
+    public class MemberJoinInfo
+    {
+        public Guid UserId { get; set; }
+        public string DisplayName { get; set; }
+        public string Avatar { get; set; }
+        public List<Guid> Followers { get; set; }
     }
 
     public class GetAllActivityQueryHandler : IRequestHandler<GetAllActivityQueryRequest, IEnumerable<ActivityQueryResponse>>
@@ -72,7 +81,21 @@ namespace Application.Query.Activities
                     HostId = a.HostId,
                     Status = a.Status,
                     HostName = au.DisplayName,
-                    Avatar = au.Avatar
+                    Avatar = au.Avatar,
+                    Members = _context.ActivityMembers
+                        .Where(am => am.ActivityId == a.Id)
+                        .Join(_context.AppUsers
+                        , am => am.MemberId
+                        , au2 => au2.Id
+                        , (am, au2) => new MemberJoinInfo{
+                            UserId = am.MemberId,
+                            DisplayName = au2.DisplayName,
+                            Avatar = au2.Avatar,
+                            Followers = _context.Followers
+                                .Where(fw => fw.FollowingId == am.MemberId)
+                                .Select(fw => fw.FollowerId)
+                                .ToList()
+                        }).ToList()
                 })
                 .OrderByDescending(x => x.Date)
                 .ToListAsync(cancellationToken);
