@@ -63,10 +63,16 @@ const Followers = {
   unFollowUser: (userId: string): Promise<boolean> => requests.del(`/${apiUrl.followers}?userId=${userId}`)
 }
 
+const ActivityMembers = {
+  join: (activityId: string): Promise<boolean> => requests.post(`/${apiUrl.activityMembers}`, {activityId}),
+  unjoin: (activityId: string): Promise<boolean> => requests.del(`/${apiUrl.activityMembers}?activityId=${activityId}`)
+}
+
 const agent = {
   Activities,
   Account,
-  Followers
+  Followers,
+  ActivityMembers
 }
 
 export default agent;

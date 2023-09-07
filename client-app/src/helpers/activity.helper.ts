@@ -10,7 +10,7 @@ const getStatusText = (status: ActivityStatusEnum | undefined) => {
         case ActivityStatusEnum.Active:
             return 'Active';
         case ActivityStatusEnum.InActive:
-            return 'In active';
+            return 'Inactive';
         default:
             return 'Draft';
     }

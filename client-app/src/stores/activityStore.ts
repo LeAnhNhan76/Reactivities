@@ -101,16 +101,38 @@ export default class ActivityStore extends BaseStore {
     })
     return result;
   }
-  @action addFollwer = (activityId: string, userId: string) => {
-    const newActivities = this.activities.map(a => a.id === activityId ? {
-      ...a,
-      ...a.members?.map(m => m.userId === userId ? {
-        ...m,
-        followers: [...m.followers, getCurrentUserId()]
-      }: m)
-    } : a);
-
-    this.activities = newActivities;
+  @action addFollwer = (activityId: string, memberId: string) => {
+    const userId = getCurrentUserId();
+    const activityIndex = this.activities.findIndex(x => x.id === activityId);
+    const userIndex = this.activities[activityIndex].members?.findIndex(x => x.userId === memberId);
+    if (userId && activityIndex !== -1 && userIndex && userIndex !== -1) {
+      const cloneActivity = this.activities[activityIndex];
+      if (cloneActivity && cloneActivity.members) {
+        const cloneMember = cloneActivity.members[userIndex];
+        cloneActivity.members[userIndex] = {
+          ...cloneMember,
+          followers: [
+            ...cloneMember.followers,
+            userId
+          ]
+        };
+      }
+      this.activities[activityIndex] = cloneActivity;
+    }
+  }
+  @action joinActivity = async (activityId: string) => {
+    let result = false;
+    await this.performAnApiActionWithLoading(async () => {
+      result = await agent.ActivityMembers.join(activityId);
+    });
+    return result;
+  }
+  @action unjoinActivity = async (activityId: string) => {
+    let result = false;
+    await this.performAnApiActionWithLoading(async () => {
+      result = await agent.ActivityMembers.unjoin(activityId);
+    });
+    return result;
   }
   public setEditMode = (state: boolean) => this.editMode = state;
   private setSubmitting = (state: boolean) => this.submitting = state;

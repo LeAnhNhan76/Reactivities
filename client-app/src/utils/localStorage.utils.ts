@@ -9,6 +9,4 @@ export const getAuthInfo = () => {
   return null;
 }
 
-export const getCurrentUserId = () => {
-  return getAuthInfo()?.userId;
-}
+export const getCurrentUserId = () => getAuthInfo()?.userId;

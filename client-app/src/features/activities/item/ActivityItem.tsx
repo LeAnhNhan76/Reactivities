@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Button, Header, Icon,
   Image,
@@ -10,10 +10,10 @@ import { dateTimeFormat } from '../../../constants/dateTime.constants';
 import { ActivityHelper } from '../../../helpers/activity.helper';
 import { getAvatar } from '../../../helpers/file.helper';
 import { IActivity } from '../../../models/activity.model';
-import { formatDate } from '../../../utils/dateTime.utils';
-import { getAuthInfo } from '../../../utils/localStorage.utils';
-import './index.scss';
 import { useActivityStore } from '../../../stores/store';
+import { formatDate } from '../../../utils/dateTime.utils';
+import { getCurrentUserId } from '../../../utils/localStorage.utils';
+import './index.scss';
 
 export interface IActivityItemProps {
     activity: IActivity
@@ -25,7 +25,9 @@ const ActivityItem = (props: IActivityItemProps) => {
     const navigate = useNavigate();
     const {loadActivity} = useActivityStore();
 
-    const isHost = activity?.hostId === getAuthInfo()?.userId;
+    const userId = getCurrentUserId();
+
+    const isHost = activity?.hostId === userId;
 
     const viewDetails = async () => {
       
@@ -68,6 +70,7 @@ const ActivityItem = (props: IActivityItemProps) => {
                       <div className='participant'>
                         {activity.members?.map((item, index) => {
                           return <Popup key={index} flowing hoverable
+                            disabled={userId === item.userId}
                             trigger={<Image src={getAvatar(item.avatar)} avatar></Image>
                           }
                           content={<UserCard user={item} activityId={activity?.id} />}/>

@@ -34,10 +34,22 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMemberToActivityAsync ([FromBody] AddMemberToActivityRequest model)
+        public async Task<IActionResult> JoinActivityAsync ([FromBody] AddMemberToActivityRequest model)
         {
             var request = new AddMemberToActivityCommandRequest() {
                 ActivityId = model.ActivityId,
+                UserId = CurrentLoginUser.UserId
+            };
+
+            var result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> UnjoinActivityAsync([FromQuery] Guid activityId)
+        {
+            var request = new RemoveMemberOutOfActivityRequest() {
+                ActivityId = activityId,
                 UserId = CurrentLoginUser.UserId
             };
 

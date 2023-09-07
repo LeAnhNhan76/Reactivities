@@ -1,29 +1,34 @@
-import { observer } from 'mobx-react-lite';
-import { FormEvent, useState } from 'react';
-import { Button, Container, DropdownItemProps, DropdownProps, Form, Header, Segment } from 'semantic-ui-react';
-import { IAddActivity } from '../../../models/add-activity.model';
-import { useActivityStore } from '../../../stores/store';
-import './index.scss';
-import { toast } from 'react-semantic-toasts'
+import { observer } from "mobx-react-lite";
+import { FormEvent, useState } from "react";
+import {
+  Button,
+  Container,
+  DropdownItemProps,
+  DropdownProps,
+  Form,
+  Header,
+  Segment,
+} from "semantic-ui-react";
+import { IAddActivity } from "../../../models/add-activity.model";
+import { useActivityStore } from "../../../stores/store";
+import "./index.scss";
+import { toast } from "react-semantic-toasts";
 
 const ActivityForm = () => {
-  const {
-    selectedActivity,
-    createActivity
-  } = useActivityStore();
+  const { selectedActivity, createActivity } = useActivityStore();
 
-  const [activity, setActivity] = useState<IAddActivity | undefined> (() => {
-    if(selectedActivity !== undefined) {
+  const [activity, setActivity] = useState<IAddActivity | undefined>(() => {
+    if (selectedActivity !== undefined) {
       return selectedActivity;
     }
 
     return {
-      title: '',
-      description: '',
-      category: '',
+      title: "",
+      description: "",
+      category: "",
       date: new Date(),
-      city: '',
-      venue: '',
+      city: "",
+      venue: "",
     };
   });
 
@@ -31,43 +36,50 @@ const ActivityForm = () => {
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.currentTarget;
-    setActivity((item: any) => {return {...item, [name]: value}});
+    setActivity((item: any) => {
+      return { ...item, [name]: value };
+    });
   };
 
-  const handleDropdownChange = (event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+  const handleDropdownChange = (
+    event: React.SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps
+  ) => {
     if (data) {
-      setActivity((item: any) => {return {...item, category: data.value}})
+      setActivity((item: any) => {
+        return { ...item, category: data.value };
+      });
     }
-  }
+  };
 
   const categoryOptions: DropdownItemProps[] = [
-    { key: 'cul', text: 'Culture', value: 'culture'},
-    { key: 'dri', text: 'Drinks', value: 'drinks'},
-    { key: 'fil', text: 'Film', value: 'film'},
-    { key: 'foo', text: 'Food', value: 'food'},
-    { key: 'mus', text: 'Music', value: 'music'},
-    { key: 'tra', text: 'Travel', value: 'travel'},
-  ]
+    { key: "cul", text: "Culture", value: "culture" },
+    { key: "dri", text: "Drinks", value: "drinks" },
+    { key: "fil", text: "Film", value: "film" },
+    { key: "foo", text: "Food", value: "food" },
+    { key: "mus", text: "Music", value: "music" },
+    { key: "tra", text: "Travel", value: "travel" },
+  ];
 
   const handleSubmit = async () => {
-    if(activity) {
+    if (activity) {
       const createResult = await createActivity(activity);
-      console.log('create', createResult)
+      console.log("create", createResult);
       if (createResult === true) {
         toast({
-          title: 'New activity',
-          description: 'Your activity create sucessfully!',
-          type:'success',
-          animation: 'fade right',
-        })
+          title: "New activity",
+          description: "Your activity create sucessfully!",
+          type: "success",
+          animation: "fade right",
+        });
       }
     }
   };
 
   return (
-    <Container className='activity-form'>
+    <Container className="activity-form">
       <Segment clearing>
-        <Header as={'h1'}>Create new Activity</Header>
+        <Header as={"h1"}>Create new Activity</Header>
         <Form onSubmit={handleSubmit}>
           <Form.Input
             onChange={handleInputChange}
@@ -82,15 +94,16 @@ const ActivityForm = () => {
             placeholder="Description"
             value={activity?.description}
           />
-          <Form.Dropdown
-            onChange={handleDropdownChange}
-            options={categoryOptions}
-            placeholder='Select Category'
-            value={activity?.category}
+          <Form.Select
             fluid
-            clearable
-          >
-          </Form.Dropdown>
+            options={categoryOptions}
+            placeholder="Select Category"
+            onChange={handleDropdownChange}
+            value={activity?.category}
+            compact
+            className="ui-fselect"
+            //simple
+          />
           <Form.Input
             onChange={handleInputChange}
             name="date"
@@ -110,12 +123,7 @@ const ActivityForm = () => {
             placeholder="Venue"
             value={activity?.venue}
           />
-          <Button
-            floated="right"
-            positive
-            type="submit"
-            content="Submit"
-          />
+          <Button floated="right" positive type="submit" content="Submit" />
           <Button
             // onClick={() => setEditMode(false)}
             floated="right"
