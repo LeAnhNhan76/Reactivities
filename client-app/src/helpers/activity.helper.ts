@@ -1,5 +1,5 @@
 import { SemanticCOLORS } from "semantic-ui-react";
-import { ActivityStatusEnum } from "../enums/common.enums";
+import { ActivityStatusEnum } from "../enums/common.enum";
 
 const getStatusText = (status: ActivityStatusEnum | undefined) => {
     if (status === undefined) return '';

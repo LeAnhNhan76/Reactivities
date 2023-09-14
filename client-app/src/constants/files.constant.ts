@@ -1,4 +1,4 @@
-import { baseAPIURL } from "./url.constants";
+import { baseAPIURL } from "./api.constant";
 
 export const avatarFolder = 'user/avatars';
 

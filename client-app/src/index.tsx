@@ -1,20 +1,11 @@
-import ReactDOM from 'react-dom';
-import { RouterProvider } from 'react-router-dom';
-import reportWebVitals from './reportWebVitals';
-import { router } from './router/Routes';
-import { store, StoreContext } from './stores/store';
-import 'react-calendar/dist/Calendar.css';
-import './assets/css/_global.scss';
-import 'react-semantic-toasts/styles/react-semantic-alert.css';
+import "react-calendar/dist/Calendar.css";
+import ReactDOM from "react-dom";
+import "react-semantic-toasts/styles/react-semantic-alert.css";
+import "./assets/css/_global.scss";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-ReactDOM.render(
-  <StoreContext.Provider value={store}>
-    <RouterProvider 
-      router={router}></RouterProvider>
-  </StoreContext.Provider>
-  ,
-  document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
