@@ -1,9 +1,10 @@
-import { Container } from "semantic-ui-react";
+import Welcome from '../welcome/Welcome';
+import './index.scss';
 
 export const HomePage = () => {
     return (
-        <Container style={{marginTop: '7em'}}>
-            <h1>Home page</h1>
-        </Container>
+        <div className="home">
+            <Welcome></Welcome>
+        </div>
     );
 }

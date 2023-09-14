@@ -29,8 +29,8 @@ namespace Application.Command.Activities
                 throw new Exception("The item is not found!");
 
             _context.Activities.Remove(activity);
-            var success = await _context.SaveChangesAsync() > 0;
-            return success;
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

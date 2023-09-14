@@ -1,0 +1,66 @@
+@use '../../../../assets/css/index.scss' as *;
+
+.activity-main-info {
+    >.card {
+        &.banner {
+            img {
+                filter: brightness(0.5) !important;
+            }
+            >.content {
+                &.banner-info {
+                    position: absolute;
+                    left: 18px;
+                    bottom: 60px;
+                    color: $white;
+        
+                    >.header, >.meta, >.description {
+                        color: $white;
+                    }
+                    >.meta {
+                        font-size: 13px;
+                    }
+
+                    >.description {
+                        >.host-name {
+                            color: $primary;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    >.card {
+        &.main-info {
+            >.list {
+                >.item{
+                    padding: 15px;
+                    vertical-align: middle;
+                    >.content {
+                        font-size: 12px
+                    }
+                }
+            }
+        }
+    }
+
+    >.card {
+        &.chat {
+            >.content {
+                textarea {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid $lightGray;
+                }
+                ::placeholder {
+                    color: $lightGray;
+                }
+                :focus {
+                    outline: none;
+                    border: 1px solid $teal !important;
+                }
+            }
+        }
+    }
+}

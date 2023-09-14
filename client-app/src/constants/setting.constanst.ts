@@ -1,3 +1,4 @@
 export const SystemConstants = {
-    LoadingApp: 'Loadding app ...'
+    LoadingApp: 'Loadding app ...',
+    AuthInfo: 'authInfo'
 }

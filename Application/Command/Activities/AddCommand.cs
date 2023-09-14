@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using Domain.Entities;
+using FluentValidation;
+using FrameworkCore.Enums;
 using MediatR;
 using Persistence;
 using System;
@@ -9,13 +11,22 @@ namespace Application.Command.Activities
 {
     public class AddToActivityCommandRequest : IRequest<bool>
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
+        public Guid? HostId { get; set; }
+    }
+
+    public class AddToActivityCommandValidator: AbstractValidator<AddToActivityCommandRequest>
+    {
+        public AddToActivityCommandValidator()
+        {
+            RuleFor(x => x.Title).NotNull().NotEmpty();
+            RuleFor(x => x.Date).GreaterThanOrEqualTo(DateTimeOffset.Now);
+        }
     }
 
     public class AddToActivityCommandHandler : IRequestHandler<AddToActivityCommandRequest, bool>
@@ -28,20 +39,25 @@ namespace Application.Command.Activities
 
         public async Task<bool> Handle(AddToActivityCommandRequest request, CancellationToken cancellationToken)
         {
+            var currentDateTimeOffset = DateTimeOffset.UtcNow;
             var activity = new Activity
             {
-                Id = request.Id,
+                Id = Guid.NewGuid(),
                 Title = request.Title,
                 Description = request.Description,
                 Category = request.Category,
                 Date = request.Date,
                 City = request.City,
-                Venue = request.Venue
+                Venue = request.Venue,
+                HostId = request.HostId,
+                Status = request.Date > currentDateTimeOffset 
+                    ? (byte)ActivityStatusEnum.Pending 
+                    : (byte)ActivityStatusEnum.Active
             };
 
             await _dbContext.Activities.AddAsync(activity);
-            var success = await _dbContext.SaveChangesAsync() >  0;
-            return success;
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

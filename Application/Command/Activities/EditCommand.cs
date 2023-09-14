@@ -40,8 +40,8 @@ namespace Application.Command.Activities
             activity.City = request.City ?? activity.City;
             activity.Venue = request.Venue ?? activity.Venue;
 
-            var success = await _context.SaveChangesAsync() > 0;
-            return success;
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

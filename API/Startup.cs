@@ -1,6 +1,7 @@
-using Application.Query.Activities;
+using Application.Services;
 using FrameworkCore.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Persistence;
-using System.Reflection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using AutoMapper;
+using API.AutoMapper;
+using API.Middleware;
+using Application.Behaviors;
+using FluentValidation;
+using Application.Services.Interfaces;
 
 namespace API
 {
@@ -24,7 +32,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<ApplicationDbContext>(opt =>
+            services.AddDbContext<ApplicationDbContext>(opt =>
             {
                 opt.UseSqlServer(
                     _configuration.GetConnectionString(Constant.DefaultConnection)
@@ -47,7 +55,27 @@ namespace API
                 );
             });
 
-            services.AddMediatR(typeof(GetAllActivityQueryHandler).GetTypeInfo().Assembly);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(
+                authenticationScheme: JwtBearerDefaults.AuthenticationScheme,
+                configureOptions: options => {
+                  options.TokenValidationParameters = new TokenValidationParameters {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration[Constant.TokenKey])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                  };
+              });
+
+            services.AddHttpContextAccessor();
+
+            this.RegisterMiddleware(services);
+
+            this.RegisterMediatR(services);
+
+            this.RegisterServices(services);
+
+            this.RegisterAutoMapper(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +86,9 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+            app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
@@ -68,13 +98,47 @@ namespace API
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseCors("AllowCors");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        public void RegisterMediatR(IServiceCollection services) 
+        {
+          var applicationAssembly = typeof(Application.AssemblyReference).Assembly;
+
+          services.AddMediatR(applicationAssembly);
+
+          services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+          services.AddValidatorsFromAssembly(applicationAssembly);
+        }
+
+        public void RegisterServices(IServiceCollection services) 
+        {
+          services.AddScoped<ITokenService, TokenService>();
+          services.AddScoped<IFileService, FileService>();
+        }
+
+        public void RegisterAutoMapper(IServiceCollection services)
+        {
+            var mapperConfig = new MapperConfiguration(mc => {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+        }
+
+        public void RegisterMiddleware(IServiceCollection services)
+        {
+            services.AddTransient<ExceptionHandlingMiddleware>();
         }
     }
 }

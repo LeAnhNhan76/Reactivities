@@ -1,17 +1,31 @@
 import { observer } from 'mobx-react-lite';
-import { Fragment } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import Spinner from '../components/spinner/Spinner';
+import { HomePage } from '../features/home/HomePage';
+import NavBar from '../components/nav/NavBar';
 import { Container } from 'semantic-ui-react';
-import NavBar from '../features/nav/NavBar';
+import Modal from '../components/modal/Modal';
+import { SemanticToastContainer} from 'react-semantic-toasts';
 
 const App = () => {
+    const location = useLocation();
+
     return (
-      <Fragment>
-        <NavBar />
-        <Container style={{ marginTop: "7em" }}>
-          <Outlet />
-        </Container>
-      </Fragment>
+        <div className='root-container'>
+            <div className='page-container'>
+                { location.pathname === '/'  ? <HomePage></HomePage> :
+                  <>
+                    <NavBar></NavBar>
+                    <Container className='main-body'>
+                        <Outlet></Outlet>
+                    </Container>
+                  </>
+                }
+                <Modal></Modal>
+                <Spinner></Spinner>
+                <SemanticToastContainer></SemanticToastContainer>
+            </div>
+        </div>
     );
 }
 export default observer(App);
