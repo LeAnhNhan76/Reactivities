@@ -1,8 +1,11 @@
 import { Button, Divider, Icon } from "semantic-ui-react";
 import Logo from "../../components/Logo/Logo";
 import "./Home.scss";
+import { useState } from "react";
+import Login from "../../components/Login/Login";
 
 const Home = () => {
+  const [openLogin, setOpenLogin] = useState(false);
   return (
     <div className="home">
       <div className="home-container">
@@ -13,8 +16,8 @@ const Home = () => {
               type="button"
               color="orange"
               content={"Login"}
-              onClick={() => {}}
               className="btn-login"
+              onClick={() => setOpenLogin(!openLogin)}
             />
             <Button
               type="button"
@@ -29,6 +32,12 @@ const Home = () => {
             icon={<Icon name="facebook" />}
             content={"Login with Facebook"}
           />
+          {openLogin && (
+            <Login
+              isOpen={openLogin}
+              onDissmiss={() => setOpenLogin(!openLogin)}
+            />
+          )}
         </div>
       </div>
     </div>
