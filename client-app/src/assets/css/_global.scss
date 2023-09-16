@@ -1,4 +1,5 @@
 @use './index.scss' as *;
+@import 'react-semantic-toasts/styles/react-semantic-alert.css';
 
 * {
   margin: 0;
@@ -6,8 +7,14 @@
   box-sizing: border-box;
 }
 
+:root {
+  --primary-color: #f2711c;
+}
+
 .form {
-  input.re-input-field {
-    padding: 15px !important;
+  .re-app-input {
+    input {
+      border: 1px solid var(--primary-color) !important;
+    }
   }
 }

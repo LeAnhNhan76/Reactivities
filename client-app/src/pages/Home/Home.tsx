@@ -35,7 +35,7 @@ const Home = () => {
           {openLogin && (
             <Login
               isOpen={openLogin}
-              onDissmiss={() => setOpenLogin(!openLogin)}
+              onDismiss={() => setOpenLogin(!openLogin)}
             />
           )}
         </div>

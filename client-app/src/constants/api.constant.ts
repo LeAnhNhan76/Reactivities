@@ -1,9 +1,12 @@
-export const apiUrl = {
-  activities: 'activities',
-  account: 'account',
-  setting: 'setting',
-  followers: 'followers',
-  activityMembers: 'activityMembers'
-}
+import ApplicationSetting from '../constants/application.constant'
 
-export const baseAPIURL = 'https://localhost:5000/api'
+export const baseAPIURL = `${ApplicationSetting.apiUrl}/api`;
+
+export const ApiConstants = {
+  account: {
+    root: `${baseAPIURL}/account`,
+    login() {
+      return `${this.root}/login`
+    }
+  }
+}

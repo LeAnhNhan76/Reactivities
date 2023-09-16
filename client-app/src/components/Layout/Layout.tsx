@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import { SemanticToastContainer } from "react-semantic-toasts";
 
 const Layout = () => {
-  const [user, setUser] = useState(false);
+  const [user] = useState(false);
 
   return (
     <div>
@@ -16,6 +17,7 @@ const Layout = () => {
           <Footer />
         </>
       )}
+      <SemanticToastContainer position="bottom-right" animation="bounce" />
     </div>
   );
 };

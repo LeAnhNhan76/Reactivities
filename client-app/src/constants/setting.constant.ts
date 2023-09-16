@@ -1,4 +1,4 @@
-export const SystemConstants = {
-    LoadingApp: 'Loadding app ...',
-    AuthInfo: 'authInfo'
+export const SettingKeyConstants = {
+    AccessToken: "access_token",
+    RefreshToken: "refresh_token",
 }

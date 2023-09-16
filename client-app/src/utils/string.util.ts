@@ -1,1 +1,1 @@
-export const isNotNullOrUndefined = (val: string | null | undefined) => val !== undefined && val !== null && val !== '';
+export const isStrNotNullOrUndefined = (val: string | null | undefined) => val !== undefined && val !== null && val !== '';
