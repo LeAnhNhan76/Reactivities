@@ -1,6 +1,6 @@
-import { Button, Container, Header, Message } from "semantic-ui-react";
-import "./NotFound.scss";
 import { Link } from "react-router-dom";
+import { Button, Container, Header } from "semantic-ui-react";
+import "./NotFound.scss";
 
 const NotFound = () => {
   return (

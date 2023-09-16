@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { toastSuccess } from "../../utils/toast.util";
 import { useStore } from "../../stores/store";
 import { observer } from "mobx-react-lite";
+import { useState } from "react";
 
 type Props = ModalProps;
 
 const Login = ({ isOpen, onDismiss }: Props) => {
   const navigate = useNavigate();
   const { authStore } = useStore();
+  const [logginErr, setLogginErr] = useState(false);
 
   const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,6 +32,8 @@ const Login = ({ isOpen, onDismiss }: Props) => {
       setTimeout(() => {
         navigate("/activities");
       }, 1000);
+    } else {
+      setLogginErr(true);
     }
   };
 
@@ -55,10 +59,7 @@ const Login = ({ isOpen, onDismiss }: Props) => {
         size="large"
       />
       <Modal.Content>
-        <Form
-          onSubmit={(event) => handleSubmitForm(event)}
-          error={authStore.loggedIn === false}
-        >
+        <Form onSubmit={(event) => handleSubmitForm(event)} error={logginErr}>
           <Message
             error
             header="Login failed"

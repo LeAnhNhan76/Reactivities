@@ -1,8 +1,13 @@
 import DefaultAvatar from '../assets/images/defaultAvatar.jpg';
-import { baseAPIURL } from '../constants/api.constant';
+import { ApiConstants } from '../constants/api.constant';
+import { isStrNotNullOrUndefined } from '../utils/string.util';
 
-export const getAvatar = (path: string | undefined | null) => {
-    if (path === null || path === undefined || path === '') return DefaultAvatar;
+const loadAvatar = (img: string | undefined | null) => {
+    if (!isStrNotNullOrUndefined(img)) return DefaultAvatar;
 
-    return `${baseAPIURL}/files?path=user/avatars/${path}`;
+    return ApiConstants.files.loadAvatar(img);
+}
+
+export {
+    loadAvatar
 }

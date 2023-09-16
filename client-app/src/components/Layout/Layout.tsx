@@ -6,8 +6,7 @@ import { useLocation } from "react-router-dom";
 const Layout = () => {
   const location = useLocation();
   const route = location.pathname.split("/")[1];
-
-  const layoutRoutes = ["activities"];
+  const layoutRoutes = ["activities", "errors"];
 
   if (!layoutRoutes.includes(route)) return <Outlet />;
   return (

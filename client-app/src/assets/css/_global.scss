@@ -18,3 +18,15 @@
     }
   }
 }
+
+.ui.header {
+  margin: 0px !important;
+}
+
+.ui.dropdown {
+  display: flex;
+   align-items: center;
+   .dropdown.icon {
+    vertical-align: middle !important;
+   }
+}
