@@ -3,15 +3,25 @@ import App from "../App";
 import Home from "../pages/Home/Home";
 import Activities from "../pages/Activities/Activities";
 import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
+import Layout from "../components/Layout/Layout";
+import NotFound from "../pages/NotFound/NotFound";
 
 export const routes: RouteObject[] = [
   {
     path: "",
     element: <App />,
     children: [
-      { path: "", element: <Home /> },
-      { path: "activities", element: <Activities /> },
-      { path: "activities/:id", element: <ActivityDetail /> },
+      {
+        path: "",
+        element: <Layout />,
+        children: [
+          { path: "", element: <Home /> },
+          { path: "/home", element: <Home /> },
+          { path: "/activities", element: <Activities /> },
+          { path: "/activities/:id", element: <ActivityDetail /> },
+          { path: "*", element: <NotFound /> },
+        ],
+      },
     ],
   },
 ];

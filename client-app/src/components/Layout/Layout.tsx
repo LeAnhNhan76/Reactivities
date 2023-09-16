@@ -1,23 +1,22 @@
-import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { SemanticToastContainer } from "react-semantic-toasts";
+import { useLocation } from "react-router-dom";
 
 const Layout = () => {
-  const [user] = useState(false);
+  const location = useLocation();
+  const route = location.pathname.split("/")[1];
 
+  const layoutRoutes = ["activities"];
+
+  if (!layoutRoutes.includes(route)) return <Outlet />;
   return (
     <div>
-      {!user && <Outlet />}
-      {user && (
-        <>
-          <Header />
-          <Outlet />
-          <Footer />
-        </>
-      )}
-      <SemanticToastContainer position="bottom-right" animation="bounce" />
+      <>
+        <Header />
+        <Outlet />
+        <Footer />
+      </>
     </div>
   );
 };
