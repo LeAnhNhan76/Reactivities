@@ -2,6 +2,7 @@ import { createBrowserRouter, RouteObject } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home/Home";
 import Activities from "../pages/Activities/Activities";
+import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
 
 export const routes: RouteObject[] = [
   {
@@ -10,6 +11,7 @@ export const routes: RouteObject[] = [
     children: [
       { path: "", element: <Home /> },
       { path: "activities", element: <Activities /> },
+      { path: "activities/:id", element: <ActivityDetail /> },
     ],
   },
 ];
