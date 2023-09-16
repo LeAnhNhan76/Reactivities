@@ -17,8 +17,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
             color: white;
+
+            .logo {
+                font-size: 40px;
+            }
 
             .btn-login {
                 margin-right: 10px;

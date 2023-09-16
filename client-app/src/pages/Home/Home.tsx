@@ -13,38 +13,38 @@ const Home = () => {
     <div className="home">
       <div className="home-container">
         <div className="home-wrapper">
-          <Logo size="huge" />
+          <Logo />
           {!loggedIn && (
-            <div>
-              <Button
-                type="button"
-                color="orange"
-                content={"Login"}
-                className="btn-login"
-                onClick={() => setOpenLogin(!openLogin)}
-              />
-              <Button
-                type="button"
-                color="grey"
-                content={"Register"}
-                onClick={() => {}}
-              />
+            <>
+              <div className="">
+                <Button
+                  type="button"
+                  color="orange"
+                  content={"Login"}
+                  className="btn-login"
+                  onClick={() => setOpenLogin(!openLogin)}
+                />
+                <Button
+                  type="button"
+                  color="grey"
+                  content={"Register"}
+                  onClick={() => {}}
+                />
+              </div>
               <Divider horizontal content={"OR"} inverted />
               <Button
                 color="facebook"
                 icon={<Icon name="facebook" />}
                 content={"Login with Facebook"}
               />
-            </div>
+            </>
           )}
           {loggedIn && (
             <Link to="/activities">
               <Button
-                type="button"
-                color="orange"
-                content={"Take your activities"}
-                size="big"
-                fluid
+                content={"Discover your amazing things today!"}
+                icon="heart"
+                positive
               />
             </Link>
           )}

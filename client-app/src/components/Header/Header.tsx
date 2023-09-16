@@ -6,6 +6,8 @@ import {
   Image,
   DropdownProps,
   DropdownItemProps,
+  Confirm,
+  DropdownItem,
 } from "semantic-ui-react";
 import Logo from "../Logo/Logo";
 import "./Header.scss";
@@ -13,22 +15,27 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
 import { loadAvatar } from "../../helpers/file.helper";
+import { useState } from "react";
 
 const Header = () => {
   const leftMenus = [
     { key: "activities", name: "Actvities", link: "/activities" },
     { key: "errors", name: "Errors", link: "/errors" },
   ];
-  const rightOptions: DropdownItemProps[] = [
+  const profileMenus: DropdownItemProps[] = [
     {
       key: "profile",
       text: "Your profile",
       value: "profile",
+      onClick: () => {
+        navigate("profile");
+      },
     },
     {
       key: "logout",
       text: "Logout",
       value: "logout",
+      onClick: () => setOpenConfirmLogout(true),
     },
   ];
 
@@ -48,19 +55,12 @@ const Header = () => {
 
   const { authStore } = useStore();
 
-  const handleChangeDropdown = (
-    event: React.SyntheticEvent<HTMLElement, Event>,
-    { value }: DropdownProps
-  ) => {
-    event.preventDefault();
-    if (value === "logout") {
-      authStore.logout();
-      navigate("/");
-    }
+  const [openConfirmLogout, setOpenConfirmLogout] = useState(false);
 
-    if (value === "profile") {
-      navigate("profile");
-    }
+  const onLogout = () => {
+    authStore.logout();
+    setOpenConfirmLogout(false);
+    navigate("/");
   };
 
   return (
@@ -86,10 +86,20 @@ const Header = () => {
             <Button content="Create new activity" icon="add" color="green" />
           </Menu.Item>
           <Menu.Menu position="right">
-            <Dropdown
-              trigger={profileTrigger}
-              options={rightOptions}
-              onChange={handleChangeDropdown}
+            <Dropdown trigger={profileTrigger} defaultValue={""}>
+              <Dropdown.Menu>
+                {profileMenus.map((item) => (
+                  <Dropdown.Item {...item} />
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+            <Confirm
+              header="Confirm logout"
+              content="Are you sure logout now?"
+              open={openConfirmLogout}
+              size="tiny"
+              onCancel={() => setOpenConfirmLogout(false)}
+              onConfirm={onLogout}
             />
           </Menu.Menu>
         </Menu>

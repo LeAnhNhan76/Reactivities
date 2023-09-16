@@ -9,7 +9,7 @@ const Logo = ({ size }: Props) => {
   return (
     <Header
       content="Reactivities"
-      icon={<Icon name="bicycle" />}
+      icon={<Icon name="users" />}
       className="logo"
       color="orange"
       size={size || "medium"}

@@ -1,9 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
 import { useLocation } from "react-router-dom";
 import { hasToken } from "../../utils/authentication.util";
 import { useState, useEffect } from "react";
+import { Container } from "semantic-ui-react";
 
 const Layout = () => {
   const location = useLocation();
@@ -12,7 +12,7 @@ const Layout = () => {
   const navigate = useNavigate();
   const loggedIn = hasToken();
 
-  const [type, setType] = useState<"single" | "layout">();
+  const [useLayout, setUseLayout] = useState(false);
 
   useEffect(() => {
     if (!loggedIn) {
@@ -21,17 +21,19 @@ const Layout = () => {
   }, [loggedIn]);
 
   useEffect(() => {
-    setType(layoutRoutes.includes(route) ? "layout" : "single");
+    setUseLayout(layoutRoutes.includes(route));
   }, [route]);
 
   return (
     <div>
-      {type === "single" && <Outlet />}
-      {type === "layout" && (
+      {!useLayout ? (
+        <Outlet />
+      ) : (
         <>
           <Header />
-          <Outlet />
-          <Footer />
+          <Container>
+            <Outlet />
+          </Container>
         </>
       )}
     </div>
