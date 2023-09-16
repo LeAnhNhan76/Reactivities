@@ -15,7 +15,7 @@ const Layout = () => {
   const [useLayout, setUseLayout] = useState(false);
 
   useEffect(() => {
-    if (!loggedIn) {
+    if (layoutRoutes.includes(route) && !loggedIn) {
       navigate("");
     }
   }, [loggedIn]);

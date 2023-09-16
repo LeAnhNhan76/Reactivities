@@ -7,6 +7,7 @@ import Layout from "../components/Layout/Layout";
 import NotFound from "../pages/NotFound/NotFound";
 import Errors from "../pages/Errors/Errors";
 import Profile from "../pages/Profile/Profile";
+import { routingConstants } from "../constants/routing.constant";
 
 export const routes: RouteObject[] = [
   {
@@ -18,12 +19,15 @@ export const routes: RouteObject[] = [
         element: <Layout />,
         children: [
           { path: "", element: <Home /> },
-          { path: "/home", element: <Home /> },
-          { path: "/activities", element: <Activities /> },
-          { path: "/activities/:id", element: <ActivityDetail /> },
-          { path: "/errors", element: <Errors /> },
-          { path: "/profile", element: <Profile /> },
-          { path: "*", element: <NotFound /> },
+          { path: routingConstants.Home, element: <Home /> },
+          { path: routingConstants.Activities, element: <Activities /> },
+          {
+            path: routingConstants.ActivityDetail,
+            element: <ActivityDetail />,
+          },
+          { path: routingConstants.Errors, element: <Errors /> },
+          { path: routingConstants.Profile, element: <Profile /> },
+          { path: routingConstants.NotFound, element: <NotFound /> },
         ],
       },
     ],

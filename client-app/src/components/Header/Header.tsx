@@ -1,24 +1,23 @@
-import {
-  Container,
-  Menu,
-  Button,
-  Dropdown,
-  Image,
-  DropdownProps,
-  DropdownItemProps,
-  Confirm,
-  DropdownItem,
-} from "semantic-ui-react";
-import Logo from "../Logo/Logo";
-import "./Header.scss";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Button,
+  Confirm,
+  Container,
+  Dropdown,
+  DropdownItemProps,
+  Image,
+  Menu,
+} from "semantic-ui-react";
+import { routingConstants } from "../../constants/routing.constant";
+import { loadAvatar } from "../../helpers/file.helper";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
-import { loadAvatar } from "../../helpers/file.helper";
-import { useState } from "react";
+import Logo from "../Logo/Logo";
+import "./Header.scss";
 
 const Header = () => {
-  const leftMenus = [
+  const navMenus = [
     { key: "activities", name: "Actvities", link: "/activities" },
     { key: "errors", name: "Errors", link: "/errors" },
   ];
@@ -27,21 +26,23 @@ const Header = () => {
       key: "profile",
       text: "Your profile",
       value: "profile",
+      icon: "user",
       onClick: () => {
-        navigate("profile");
+        navigate(routingConstants.Profile);
       },
     },
     {
       key: "logout",
       text: "Logout",
       value: "logout",
+      icon: "arrow circle right",
       onClick: () => setOpenConfirmLogout(true),
     },
   ];
 
   const location = useLocation();
   const route = location.pathname.split("/")[1];
-  const activeRouteIndex = leftMenus.findIndex((x) => x.key === route);
+  const activeRouteIndex = navMenus.findIndex((x) => x.key === route);
   const navigate = useNavigate();
 
   const authenProfile = getAuthenProfile();
@@ -72,7 +73,7 @@ const Header = () => {
               <Logo />
             </Link>
           </Menu.Item>
-          {leftMenus.map((menu) => (
+          {navMenus.map((menu) => (
             <Menu.Item
               key={menu.key}
               name={menu.name}

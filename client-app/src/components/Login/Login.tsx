@@ -6,6 +6,7 @@ import { toastSuccess } from "../../utils/toast.util";
 import { useStore } from "../../stores/store";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import { routingConstants } from "../../constants/routing.constant";
 
 type Props = ModalProps;
 
@@ -30,7 +31,7 @@ const Login = ({ isOpen, onDismiss }: Props) => {
         description: "Welcome you back to app, again!",
       });
       setTimeout(() => {
-        navigate("/activities");
+        navigate(routingConstants.Activities);
       }, 1000);
     } else {
       setLogginErr(true);
