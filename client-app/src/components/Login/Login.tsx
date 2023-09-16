@@ -68,7 +68,7 @@ const Login = ({ isOpen, onDismiss }: Props) => {
           <Form.Field>
             <Input
               placeholder="Enter your username"
-              className="re-app-input"
+              className="racti-input"
               name="username"
               size="large"
             />
@@ -76,7 +76,7 @@ const Login = ({ isOpen, onDismiss }: Props) => {
           <Form.Field>
             <Input
               placeholder="Enter your password"
-              className="re-app-input"
+              className="racti-input"
               name="pwd"
               size="large"
               type="password"

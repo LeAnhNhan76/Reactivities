@@ -6,6 +6,7 @@ import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
 import Layout from "../components/Layout/Layout";
 import NotFound from "../pages/NotFound/NotFound";
 import Errors from "../pages/Errors/Errors";
+import Profile from "../pages/Profile/Profile";
 
 export const routes: RouteObject[] = [
   {
@@ -21,6 +22,7 @@ export const routes: RouteObject[] = [
           { path: "/activities", element: <Activities /> },
           { path: "/activities/:id", element: <ActivityDetail /> },
           { path: "/errors", element: <Errors /> },
+          { path: "/profile", element: <Profile /> },
           { path: "*", element: <NotFound /> },
         ],
       },

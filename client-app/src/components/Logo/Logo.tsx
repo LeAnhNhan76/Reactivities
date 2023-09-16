@@ -1,4 +1,5 @@
 import { Header, Icon } from "semantic-ui-react";
+import "./Logo.scss";
 
 type Props = {
   size?: "huge" | "tiny" | "small" | "medium" | "large" | undefined;

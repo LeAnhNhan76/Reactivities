@@ -6,6 +6,7 @@ import { isStrNotNullOrUndefined } from "./string.util";
 
 const hasToken = () => {
     const token = getToken();
+    console.log('token', token)
     return isStrNotNullOrUndefined(token);
 }
 

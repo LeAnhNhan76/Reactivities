@@ -29,6 +29,12 @@ const Home = () => {
                 content={"Register"}
                 onClick={() => {}}
               />
+              <Divider horizontal content={"OR"} inverted />
+              <Button
+                color="facebook"
+                icon={<Icon name="facebook" />}
+                content={"Login with Facebook"}
+              />
             </div>
           )}
           {loggedIn && (
@@ -37,16 +43,12 @@ const Home = () => {
                 type="button"
                 color="orange"
                 content={"Take your activities"}
+                size="big"
                 fluid
               />
             </Link>
           )}
-          <Divider horizontal content={"OR"} inverted />
-          <Button
-            color="facebook"
-            icon={<Icon name="facebook" />}
-            content={"Login with Facebook"}
-          />
+
           {openLogin && (
             <Login
               isOpen={openLogin}

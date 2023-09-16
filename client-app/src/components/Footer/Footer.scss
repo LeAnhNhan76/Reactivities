@@ -1,0 +1,10 @@
+.racti-footer {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    .container {
+        display: flex;
+        justify-content: space-between;
+        color: var(--primary-color)
+    }
+}

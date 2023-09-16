@@ -4,7 +4,7 @@ import "./Loading.scss";
 const Loading = () => {
   return (
     <Segment>
-      <Dimmer page active className="re-app-loading">
+      <Dimmer page active className="racti-loading">
         <Loader inverted content="Loading..." />
       </Dimmer>
     </Segment>

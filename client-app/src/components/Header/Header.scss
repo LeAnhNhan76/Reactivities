@@ -1,20 +1,18 @@
 @use '../../assets/css/index.scss' as *;
 
-
-.ui.segment {
+.racti-header {
+    height: 52px;
     @include primary-background;
-    .row {
-        height: 60px;
-        align-items: center;
-
-        .navbar {
-            gap: 10px
-        }
-
-        .profile-menu-trigger {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px
+    
+    .ui.menu {
+        background-color: transparent;
+        width: 100%;
+        border: none;
+        box-shadow: none;
+        >.item {
+            &:first-child {
+                padding-left: 0;
+            }
         }
     }
 }

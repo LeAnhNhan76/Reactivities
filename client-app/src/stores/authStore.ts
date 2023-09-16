@@ -4,7 +4,7 @@ import { action, observable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { SettingKeyConstants } from "../constants/setting.constant";
 import { LoginType } from "../types/login.type";
-import { setLocalStorageItem } from "../utils/localStorage.util";
+import { removeLocalStorageItem, setLocalStorageItem } from "../utils/localStorage.util";
 
 export default class AuthStore {
     @observable isLoading: boolean = false;
@@ -36,5 +36,10 @@ export default class AuthStore {
             this.hideLoading();
             return false;
         }
+    }
+
+    @action logout() {
+        removeLocalStorageItem(SettingKeyConstants.AccessToken);
+        removeLocalStorageItem(SettingKeyConstants.AuthenProfile);
     }
 }
