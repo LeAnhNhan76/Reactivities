@@ -18,10 +18,12 @@ const Layout = () => {
     if (layoutRoutes.includes(route) && !loggedIn) {
       navigate("");
     }
+    // eslint-disable-next-line
   }, [loggedIn]);
 
   useEffect(() => {
     setUseLayout(layoutRoutes.includes(route));
+    // eslint-disable-next-line
   }, [route]);
 
   return (

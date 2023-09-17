@@ -6,6 +6,7 @@ import {
   Container,
   Dropdown,
   DropdownItemProps,
+  Icon,
   Image,
   Menu,
 } from "semantic-ui-react";
@@ -13,14 +14,24 @@ import { routingConstants } from "../../constants/routing.constant";
 import { loadAvatar } from "../../helpers/file.helper";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
+import CreateNewActivity from "../CreateNewActivity/CreateNewActivity";
 import Logo from "../Logo/Logo";
 import "./Header.scss";
-import CreateNewActivity from "../CreateNewActivity/CreateNewActivity";
 
 const Header = () => {
   const navMenus = [
-    { key: "activities", name: "Actvities", link: "/activities" },
-    { key: "errors", name: "Errors", link: "/errors" },
+    {
+      key: "activities",
+      name: "Actvities",
+      icon: <Icon name="coffee" />,
+      link: "/activities",
+    },
+    {
+      key: "errors",
+      name: "Errors",
+      icon: <Icon name="bug" />,
+      link: "/errors",
+    },
   ];
   const profileMenus: DropdownItemProps[] = [
     {
@@ -83,7 +94,10 @@ const Header = () => {
               onClick={() => {
                 navigate(menu.link);
               }}
-            />
+            >
+              {menu.icon}
+              <span>{menu.name}</span>
+            </Menu.Item>
           ))}
           <Menu.Item>
             <Button

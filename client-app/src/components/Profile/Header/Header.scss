@@ -1,0 +1,19 @@
+.profile-header {
+    margin-bottom: 15px;
+    .avatar-container {
+        img {
+            width: 135px !important;
+            height: 135px !important;
+        }
+
+        span {
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+    }
+
+    .number-follow-container {
+        text-align: center;
+    }
+}
