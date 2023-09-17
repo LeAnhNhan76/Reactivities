@@ -1,4 +1,4 @@
-import { Grid, Icon, Menu } from "semantic-ui-react";
+import { Grid, Icon, Menu, Segment } from "semantic-ui-react";
 import ProfileHeader from "../../components/Profile/Header/Header";
 import About from "../../components/Profile/About/About";
 import "./Profile.scss";
@@ -39,11 +39,13 @@ const Profile = () => {
       <Grid columns={2}>
         <Grid.Row>
           <Grid.Column width={10}>
-            {currentMenu === "about" && <About />}
-            {currentMenu === "photos" && <Photos />}
-            {currentMenu === "events" && <Events />}
-            {currentMenu === "followers" && <Followers />}
-            {currentMenu === "following" && <Following />}
+            <Segment>
+              {currentMenu === "about" && <About />}
+              {currentMenu === "photos" && <Photos />}
+              {currentMenu === "events" && <Events />}
+              {currentMenu === "followers" && <Followers />}
+              {currentMenu === "following" && <Following />}
+            </Segment>
           </Grid.Column>
           <Grid.Column width={6}>
             <Menu vertical fluid>
