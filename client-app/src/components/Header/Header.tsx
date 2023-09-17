@@ -15,6 +15,7 @@ import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
 import Logo from "../Logo/Logo";
 import "./Header.scss";
+import CreateNewActivity from "../CreateNewActivity/CreateNewActivity";
 
 const Header = () => {
   const navMenus = [
@@ -57,6 +58,7 @@ const Header = () => {
   const { authStore } = useStore();
 
   const [openConfirmLogout, setOpenConfirmLogout] = useState(false);
+  const [openNewAct, setOpenNewAct] = useState(false);
 
   const onLogout = () => {
     authStore.logout();
@@ -84,7 +86,12 @@ const Header = () => {
             />
           ))}
           <Menu.Item>
-            <Button content="Create new activity" icon="add" color="green" />
+            <Button
+              content="Create new activity"
+              icon="add"
+              color="green"
+              onClick={() => setOpenNewAct(true)}
+            />
           </Menu.Item>
           <Menu.Menu position="right">
             <Dropdown trigger={profileTrigger} defaultValue={""}>
@@ -104,6 +111,12 @@ const Header = () => {
             />
           </Menu.Menu>
         </Menu>
+        {openNewAct && (
+          <CreateNewActivity
+            isOpen={openNewAct}
+            onDismiss={() => setOpenNewAct(false)}
+          />
+        )}
       </Container>
     </div>
   );

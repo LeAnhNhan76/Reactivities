@@ -13,7 +13,7 @@
 
 .form {
   .racti-input {
-    input {
+    input, .selection.ui.dropdown, textarea {
       border: 1px solid var(--primary-color) !important;
     }
   }
@@ -29,4 +29,16 @@
    .dropdown.icon {
     vertical-align: middle !important;
    }
+}
+
+.ui.modal {
+  top: 40%;
+}
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+.ui.form .divider {
+  margin: 0;
 }
