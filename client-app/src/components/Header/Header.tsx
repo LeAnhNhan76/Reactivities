@@ -47,7 +47,7 @@ const Header = () => {
       key: "logout",
       text: "Logout",
       value: "logout",
-      icon: "arrow circle right",
+      icon: "shutdown",
       onClick: () => setOpenConfirmLogout(true),
     },
   ];
