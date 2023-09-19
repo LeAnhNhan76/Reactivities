@@ -21,8 +21,12 @@ const ProfileAbout = () => {
               content={!editable ? "Edit" : "Cancel"}
               floated="right"
               size="small"
-              color={!editable ? "orange" : undefined}
               onClick={() => setEditable(!editable)}
+              style={{
+                color: !editable ? "white" : "",
+                backgroundColor: !editable ? "var(--secondary-color)" : "",
+              }}
+              icon={!editable ? "edit" : "close"}
             ></Button>
           </Form.Field>
         </Form.Group>

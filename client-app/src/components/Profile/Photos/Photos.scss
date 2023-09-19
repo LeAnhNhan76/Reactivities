@@ -1,5 +1,13 @@
 .photos {
+    .title-section {
+        display: flex;
+        align-items: center;
+        img {
+            font-size: 8px !important;
+        }
+    }
     .image-list {
         margin-top: 15px
     }
+
 }
