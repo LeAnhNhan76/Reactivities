@@ -42,12 +42,12 @@ const Home = () => {
           {loggedIn && (
             <>
               <Header
-                content="Helo helo, hope you have a nice day! <3 <3 <3"
+                content="Helo my friend, hope you have a nice day! <3 <3 <3"
                 size="large"
               />
               <Link to="/activities">
                 <Button
-                  content={"Discover your amazing activities today!"}
+                  content={"Let discover amazing things today!"}
                   icon="heart"
                   positive
                   size="large"
