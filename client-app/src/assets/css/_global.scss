@@ -69,3 +69,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.btn-secondary {
+  background-color: var(--secondary-color) !important;
+  color: white !important;
+}

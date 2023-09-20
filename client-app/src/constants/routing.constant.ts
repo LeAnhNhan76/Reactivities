@@ -3,7 +3,7 @@ const routingConstants = {
     Activities: "activities",
     ActivityDetail: "activities/:id",
     Errors: "errors",
-    Profile: "profile/:id",
+    Profile: "profile/:username",
     NotFound: "*"
 }
 

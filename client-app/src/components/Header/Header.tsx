@@ -10,11 +10,10 @@ import {
   Image,
   Menu,
 } from "semantic-ui-react";
-import { routingConstants } from "../../constants/routing.constant";
 import { loadAvatar } from "../../helpers/file.helper";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
-import CreateNewActivity from "../CreateNewActivity/CreateNewActivity";
+import CreateOrEditActivity from "../Activity/CreateOrEdit/CreateOrEdit";
 import Logo from "../Logo/Logo";
 import "./Header.scss";
 
@@ -40,7 +39,7 @@ const Header = () => {
       value: "profile",
       icon: "user",
       onClick: () => {
-        navigate(routingConstants.Profile);
+        navigate(`profile/${authenProfile?.userName}`);
       },
     },
     {
@@ -126,7 +125,7 @@ const Header = () => {
           </Menu.Menu>
         </Menu>
         {openNewAct && (
-          <CreateNewActivity
+          <CreateOrEditActivity
             isOpen={openNewAct}
             onDismiss={() => setOpenNewAct(false)}
           />

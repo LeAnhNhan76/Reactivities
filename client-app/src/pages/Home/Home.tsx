@@ -13,7 +13,7 @@ const Home = () => {
     <div className="home">
       <div className="home-container">
         <div className="home-wrapper">
-          <Logo />
+          <Logo size="huge" />
           {!loggedIn && (
             <>
               <div className="">
@@ -22,12 +22,16 @@ const Home = () => {
                   color="orange"
                   content={"Login"}
                   className="btn-login"
+                  size="massive"
+                  style={{ width: "200px" }}
                   onClick={() => setOpenLogin(!openLogin)}
                 />
                 <Button
                   type="button"
                   color="grey"
                   content={"Register"}
+                  size="massive"
+                  style={{ width: "200px" }}
                   onClick={() => {}}
                 />
               </div>
@@ -36,6 +40,7 @@ const Home = () => {
                 color="facebook"
                 icon={<Icon name="facebook" />}
                 content={"Login with Facebook"}
+                size="massive"
               />
             </>
           )}

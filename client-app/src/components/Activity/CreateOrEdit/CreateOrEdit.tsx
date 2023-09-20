@@ -1,10 +1,10 @@
 import { Button, Form, FormProps, Icon, Modal } from "semantic-ui-react";
-import { activityCategoryOptions } from "../../constants/activity.constant";
-import { ModalProps } from "../../types/modal.type";
-import "./CreateNewActivity.scss";
+import { activityCategoryOptions } from "../../../constants/activity.constant";
+import { ModalProps } from "../../../types/modal.type";
+import "./CreateOrEdit.scss";
 
 type Props = ModalProps;
-const CreateNewActivity = ({ isOpen, onDismiss }: Props) => {
+const CreateOrEdit = ({ isOpen, onDismiss }: Props) => {
   const handleSubmitForm = (
     event: React.FormEvent<HTMLFormElement>,
     data: FormProps
@@ -85,4 +85,4 @@ const CreateNewActivity = ({ isOpen, onDismiss }: Props) => {
   );
 };
 
-export default CreateNewActivity;
+export default CreateOrEdit;

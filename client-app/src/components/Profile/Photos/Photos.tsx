@@ -25,7 +25,11 @@ const Photos = () => {
             ></Button>
           </Form.Field>
         </Form.Group>
-        <Card.Group itemsPerRow={3} style={{ textAlign: "center" }}>
+        <Card.Group
+          itemsPerRow={3}
+          style={{ textAlign: "center" }}
+          className="image-list"
+        >
           {Array.from(Array(10).keys()).map((key) => (
             <Card key={key}>
               <Image

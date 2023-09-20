@@ -38,7 +38,7 @@ const Profile = () => {
       <ProfileHeader />
       <Grid columns={2}>
         <Grid.Row>
-          <Grid.Column width={10}>
+          <Grid.Column width={11}>
             <Segment>
               {currentMenu === "about" && <About />}
               {currentMenu === "photos" && <Photos />}
@@ -47,7 +47,7 @@ const Profile = () => {
               {currentMenu === "following" && <Following />}
             </Segment>
           </Grid.Column>
-          <Grid.Column width={6}>
+          <Grid.Column width={5}>
             <Menu vertical fluid>
               {menuBar.map((item) => (
                 <Menu.Item
