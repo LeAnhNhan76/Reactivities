@@ -1,4 +1,4 @@
-import { Form, Segment, TextArea, Comment } from "semantic-ui-react";
+import { Form, Segment, TextArea } from "semantic-ui-react";
 import Comments from "../../Comments/Comments";
 
 const Chats = () => {

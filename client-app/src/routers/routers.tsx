@@ -18,8 +18,6 @@ export const routes: RouteObject[] = [
         path: "",
         element: <Layout />,
         children: [
-          { path: "", element: <Home /> },
-          { path: routingConstants.Home, element: <Home /> },
           { path: routingConstants.Activities, element: <Activities /> },
           {
             path: routingConstants.ActivityDetail,
