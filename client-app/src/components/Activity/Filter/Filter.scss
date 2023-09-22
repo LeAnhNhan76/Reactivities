@@ -1,0 +1,16 @@
+.activity-filter {
+    padding-top: 42px;
+    .react-calendar {
+        width: 100%;
+        margin-top: 25px;
+        border: none;
+        box-shadow: var(--box-shadow-xl);
+        border-radius: 3px;
+    }
+
+    .ui.menu {
+        .item {
+            cursor: pointer;
+        }
+    }
+}

@@ -33,7 +33,7 @@ const Layout = () => {
       ) : (
         <>
           <Header />
-          <Container>
+          <Container style={{ paddingTop: "20px" }}>
             <Outlet />
           </Container>
         </>

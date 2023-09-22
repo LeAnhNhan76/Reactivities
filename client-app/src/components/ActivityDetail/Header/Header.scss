@@ -1,0 +1,37 @@
+.activity-detail-header {
+    .banner {
+        padding:0;
+        img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            filter: brightness(50%);
+        }
+        position: relative;
+        .desc {
+            position: absolute;
+            bottom: 20px;
+            left: 27px;
+            z-index: 2;
+            color: white;
+            display: flex;
+             flex-direction: column;
+             gap:5px;
+
+            .header {
+                color: white !important;
+                line-height: 22px;
+            }
+
+            span {
+                font-size: 12px;
+                .hoster {
+                    font-weight: bold;
+                    font-style: italic;
+                    color: var(--primary-color);
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}

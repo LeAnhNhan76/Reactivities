@@ -1,0 +1,26 @@
+.activity-list-item {
+    >.header {
+        margin-bottom: 25px !important;
+    }
+    .card {
+        .title-section {
+            padding-top: 15px;
+            .item {
+                .image {
+                    width: 100px !important;
+    
+                    img {
+                        width: 100px !important;
+                        height: 100px !important;
+                        object-fit: cover;
+                    }
+                }
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px
+                }
+            }
+        }
+    }
+}
