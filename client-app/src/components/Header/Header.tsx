@@ -10,11 +10,11 @@ import {
   Image,
   Menu,
 } from "semantic-ui-react";
-import { loadAvatar } from "../../helpers/file.helper";
+import { loadAvatar } from "../../common/helpers/file.helper";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
 import CreateOrEditActivity from "../Activity/CreateOrEdit/CreateOrEdit";
-import Logo from "../Logo/Logo";
+import Logo from "../../common/ui/Logo/Logo";
 import "./Header.scss";
 
 const Header = () => {

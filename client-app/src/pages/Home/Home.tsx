@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Divider, Header, Icon } from "semantic-ui-react";
 import Login from "../../components/Login/Login";
-import Logo from "../../components/Logo/Logo";
+import Logo from "../../common/ui/Logo/Logo";
 import { hasToken } from "../../utils/authentication.util";
 import "./Home.scss";
 
