@@ -1,7 +1,9 @@
 ﻿using Domain.Entities;
 using FluentValidation;
 using FrameworkCore.Enums;
+using FrameworkCore.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Persistence;
 using System;
 using System.Threading;
@@ -17,10 +19,9 @@ namespace Application.Command.Activities
         public DateTimeOffset Date { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
-        public Guid? HostId { get; set; }
     }
 
-    public class AddToActivityCommandValidator: AbstractValidator<AddToActivityCommandRequest>
+    public class AddToActivityCommandValidator : AbstractValidator<AddToActivityCommandRequest>
     {
         public AddToActivityCommandValidator()
         {
@@ -32,30 +33,43 @@ namespace Application.Command.Activities
     public class AddToActivityCommandHandler : IRequestHandler<AddToActivityCommandRequest, bool>
     {
         private readonly ApplicationDbContext _dbContext;
-        public AddToActivityCommandHandler(ApplicationDbContext dbContext)
+        private Guid _currentUserId { get; set; }
+        public AddToActivityCommandHandler(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             this._dbContext = dbContext;
+            this._currentUserId = httpContextAccessor.HttpContext.CurrentUserId();
         }
 
         public async Task<bool> Handle(AddToActivityCommandRequest request, CancellationToken cancellationToken)
         {
             var currentDateTimeOffset = DateTimeOffset.UtcNow;
+
+            var newActivityId = Guid.NewGuid();
+
             var activity = new Activity
             {
-                Id = Guid.NewGuid(),
+                Id = newActivityId,
                 Title = request.Title,
                 Description = request.Description,
                 Category = request.Category,
                 Date = request.Date,
                 City = request.City,
                 Venue = request.Venue,
-                HostId = request.HostId,
-                Status = request.Date > currentDateTimeOffset 
-                    ? (byte)ActivityStatusEnum.Pending 
+                HostId = _currentUserId,
+                Status = request.Date > currentDateTimeOffset
+                    ? (byte)ActivityStatusEnum.Pending
                     : (byte)ActivityStatusEnum.Active
             };
-
             await _dbContext.Activities.AddAsync(activity);
+
+            var activityMember = new ActivityMember()
+            {
+                Id = Guid.NewGuid(),
+                ActivityId = newActivityId,
+                MemberId = _currentUserId,
+            };
+            await _dbContext.ActivityMembers.AddAsync(activityMember);
+
             await _dbContext.SaveChangesAsync();
             return true;
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,13 +24,22 @@ namespace Application.Query
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
         public string Category { get; set; }
         public DateTimeOffset Date { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
         public Guid? HostId { get; set; }
+        public string HostName { get; set; }
         public byte Status { get; set; }
+        public string StatusName { get; set; }
+        public List<ActivityJoinerItem> Joiners { get; set; }
+    }
+
+    public class ActivityJoinerItem
+    {
+        public Guid ActivityId { get; set; }
+        public Guid JoinerId { get; set; }
+        public string JoinerAvatar { get; set; }
     }
 
     public class GetPagingActivitiesHandler : IRequestHandler<GetPagingActivitiesRequest, PagedList<ActivityPagingItem>>
@@ -66,14 +76,37 @@ namespace Application.Query
 
             var totalItems = await query.CountAsync();
             var items = await query.Paging(request.PageIndex, request.ItemsPerPage)
-                .Select(a => new ActivityPagingItem
+                .Join(_context.AppUsers
+                , a => a.HostId
+                , u => u.Id
+                , (a, u) => new ActivityPagingItem
                 {
                     Id = a.Id,
                     Title = a.Title,
-                    Description = a.Description,
-                    Category = a.Category
+                    Category = a.Category,
+                    Date = a.Date,
+                    City = a.City,
+                    Venue = a.Venue,
+                    HostId = a.HostId,
+                    HostName = u.DisplayName,
+                    Status = a.Status,
+                    StatusName = a.ActivityStatus.Name
                 }).ToListAsync();
 
+            var itemsId = items.Select(x => x.Id);
+
+            var joiners = await _context.ActivityMembers.Where(x => itemsId.Contains(x.ActivityId))
+                .Select(x => new ActivityJoinerItem
+                {
+                    ActivityId = x.ActivityId,
+                    JoinerId = x.MemberId,
+                    JoinerAvatar = x.User.Avatar
+                }).ToListAsync();
+
+            foreach (var item in items)
+            {
+                item.Joiners = joiners.Where(x => x.ActivityId == item.Id).ToList();
+            }
 
             return new PagedList<ActivityPagingItem>(items, request.PageIndex, request.ItemsPerPage, totalItems);
         }

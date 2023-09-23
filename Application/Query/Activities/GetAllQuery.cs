@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Query.Activities
 {
-    public class GetAllActivityQueryRequest : IRequest<IEnumerable<ActivityQueryResponse>> 
+    public class GetAllActivityQueryRequest : IRequest<IEnumerable<ActivityQueryResponse>>
     {
         public string Hosting { get; set; }
     }
@@ -36,7 +36,7 @@ namespace Application.Query.Activities
         public Guid? HostId { get; set; }
 
         public byte Status { get; set; }
-        
+
         public string HostName { get; set; }
 
         public string Avatar { get; set; }
@@ -67,7 +67,8 @@ namespace Application.Query.Activities
                 .Join(_context.AppUsers
                 , a => a.HostId
                 , au => au.Id
-                , (a , au) => new ActivityQueryResponse {
+                , (a, au) => new ActivityQueryResponse
+                {
                     Id = a.Id,
                     Title = a.Title,
                     Description = a.Description,
@@ -84,7 +85,8 @@ namespace Application.Query.Activities
                         .Join(_context.AppUsers
                         , am => am.MemberId
                         , au2 => au2.Id
-                        , (am, au2) => new MemberJoinInfo{
+                        , (am, au2) => new MemberJoinInfo
+                        {
                             UserId = am.MemberId,
                             DisplayName = au2.DisplayName,
                             Avatar = au2.Avatar,

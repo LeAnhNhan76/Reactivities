@@ -74,7 +74,6 @@ namespace API.Controllers
         public async Task<IActionResult> Add([FromBody] AddToActivityDto dto)
         {
             var request = this._mapper.Map<AddToActivityCommandRequest>(dto);
-            request.HostId = CurrentLoginUser.UserId;
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
             return Ok(response);
         }
