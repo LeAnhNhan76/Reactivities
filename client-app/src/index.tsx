@@ -6,9 +6,12 @@ import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
 import "./assets/css/_global.scss";
 import reportWebVitals from "./reportWebVitals";
 import { router } from "./routers/routers";
+import { StoreContext, store } from "./stores/store";
 
 ReactDOM.render(
-  <RouterProvider router={router} />,
+  <StoreContext.Provider value={store}>
+    <RouterProvider router={router} />
+  </StoreContext.Provider>,
   document.getElementById("root")
 );
 

@@ -18,9 +18,13 @@
                 .content {
                     display: flex;
                     flex-direction: column;
-                    gap: 2px
+                    gap: 2px;
                 }
             }
+        }
+
+        .content.joiners{
+            height: 50px;
         }
     }
 }

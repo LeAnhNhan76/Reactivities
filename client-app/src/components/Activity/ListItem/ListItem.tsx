@@ -1,13 +1,23 @@
 import { Header, Card, Button, Item, Icon, Image } from "semantic-ui-react";
-import { formatDateTime } from "../../../utils/dateTime.util";
+import {
+  formatDateTime,
+  formatDateTimeConversational,
+} from "../../../utils/dateTime.util";
 import "./ListItem.scss";
 import { Link } from "react-router-dom";
+import { ActivityPagingItem } from "../../../types/activity.type";
+import { isStrNotNullOrUndefined } from "../../../utils/string.util";
+import { loadAvatar } from "../../../common/helpers/file.helper";
 
-const ListItem = () => {
+type Props = {
+  activity: ActivityPagingItem;
+};
+
+const ListItem = ({ activity }: Props) => {
   return (
     <div className="activity-list-item">
       <Header
-        content={formatDateTime(new Date())}
+        content={formatDateTime(activity.date)}
         color="orange"
         size="small"
       />
@@ -17,12 +27,16 @@ const ListItem = () => {
             <Item>
               <Item.Image
                 alt=""
-                src="https://images.pexels.com/photos/18226128/pexels-photo-18226128/free-photo-of-young-fashionable-woman-walking-on-the-street-and-looking-over-her-shoulder.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+                src={loadAvatar(
+                  activity.joiners.length > 0
+                    ? activity.joiners[0].joinerAvatar
+                    : ""
+                )}
                 avatar
               ></Item.Image>
               <Item.Content>
-                <Item.Header content="Future Activity 1" />
-                <Item.Meta content="Hosted by Tome" />
+                <Item.Header content={activity.title} />
+                <Item.Meta content={`Host by ${activity.hostName}`} />
                 <Item.Description>
                   <Button
                     content={"You are going to this activity"}
@@ -36,22 +50,27 @@ const ListItem = () => {
         </Card.Content>
         <Card.Content extra>
           <Icon name="clock" />
-          <span>{formatDateTime(new Date())}</span>
+          <span>{formatDateTime(activity.date)}</span>
           <Icon name="map marker" />
-          <span>Hai Ba Trung Street</span>
+          <span>
+            {isStrNotNullOrUndefined(activity.city)
+              ? `${activity.venue}, ${activity.city}`
+              : activity.venue}
+          </span>
         </Card.Content>
-        <Card.Content extra>
-          {Array.from(Array(5).keys()).map((item, index) => (
+        <Card.Content extra className="joiners">
+          {activity.joiners.map((item, index) => (
             <Image
-              src="https://images.pexels.com/photos/14680537/pexels-photo-14680537.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+              key={item.id}
+              src={loadAvatar(item.joinerAvatar)}
               avatar
               alt=""
             />
           ))}
         </Card.Content>
         <Card.Content>
-          <span>Activity in 1 month future</span>
-          <Link to={"/activities/123"}>
+          <span>Activity in {formatDateTimeConversational(activity.date)}</span>
+          <Link to={`/activities/${activity.id}`}>
             <Button content="View" className="btn-secondary" floated="right" />
           </Link>
         </Card.Content>

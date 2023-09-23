@@ -37,6 +37,7 @@ namespace Application.Query
 
     public class ActivityJoinerItem
     {
+        public Guid Id { get; set; }
         public Guid ActivityId { get; set; }
         public Guid JoinerId { get; set; }
         public string JoinerAvatar { get; set; }
@@ -98,6 +99,7 @@ namespace Application.Query
             var joiners = await _context.ActivityMembers.Where(x => itemsId.Contains(x.ActivityId))
                 .Select(x => new ActivityJoinerItem
                 {
+                    Id = x.Id,
                     ActivityId = x.ActivityId,
                     JoinerId = x.MemberId,
                     JoinerAvatar = x.User.Avatar

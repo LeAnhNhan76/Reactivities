@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { baseAPIURL } from '../constants/api.constant';
-import Account from './account';
+import Account from './account.api';
+import Activities from './activities.api';
+import { getToken, hasToken } from '../utils/authentication.util';
 
 //axios.defaults.baseURL = 'https://localhost:5000/api';
 //axios.defaults.baseURL = 'https://localhost:44311/api';
@@ -11,11 +13,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((
   config: AxiosRequestConfig) => {
-    //const authInfo = getAuthInfo()
-
-    // if(authInfo) {
-    //   config.headers.Authorization = `Bearer ${authInfo.token}`
-    // }
+  if (hasToken()) {
+      config.headers.Authorization = `Bearer ${getToken()}`
+    }
+  
     return config;
 }, (error) => {
   console.log('Error api: ', error);
@@ -37,7 +38,8 @@ export const requests = {
 }
 
 const agent = {
-  Account
+  Account,
+  Activities
 }
 
 export default agent;
