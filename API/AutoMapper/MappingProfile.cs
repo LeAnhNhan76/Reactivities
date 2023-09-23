@@ -1,11 +1,10 @@
 using API.Dto;
 using Application.Command.Activities;
 using AutoMapper;
-using Domain.Entities;
 
 namespace API.AutoMapper
 {
-    public class MappingProfile: Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
@@ -15,7 +14,7 @@ namespace API.AutoMapper
             #endregion
 
             #region  DTO & Entity
-            
+
             #endregion
         }
     }

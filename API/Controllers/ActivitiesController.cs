@@ -1,9 +1,11 @@
 using API.Dto;
 using Application.Command;
 using Application.Command.Activities;
+using Application.Query;
 using Application.Query.Activities;
 using AutoMapper;
 using Domain.Entities;
+using FrameworkCore.CustomModels;
 using FrameworkCore.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +26,7 @@ namespace API.Controllers
         private readonly IMapper _mapper;
 
         public ActivitiesController(IHttpContextAccessor context,
-         IMediator mediator, IMapper mapper, IWebHostEnvironment env): base(context)
+         IMediator mediator, IMapper mapper, IWebHostEnvironment env) : base(context)
         {
             this._mediator = mediator;
             this._mapper = mapper;
@@ -35,12 +37,22 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAll()
         {
-            var request = new GetAllActivityQueryRequest() {
+            var request = new GetAllActivityQueryRequest()
+            {
                 Hosting = Request.GetFullHostServer()
             };
 
             var response = await _mediator.Send(request, HttpContext.RequestAborted);
 
+            return Ok(response);
+        }
+
+        [HttpGet("paging")]
+        [ProducesResponseType(typeof(PagedList<ActivityPagingItem>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetPaging([FromQuery] GetPagingActivitiesRequest request)
+        {
+            var response = await _mediator.Send(request, HttpContext.RequestAborted);
             return Ok(response);
         }
 
@@ -95,7 +107,8 @@ namespace API.Controllers
         [HttpPatch("{id:guid}/cancel")]
         public async Task<IActionResult> CancelActivity(Guid id)
         {
-            var request = new CancelActivityCommandRequest {
+            var request = new CancelActivityCommandRequest
+            {
                 ActivityId = id,
                 UserId = CurrentLoginUser.UserId
             };
