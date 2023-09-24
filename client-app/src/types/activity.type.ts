@@ -26,4 +26,7 @@ export type ActivityJoinerItem = {
     activityId: string;
     joinerId: string;
     joinerAvatar: string;
+    joinerDisplayName: string;
+    joinerRegisterDate: Date;
+    joinerFollowers: string[];
 }

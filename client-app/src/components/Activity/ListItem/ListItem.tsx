@@ -16,13 +16,11 @@ import {
 import { loadAvatar } from "../../../common/helpers/files.helper";
 import Placeholder from "../../../common/ui/Placeholder/Placeholder";
 import { ActivityPagingItem } from "../../../types/activity.type";
-import { UserInfoByAvatar } from "../../../types/user.type";
 import { currentUserId } from "../../../utils/authentication.util";
 import { formatDateTime } from "../../../utils/dateTime.util";
 import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 import UserCard from "../../User/Card/Card";
 import "./ListItem.scss";
-import { useStore } from "../../../stores/store";
 
 type Props = {
   activity: ActivityPagingItem;
@@ -32,18 +30,7 @@ const ListItem = ({ activity }: Props) => {
   const userId = currentUserId();
   const isJoined = activity.joiners.some((x) => x.joinerId === userId);
 
-  const [hoveringUser, setHoveringUser] = useState<
-    UserInfoByAvatar | undefined
-  >(undefined);
-
-  const { usersStore } = useStore();
-
-  const loadHoveringUser = async (userId: string) => {
-    const info = await usersStore.getInfoByAvatar(userId);
-    if (info) {
-      setHoveringUser(info);
-    }
-  };
+  const [openUserCard, setOpenUserCard] = useState(false);
 
   return (
     <div className="activity-list-item">
@@ -112,18 +99,22 @@ const ListItem = ({ activity }: Props) => {
             ) : (
               <Popup
                 trigger={img}
-                flowing
-                hoverable
-                onOpen={() => loadHoveringUser(item.joinerId)}
-                onClose={() => setHoveringUser(undefined)}
+                on="click"
+                pinned
+                onOpen={() =>
+                  setTimeout(() => {
+                    setOpenUserCard(true);
+                  }, 300)
+                }
+                onClose={() => setOpenUserCard(false)}
               >
-                {hoveringUser === undefined ? (
+                {!openUserCard ? (
                   <Placeholder.Card
                     lines={14}
                     style={{ width: 270, height: 350 }}
                   ></Placeholder.Card>
                 ) : (
-                  <UserCard userInfo={hoveringUser} />
+                  <UserCard item={item} />
                 )}
               </Popup>
             );

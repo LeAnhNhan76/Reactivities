@@ -1,31 +1,30 @@
-import { Button, Card, Divider, Image } from "semantic-ui-react";
+import { Button, Card, Image } from "semantic-ui-react";
 import { loadAvatar } from "../../../common/helpers/files.helper";
-import { UserInfoByAvatar } from "../../../types/user.type";
+import { ActivityJoinerItem } from "../../../types/activity.type";
 import { formatDateTime } from "../../../utils/dateTime.util";
 
 type Props = {
-  userInfo: UserInfoByAvatar;
+  item: ActivityJoinerItem;
 };
 
-const UserCard = ({ userInfo }: Props) => {
+const UserCard = ({ item }: Props) => {
   return (
     <Card>
       <Image
-        src={loadAvatar(userInfo.avatar)}
+        src={loadAvatar(item.joinerAvatar)}
         alt=""
         style={{ height: 275, objectFit: "cover" }}
       />
       <Card.Content>
-        <Card.Header>{userInfo.displayName}</Card.Header>
-        <Card.Meta>Joined {formatDateTime(userInfo.joinedDate)}</Card.Meta>
+        <Card.Header>{item.joinerDisplayName}</Card.Header>
+        <Card.Meta>Joined {formatDateTime(item.joinerRegisterDate)}</Card.Meta>
       </Card.Content>
       <Card.Content extra>
         <Card.Description>
-          {userInfo.followers.length} followers
+          {item.joinerFollowers.length} followers
         </Card.Description>
       </Card.Content>
-      <Divider />
-      <Button className="btn-secondary" fluid>
+      <Button className="btn-secondary" fluid size="large">
         Following
       </Button>
     </Card>
