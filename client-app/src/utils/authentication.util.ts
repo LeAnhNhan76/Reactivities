@@ -30,9 +30,12 @@ const getAuthenProfile = () => {
     return JSON.parse(authenProfile || '') as LoginResultType;
 }
 
+const currentUserId = () => getAuthenProfile()?.userId ?? '';
+
 export {
     hasToken,
     getToken,
     setToken,
-    getAuthenProfile
+    getAuthenProfile,
+    currentUserId
 }

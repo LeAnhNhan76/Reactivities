@@ -1,19 +1,32 @@
-import { Header, Card, Button, Item, Icon, Image } from "semantic-ui-react";
-import {
-  formatDateTime,
-  formatDateTimeConversational,
-} from "../../../utils/dateTime.util";
-import "./ListItem.scss";
 import { Link } from "react-router-dom";
+import {
+  Button,
+  Card,
+  Header,
+  Icon,
+  Image,
+  Item,
+  Popup,
+} from "semantic-ui-react";
+import {
+  formatActivityDateConversational,
+  showTextNoOneJoin,
+} from "../../../common/helpers/activities.helper";
+import { loadAvatar } from "../../../common/helpers/files.helper";
 import { ActivityPagingItem } from "../../../types/activity.type";
+import { formatDateTime } from "../../../utils/dateTime.util";
 import { isStrNotNullOrUndefined } from "../../../utils/string.util";
-import { loadAvatar } from "../../../common/helpers/file.helper";
+import "./ListItem.scss";
+import { currentUserId } from "../../../utils/authentication.util";
 
 type Props = {
   activity: ActivityPagingItem;
 };
 
 const ListItem = ({ activity }: Props) => {
+  const userId = currentUserId();
+  const isJoined = activity.joiners.some((x) => x.joinerId === userId);
+
   return (
     <div className="activity-list-item">
       <Header
@@ -39,8 +52,12 @@ const ListItem = ({ activity }: Props) => {
                 <Item.Meta content={`Host by ${activity.hostName}`} />
                 <Item.Description>
                   <Button
-                    content={"You are going to this activity"}
-                    color="green"
+                    content={
+                      isJoined
+                        ? "You are going to this activity"
+                        : "You have been not joined, yet!"
+                    }
+                    color={isJoined ? "green" : "red"}
                     inverted
                   />
                 </Item.Description>
@@ -59,17 +76,30 @@ const ListItem = ({ activity }: Props) => {
           </span>
         </Card.Content>
         <Card.Content extra className="joiners">
-          {activity.joiners.map((item, index) => (
-            <Image
-              key={item.id}
-              src={loadAvatar(item.joinerAvatar)}
-              avatar
-              alt=""
-            />
-          ))}
+          {activity.joiners.length === 0 && (
+            <p>{showTextNoOneJoin(activity.date)}</p>
+          )}
+          {activity.joiners.map((item, index) => {
+            const img = (
+              <Image
+                key={item.id}
+                src={loadAvatar(item.joinerAvatar)}
+                avatar
+                alt=""
+              />
+            );
+
+            return item.joinerId === userId ? (
+              img
+            ) : (
+              <Popup trigger={img} flowing hoverable>
+                <>Hello, this is user card</>
+              </Popup>
+            );
+          })}
         </Card.Content>
         <Card.Content>
-          <span>Activity in {formatDateTimeConversational(activity.date)}</span>
+          <span>{formatActivityDateConversational(activity.date)}</span>
           <Link to={`/activities/${activity.id}`}>
             <Button content="View" className="btn-secondary" floated="right" />
           </Link>

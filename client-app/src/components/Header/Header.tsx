@@ -10,7 +10,7 @@ import {
   Image,
   Menu,
 } from "semantic-ui-react";
-import { loadAvatar } from "../../common/helpers/file.helper";
+import { loadAvatar } from "../../common/helpers/files.helper";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
 import CreateOrEditActivity from "../Activity/CreateOrEdit/CreateOrEdit";

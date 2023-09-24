@@ -15,9 +15,12 @@ const formatDateTimeForAPI = (date: Date) =>
 
 const formatDateTimeConversational = (date: Date) => (date ? moment(date).fromNow() : date);
 
+const now = new Date();
+
 export {
   formatDate,
   formatDateTime,
   formatDateTimeForAPI,
-  formatDateTimeConversational
+  formatDateTimeConversational,
+  now
 }

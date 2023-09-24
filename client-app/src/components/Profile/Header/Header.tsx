@@ -1,5 +1,5 @@
 import { Divider, Grid, Image, Segment, Statistic } from "semantic-ui-react";
-import { loadAvatar } from "../../../common/helpers/file.helper";
+import { loadAvatar } from "../../../common/helpers/files.helper";
 import { getAuthenProfile } from "../../../utils/authentication.util";
 import "./Header.scss";
 

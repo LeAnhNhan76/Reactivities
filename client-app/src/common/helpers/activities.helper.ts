@@ -1,7 +1,9 @@
 import { SemanticCOLORS } from "semantic-ui-react";
 import { ActivityStatusEnum } from "../../enums/common.enum";
+import moment from "moment";
+import { formatDateTimeConversational, now } from "../../utils/dateTime.util";
 
-const getStatusText = (status: ActivityStatusEnum | undefined) => {
+const getActivityStatusText = (status: ActivityStatusEnum | undefined) => {
     if (status === undefined) return '';
 
     switch (status) {
@@ -16,7 +18,7 @@ const getStatusText = (status: ActivityStatusEnum | undefined) => {
     }
 }
 
-const getStatusColor = (status: ActivityStatusEnum | undefined): SemanticCOLORS| undefined => {
+const getActivityStatusColor = (status: ActivityStatusEnum | undefined): SemanticCOLORS| undefined => {
     if (status === undefined) return undefined;
 
     switch (status) {
@@ -29,9 +31,15 @@ const getStatusColor = (status: ActivityStatusEnum | undefined): SemanticCOLORS|
         case ActivityStatusEnum.Draft:
             return 'grey';
     }
-} 
+}
 
-export const ActivityHelper ={
-    getStatusText,
-    getStatusColor
+const formatActivityDateConversational = (date: Date) => `Activity${moment(date).isAfter(now) ? '' : ' in'} ${formatDateTimeConversational(date)}`;
+
+const showTextNoOneJoin = (date: Date) => moment(date).isBefore(now) ? "No one was joined, so sad!" : "Waiting first one member...";
+
+export {
+    getActivityStatusText,
+    getActivityStatusColor,
+    formatActivityDateConversational,
+    showTextNoOneJoin
 };
