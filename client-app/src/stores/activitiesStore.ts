@@ -1,8 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { action, observable } from "mobx";
-import { ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
 import agent from "../api/agent";
 import { DefaultPaging } from "../constants/common.constant";
+import { ActivityDetails, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
 
 export default class ActivitiesStore {
     @observable isLoading: boolean = false;
@@ -14,6 +14,7 @@ export default class ActivitiesStore {
         isGoing: false,
         category: ''
     }
+    @observable currentActivityDetails: ActivityDetails = {} as ActivityDetails;
     
     @action showLoading() {
         this.isLoading = true;
@@ -86,6 +87,29 @@ export default class ActivitiesStore {
         }
         finally {
             this.hideLoading();
+        }
+    }
+
+    @action async loadActivityDetails(activityId: string) {
+        const index = this.activitiesPagingList.findIndex(x => x.id === activityId);
+        if (index !== -1) {
+            this.currentActivityDetails = {
+                ...this.activitiesPagingList[index],
+            } as ActivityDetails;
+        } else {
+            this.showLoading();
+            try {
+                const details = await agent.Activities.loadDetails(activityId);
+                if (details) {
+                    this.currentActivityDetails = details;
+                }
+            } catch (error) {
+                console.log('Error api: ', error);
+                this.hideLoading();
+            }
+            finally {
+                this.hideLoading();
+            }
         }
     }
 }

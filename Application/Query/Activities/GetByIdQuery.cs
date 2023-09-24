@@ -1,4 +1,3 @@
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -10,18 +9,17 @@ using System.Threading.Tasks;
 
 namespace Application.Query.Activities
 {
-    public class GetByIdActivityQueryRequest : IRequest<GetActivityByIdQueryResponse>
+    public class GetByIdActivityQueryRequest : IRequest<ActivityDetail>
     {
         public Guid Id { get; set; }
     }
 
-    public class GetActivityByIdQueryResponse: Activity
+    public class ActivityDetail : ActivityPagingItem
     {
-        public string HostName { get; set; }
-        public List<MemberJoinInfo> Members { get; set; }
+        public string Description { get; set; }
     }
 
-    public class GetByIdActivityQueryHandler : IRequestHandler<GetByIdActivityQueryRequest, GetActivityByIdQueryResponse>
+    public class GetByIdActivityQueryHandler : IRequestHandler<GetByIdActivityQueryRequest, ActivityDetail>
     {
         private readonly ApplicationDbContext _context;
 
@@ -30,14 +28,15 @@ namespace Application.Query.Activities
             this._context = context;
         }
 
-        public async Task<GetActivityByIdQueryResponse> Handle(GetByIdActivityQueryRequest request, CancellationToken cancellationToken)
+        public async Task<ActivityDetail> Handle(GetByIdActivityQueryRequest request, CancellationToken cancellationToken)
         {
-            var response = await _context.Activities
+            var details = await _context.Activities
                 .Where(x => x.Id == request.Id)
                 .Join(_context.AppUsers
                 , a => a.HostId
                 , au => au.Id
-                , (a, au) => new GetActivityByIdQueryResponse {
+                , (a, au) => new ActivityDetail
+                {
                     Id = a.Id,
                     Title = a.Title,
                     Description = a.Description,
@@ -51,33 +50,27 @@ namespace Application.Query.Activities
                 })
                 .FirstOrDefaultAsync();
 
-            if (response != null) {
-                var memberIds = _context.ActivityMembers
-                    .Where(am => am.ActivityId == response.Id)
-                    .Select(am => am.MemberId)
-                    .ToList();
-                if (response.HostId != null) {
-                    memberIds.Insert(0, response.HostId??Guid.Empty);
-                }
+            if (details != null)
+            {
+                var joiners = await _context.ActivityMembers.Where(x => x.ActivityId == details.Id)
+                .Select(x => new ActivityJoinerItem
+                {
+                    Id = x.Id,
+                    ActivityId = x.ActivityId,
+                    JoinerId = x.MemberId,
+                    JoinerAvatar = x.User.Avatar,
+                    JoinerDisplayName = x.User.DisplayName,
+                    JoinerRegisterDate = x.User.CreatedDate,
+                    JoinerFollowers = _context.Followers
+                        .Where(f => f.FollowingId == x.MemberId)
+                        .Select(f => f.FollowerId)
+                        .ToList()
+                }).ToListAsync();
 
-                var members = memberIds
-                    .Join(_context.AppUsers
-                    , am => am
-                    , au2 => au2.Id
-                    , (am, au2) => new MemberJoinInfo{
-                        UserId = am,
-                        DisplayName = au2.DisplayName,
-                        Avatar = au2.Avatar,
-                        Followers = _context.Followers
-                            .Where(fw => fw.FollowingId == am)
-                            .Select(fw => fw.FollowerId)
-                            .ToList()
-                    }).ToList();
-                
-                response.Members = members;
+                details.Joiners = joiners;
             }
 
-            return response;
+            return details;
         }
     }
 }

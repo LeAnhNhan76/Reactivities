@@ -1,28 +1,42 @@
 import { Segment, Item, Label, Grid } from "semantic-ui-react";
 import Avatar from "../../../common/ui/Avatar/Avatar";
+import { useStore } from "../../../stores/store";
+import { observer } from "mobx-react-lite";
+import { loadAvatar } from "../../../common/helpers/files.helper";
+import { currentUserId } from "../../../utils/authentication.util";
+import Placeholder from "../../../common/ui/Placeholder/Placeholder";
 
 const Joiners = () => {
+  const { activitiesStore } = useStore();
+  const { currentActivityDetails } = activitiesStore;
+
+  const userId = currentUserId();
+  const isFollowing = (followers: string[]) => followers.includes(userId);
+
   return (
     <div>
       <Segment.Group>
         <Segment textAlign="center" className="segment-secondary">
-          2 People going
+          {currentActivityDetails?.joiners?.length} People going
         </Segment>
         <Segment>
+          {activitiesStore.isLoading && <Placeholder lines={7} />}
           <Item.Group divided>
-            {Array.from(Array(5).keys()).map((item, index) => (
-              <Item>
+            {currentActivityDetails?.joiners?.map((item, index) => (
+              <Item key={item.id}>
                 <Item.Content>
                   <Grid columns={2}>
                     <Grid.Row>
                       <Grid.Column width={10}>
                         <Avatar
-                          src={
-                            "https://images.pexels.com/photos/18369315/pexels-photo-18369315/free-photo-of-tet-holiday-in-vietnam.png?auto=compress&cs=tinysrgb&w=600&lazy=load"
-                          }
+                          src={loadAvatar(item.joinerAvatar)}
                           alt="avatar"
-                          title="Andy Row"
-                          subTitle="Following"
+                          title={item.joinerDisplayName}
+                          subTitle={
+                            isFollowing(item.joinerFollowers)
+                              ? "Following"
+                              : "No follow"
+                          }
                         />
                       </Grid.Column>
                       {index === 0 && (
@@ -44,4 +58,4 @@ const Joiners = () => {
   );
 };
 
-export default Joiners;
+export default observer(Joiners);

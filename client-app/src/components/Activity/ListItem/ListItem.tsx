@@ -1,5 +1,6 @@
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
@@ -21,7 +22,6 @@ import { formatDateTime } from "../../../utils/dateTime.util";
 import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 import UserCard from "../../User/Card/Card";
 import "./ListItem.scss";
-import { observer } from "mobx-react-lite";
 
 type Props = {
   activity: ActivityPagingItem;
@@ -32,6 +32,12 @@ const ListItem = ({ activity }: Props) => {
   const isJoined = activity.joiners.some((x) => x.joinerId === userId);
 
   const [openUserCard, setOpenUserCard] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/activities/${activity.id}`);
+  };
 
   return (
     <div className="activity-list-item">
@@ -125,9 +131,12 @@ const ListItem = ({ activity }: Props) => {
         </Card.Content>
         <Card.Content>
           <span>{formatActivityDateConversational(activity.date)}</span>
-          <Link to={`/activities/${activity.id}`}>
-            <Button content="View" className="btn-secondary" floated="right" />
-          </Link>
+          <Button
+            content="View"
+            className="btn-secondary"
+            floated="right"
+            onClick={handleViewDetails}
+          />
         </Card.Content>
       </Card>
     </div>

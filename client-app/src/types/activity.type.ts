@@ -40,3 +40,7 @@ export type CreateOrEditActivity = {
     date: Date;
     description: string;
 }
+
+export type ActivityDetails = ActivityPagingItem & {
+    description: string;
+}
