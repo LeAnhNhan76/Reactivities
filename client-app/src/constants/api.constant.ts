@@ -30,6 +30,15 @@ export const ApiConstants = {
     root: `${baseAPIURL}/users`,
     getInfoByAvatar(userId: string) {
       return `${this.root}/${userId}/avatar`
+    },
+  },
+  followers: {
+    root: `${baseAPIURL}/followers`,
+    follow(userId: string) {
+      return `${this.root}?userId=${userId}`
+    },
+    unfollow(userId: string) {
+      return `${this.root}?userId=${userId}`
     }
   }
 }

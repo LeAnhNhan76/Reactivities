@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { baseAPIURL } from '../constants/api.constant';
+import { getToken, hasToken } from '../utils/authentication.util';
 import Account from './account.api';
 import Activities from './activities.api';
-import { getToken, hasToken } from '../utils/authentication.util';
+import Followers from './followers.api';
 import Users from './users.api';
 
 //axios.defaults.baseURL = 'https://localhost:5000/api';
@@ -41,7 +42,8 @@ export const requests = {
 const agent = {
   Account,
   Activities,
-  Users
+  Users,
+  Followers
 }
 
 export default agent;

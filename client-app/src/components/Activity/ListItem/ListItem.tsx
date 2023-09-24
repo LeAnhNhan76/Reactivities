@@ -21,6 +21,7 @@ import { formatDateTime } from "../../../utils/dateTime.util";
 import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 import UserCard from "../../User/Card/Card";
 import "./ListItem.scss";
+import { observer } from "mobx-react-lite";
 
 type Props = {
   activity: ActivityPagingItem;
@@ -99,8 +100,10 @@ const ListItem = ({ activity }: Props) => {
             ) : (
               <Popup
                 trigger={img}
-                on="click"
-                pinned
+                // on="click"
+                // pinned
+                flowing
+                hoverable
                 onOpen={() =>
                   setTimeout(() => {
                     setOpenUserCard(true);
@@ -131,4 +134,4 @@ const ListItem = ({ activity }: Props) => {
   );
 };
 
-export default ListItem;
+export default observer(ListItem);

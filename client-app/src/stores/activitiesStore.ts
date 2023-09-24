@@ -43,4 +43,38 @@ export default class ActivitiesStore {
             this.hideLoading();
         }
     }
+
+    @action followUser(activityId: string, followerId: string, followingId: string) {
+        const index = this.activitiesPagingList.findIndex(x => x.id === activityId);
+        if (index > -1) {
+            const activityItem = this.activitiesPagingList[index];
+
+            this.activitiesPagingList[index] = {
+                ...activityItem,
+                joiners: activityItem.joiners.map(item => item.joinerId !== followingId ? { ...item } : {
+                    ...item,
+                    joinerFollowers: [...item.joinerFollowers, followerId]
+                })
+            }
+            console.log('index', index);
+            console.log('item', this.activitiesPagingList[index])
+        }
+    }
+
+    @action unfollowUser(activityId: string, followerId: string, followingId: string) {
+        const index = this.activitiesPagingList.findIndex(x => x.id === activityId);
+        if (index > -1) {
+            const activityItem = this.activitiesPagingList[index];
+
+            this.activitiesPagingList[index] = {
+                ...activityItem,
+                joiners: activityItem.joiners.map(item => item.joinerId !== followingId ? { ...item } : {
+                    ...item,
+                    joinerFollowers: [...item.joinerFollowers.filter(f => f !== followerId)]
+                })
+            }
+            console.log('index', index);
+            console.log('item', this.activitiesPagingList[index])
+        }
+    }
 }
