@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Application.Command.Users;
+using Application.Query.Users;
 using FrameworkCore.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,9 +27,10 @@ namespace API.Controllers
     }
 
     [HttpPost("{id:guid}/avatar")]
-    public async Task<IActionResult> UploadAvatar(Guid id, [FromForm] IFormFile file) 
+    public async Task<IActionResult> UploadAvatar(Guid id, [FromForm] IFormFile file)
     {
-      var request = new UploadAvatarCommandRequest() {
+      var request = new UploadAvatarCommandRequest()
+      {
         Id = id,
         Avatar = file,
         RootPath = Path.Combine(_env.ContentRootPath,
@@ -38,6 +40,13 @@ namespace API.Controllers
 
       var result = await _mediator.Send(request);
       return Ok(result);
+    }
+
+    [HttpGet("{id:guid}/avatar")]
+    public async Task<IActionResult> GetInfoByAvatar(Guid id)
+    {
+      var info = await _mediator.Send(new GetInfoByAvatarRequest { Id = id }, HttpContext.RequestAborted);
+      return Ok(info);
     }
   }
 }

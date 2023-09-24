@@ -3,6 +3,7 @@ import { baseAPIURL } from '../constants/api.constant';
 import Account from './account.api';
 import Activities from './activities.api';
 import { getToken, hasToken } from '../utils/authentication.util';
+import Users from './users.api';
 
 //axios.defaults.baseURL = 'https://localhost:5000/api';
 //axios.defaults.baseURL = 'https://localhost:44311/api';
@@ -39,7 +40,8 @@ export const requests = {
 
 const agent = {
   Account,
-  Activities
+  Activities,
+  Users
 }
 
 export default agent;

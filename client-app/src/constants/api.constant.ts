@@ -25,5 +25,11 @@ export const ApiConstants = {
       const query = generateQueryStringFromObj(params);
       return `${this.root}/paging?${query}`;
     }
+  },
+  users: {
+    root: `${baseAPIURL}/users`,
+    getInfoByAvatar(userId: string) {
+      return `${this.root}/${userId}/avatar`
+    }
   }
 }

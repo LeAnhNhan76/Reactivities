@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -13,11 +14,15 @@ import {
   showTextNoOneJoin,
 } from "../../../common/helpers/activities.helper";
 import { loadAvatar } from "../../../common/helpers/files.helper";
+import Placeholder from "../../../common/ui/Placeholder/Placeholder";
 import { ActivityPagingItem } from "../../../types/activity.type";
+import { UserInfoByAvatar } from "../../../types/user.type";
+import { currentUserId } from "../../../utils/authentication.util";
 import { formatDateTime } from "../../../utils/dateTime.util";
 import { isStrNotNullOrUndefined } from "../../../utils/string.util";
+import UserCard from "../../User/Card/Card";
 import "./ListItem.scss";
-import { currentUserId } from "../../../utils/authentication.util";
+import { useStore } from "../../../stores/store";
 
 type Props = {
   activity: ActivityPagingItem;
@@ -26,6 +31,19 @@ type Props = {
 const ListItem = ({ activity }: Props) => {
   const userId = currentUserId();
   const isJoined = activity.joiners.some((x) => x.joinerId === userId);
+
+  const [hoveringUser, setHoveringUser] = useState<
+    UserInfoByAvatar | undefined
+  >(undefined);
+
+  const { usersStore } = useStore();
+
+  const loadHoveringUser = async (userId: string) => {
+    const info = await usersStore.getInfoByAvatar(userId);
+    if (info) {
+      setHoveringUser(info);
+    }
+  };
 
   return (
     <div className="activity-list-item">
@@ -92,8 +110,21 @@ const ListItem = ({ activity }: Props) => {
             return item.joinerId === userId ? (
               img
             ) : (
-              <Popup trigger={img} flowing hoverable>
-                <>Hello, this is user card</>
+              <Popup
+                trigger={img}
+                flowing
+                hoverable
+                onOpen={() => loadHoveringUser(item.joinerId)}
+                onClose={() => setHoveringUser(undefined)}
+              >
+                {hoveringUser === undefined ? (
+                  <Placeholder.Card
+                    lines={14}
+                    style={{ width: 270, height: 350 }}
+                  ></Placeholder.Card>
+                ) : (
+                  <UserCard userInfo={hoveringUser} />
+                )}
               </Popup>
             );
           })}

@@ -20,9 +20,24 @@ const List = () => {
     <div className="activity-list">
       {activitiesStore.isLoading ? (
         <>
-          <Placeholder.Card fluid headerLines={1} lines={12}></Placeholder.Card>
-          <Placeholder.Card fluid headerLines={1} lines={12}></Placeholder.Card>
-          <Placeholder.Card fluid headerLines={1} lines={5}></Placeholder.Card>
+          <Placeholder.Card
+            fluid
+            headerLines={1}
+            lines={12}
+            key={1}
+          ></Placeholder.Card>
+          <Placeholder.Card
+            fluid
+            headerLines={1}
+            lines={12}
+            key={2}
+          ></Placeholder.Card>
+          <Placeholder.Card
+            fluid
+            headerLines={1}
+            lines={5}
+            key={3}
+          ></Placeholder.Card>
         </>
       ) : (
         <>
