@@ -8,6 +8,7 @@ using FrameworkCore.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Persistence;
 
 namespace Application.Query
@@ -41,6 +42,9 @@ namespace Application.Query
         public Guid ActivityId { get; set; }
         public Guid JoinerId { get; set; }
         public string JoinerAvatar { get; set; }
+        public string JoinerDisplayName { get; set; }
+        public DateTimeOffset JoinerRegisterDate { get; set; }
+        public List<Guid> JoinerFollowers { get; set; }
     }
 
     public class GetPagingActivitiesHandler : IRequestHandler<GetPagingActivitiesRequest, PagedList<ActivityPagingItem>>
@@ -102,7 +106,13 @@ namespace Application.Query
                     Id = x.Id,
                     ActivityId = x.ActivityId,
                     JoinerId = x.MemberId,
-                    JoinerAvatar = x.User.Avatar
+                    JoinerAvatar = x.User.Avatar,
+                    JoinerDisplayName = x.User.DisplayName,
+                    JoinerRegisterDate = x.User.CreatedDate,
+                    JoinerFollowers = _context.Followers
+                        .Where(f => f.FollowingId == x.MemberId)
+                        .Select(f => f.FollowerId)
+                        .ToList()
                 }).ToListAsync();
 
             foreach (var item in items)
