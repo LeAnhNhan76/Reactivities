@@ -30,3 +30,13 @@ export type ActivityJoinerItem = {
     joinerRegisterDate: Date;
     joinerFollowers: string[];
 }
+
+export type CreateOrEditActivity = {
+    id: string;
+    title: string;
+    category: string;
+    city: string;
+    venue: string;
+    date: Date;
+    description: string;
+}

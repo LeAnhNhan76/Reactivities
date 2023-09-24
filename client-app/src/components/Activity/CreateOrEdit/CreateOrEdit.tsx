@@ -1,15 +1,84 @@
-import { Button, Form, FormProps, Icon, Modal } from "semantic-ui-react";
+import { useState } from "react";
+import {
+  Button,
+  Form,
+  FormProps,
+  Icon,
+  Modal,
+  DropdownProps,
+  InputOnChangeData,
+} from "semantic-ui-react";
 import { activityCategoryOptions } from "../../../constants/activity.constant";
+import { CreateOrEditActivity } from "../../../types/activity.type";
 import { ModalProps } from "../../../types/modal.type";
 import "./CreateOrEdit.scss";
+import { now } from "../../../utils/dateTime.util";
+import { useStore } from "../../../stores/store";
+import { toastSuccess } from "../../../utils/toast.util";
+import { DefaultToast } from "../../../constants/common.constant";
 
-type Props = ModalProps;
-const CreateOrEdit = ({ isOpen, onDismiss }: Props) => {
-  const handleSubmitForm = (
+type Props = ModalProps & {
+  item?: any;
+};
+const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
+  const { activitiesStore, commonStore } = useStore();
+
+  const handleSubmitForm = async (
     event: React.FormEvent<HTMLFormElement>,
     data: FormProps
   ) => {
     event.preventDefault();
+
+    const formElement = event.currentTarget as HTMLFormElement;
+    const elements = formElement.elements as any;
+    const newestActivity: CreateOrEditActivity = {
+      ...activity,
+      title: elements.title.value,
+      city: elements.city.value,
+      venue: elements.venue.value,
+      description: elements.desc.value,
+    };
+
+    const actionResult = await activitiesStore.create(newestActivity);
+    if (actionResult === true) {
+      commonStore.setToastPosition("top-right");
+      toastSuccess({
+        title: "Create new",
+        description: "Create new activity was successfully!",
+      });
+
+      setTimeout(() => {
+        commonStore.resetToastPosition();
+      }, DefaultToast.ResetDuration);
+    }
+  };
+
+  const initialActivity = item
+    ? {
+        ...item,
+      }
+    : ({
+        category: activityCategoryOptions[0].value,
+        date: now,
+      } as CreateOrEditActivity);
+
+  const [activity, setActivity] =
+    useState<CreateOrEditActivity>(initialActivity);
+
+  const handleChangeCategory = (data: DropdownProps) => {
+    if (data && data.value) {
+      setActivity((prev: any) => {
+        return { ...prev, category: data.value };
+      });
+    }
+  };
+
+  const handleChangeDate = (data: InputOnChangeData) => {
+    if (data && data.value) {
+      setActivity((prev: any) => {
+        return { ...prev, date: data.value };
+      });
+    }
   };
 
   return (
@@ -18,7 +87,7 @@ const CreateOrEdit = ({ isOpen, onDismiss }: Props) => {
       onClose={onDismiss}
       closeIcon={<Icon name="close" />}
       size="large"
-      style={{ overflowY: "auto", height: "440px", top: "30%" }}
+      style={{ overflowY: "auto", height: "500px", top: "30%" }}
       className="create-new-activity"
     >
       <Modal.Header>Create new activity</Modal.Header>
@@ -38,27 +107,33 @@ const CreateOrEdit = ({ isOpen, onDismiss }: Props) => {
               label="Catogory"
               width={8}
               name="category"
+              value={activity.category}
+              onChange={(_, data) => handleChangeCategory(data)}
             />
           </Form.Group>
           <Form.Group>
             <Form.Input
               label="City"
-              width={5}
+              width={8}
               className="racti-input"
               name="city"
             />
             <Form.Input
-              label="Avenue"
-              width={6}
+              label="venue"
+              width={8}
               className="racti-input"
-              name="avenue"
+              name="venue"
             />
+          </Form.Group>
+          <Form.Group>
             <Form.Input
               label="Date"
               type="date"
-              width={5}
+              width={16}
               className="racti-input"
               name="date"
+              value={activity.date}
+              onChange={(_, data) => handleChangeDate(data)}
             />
           </Form.Group>
           <Form.Group grouped>

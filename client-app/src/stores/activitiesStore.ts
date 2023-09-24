@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { action, observable } from "mobx";
-import { ActivityPagingItem, ActivityPagingParams } from "../types/activity.type";
+import { ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
 import agent from "../api/agent";
 import { DefaultPaging } from "../constants/common.constant";
 
@@ -56,8 +56,6 @@ export default class ActivitiesStore {
                     joinerFollowers: [...item.joinerFollowers, followerId]
                 })
             }
-            console.log('index', index);
-            console.log('item', this.activitiesPagingList[index])
         }
     }
 
@@ -73,8 +71,21 @@ export default class ActivitiesStore {
                     joinerFollowers: [...item.joinerFollowers.filter(f => f !== followerId)]
                 })
             }
-            console.log('index', index);
-            console.log('item', this.activitiesPagingList[index])
+        }
+    }
+
+    @action async create (data: CreateOrEditActivity) {
+        this.showLoading();
+        try {
+            const createResult = await agent.Activities.create(data);
+            console.log('createResult', createResult);
+            return createResult;
+        } catch (error) {
+            console.log('Error api: ', error);
+            this.hideLoading();
+        }
+        finally {
+            this.hideLoading();
         }
     }
 }

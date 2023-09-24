@@ -2,6 +2,7 @@ import ApplicationSetting from '../constants/application.constant'
 import { ActivityPagingParams } from '../types/activity.type';
 import { generateQueryStringFromObj } from '../utils/browser.util';
 import { isStrNotNullOrUndefined } from '../utils/string.util';
+import {CreateOrEditActivity} from '../types/activity.type'
 
 export const baseAPIURL = `${ApplicationSetting.apiUrl}/api`;
 
@@ -24,6 +25,9 @@ export const ApiConstants = {
     getPaging(params: ActivityPagingParams) {
       const query = generateQueryStringFromObj(params);
       return `${this.root}/paging?${query}`;
+    },
+    create() {
+      return `${this.root}`
     }
   },
   users: {
