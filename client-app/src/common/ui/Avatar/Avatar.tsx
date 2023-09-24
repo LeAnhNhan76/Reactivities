@@ -11,6 +11,7 @@ type Props = {
   subTitle?: string;
   customTitle?: React.ReactNode;
   imgVerticalAlign?: "top" | "bottom" | "middle";
+  subTitleStyle?: React.CSSProperties;
 };
 
 const Avatar = ({
@@ -22,6 +23,7 @@ const Avatar = ({
   subTitle,
   customTitle,
   imgVerticalAlign = "top",
+  subTitleStyle,
 }: Props) => {
   const numberSize = AvatarSize[size];
   return (
@@ -50,6 +52,7 @@ const Avatar = ({
                 fontWeight: "600",
                 fontStyle: "italic",
                 color: "var(--secondary-color)",
+                ...subTitleStyle,
               }}
             >
               {subTitle}

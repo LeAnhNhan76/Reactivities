@@ -37,6 +37,11 @@ const Joiners = () => {
                               ? "Following"
                               : "No follow"
                           }
+                          subTitleStyle={{
+                            color: isFollowing(item.joinerFollowers)
+                              ? "var(--red-color)"
+                              : "var(--secondary-color)",
+                          }}
                         />
                       </Grid.Column>
                       {index === 0 && (
