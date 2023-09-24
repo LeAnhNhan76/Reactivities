@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
-import Loading from "../../../common/ui/Loading/Loading";
+import { useEffect } from "react";
+import Placeholder from "../../../common/ui/Placeholder/Placeholder";
 import { useStore } from "../../../stores/store";
 import ActivityListItem from "../ListItem/ListItem";
 import "./List.scss";
-import { useEffect } from "react";
 
 const List = () => {
   const { activitiesStore } = useStore();
@@ -16,13 +16,21 @@ const List = () => {
     loadPagingList();
   }, [activitiesStore]);
 
-  if (activitiesStore.isLoading) return <Loading />;
-
   return (
     <div className="activity-list">
-      {activitiesStore.activitiesPagingList.map((item, index) => (
-        <ActivityListItem key={item.id} activity={item} />
-      ))}
+      {activitiesStore.isLoading ? (
+        <>
+          <Placeholder.Card fluid headerLines={1} lines={12}></Placeholder.Card>
+          <Placeholder.Card fluid headerLines={1} lines={12}></Placeholder.Card>
+          <Placeholder.Card fluid headerLines={1} lines={5}></Placeholder.Card>
+        </>
+      ) : (
+        <>
+          {activitiesStore.activitiesPagingList.map((item, index) => (
+            <ActivityListItem key={item.id} activity={item} />
+          ))}
+        </>
+      )}
     </div>
   );
 };

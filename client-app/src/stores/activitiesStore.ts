@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { action, observable } from "mobx";
 import { ActivityPagingItem, ActivityPagingParams } from "../types/activity.type";
 import agent from "../api/agent";

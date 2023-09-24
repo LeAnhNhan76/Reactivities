@@ -1,4 +1,4 @@
-import { Header, Icon } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import "./Logo.scss";
 
 type Props = {
@@ -9,7 +9,7 @@ const Logo = ({ size }: Props) => {
   return (
     <Header
       content="Reactivities"
-      icon={<Icon name="users" />}
+      icon={"users"}
       className="logo"
       color="orange"
       size={size || "medium"}

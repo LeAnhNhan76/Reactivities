@@ -1,13 +1,12 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import App from "../App";
-import Home from "../pages/Home/Home";
+import Layout from "../components/Layout/Layout";
+import { routingConstants } from "../constants/routing.constant";
 import Activities from "../pages/Activities/Activities";
 import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
-import Layout from "../components/Layout/Layout";
-import NotFound from "../pages/NotFound/NotFound";
 import Errors from "../pages/Errors/Errors";
+import NotFound from "../pages/NotFound/NotFound";
 import Profile from "../pages/Profile/Profile";
-import { routingConstants } from "../constants/routing.constant";
 
 export const routes: RouteObject[] = [
   {

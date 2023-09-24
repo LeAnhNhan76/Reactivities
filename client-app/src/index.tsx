@@ -1,5 +1,6 @@
 import "react-calendar/dist/Calendar.css";
 import ReactDOM from "react-dom";
+import "react-loading-skeleton/dist/skeleton.css";
 import { RouterProvider } from "react-router-dom";
 import "react-semantic-toasts/styles/react-semantic-alert.css";
 import "react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css";
