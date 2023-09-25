@@ -43,7 +43,7 @@ const List = () => {
       ) : (
         <>
           {activitiesStore.activitiesPagingList.length === 0 && (
-            <div style={{ height: 110 }}>
+            <div style={{ height: 200 }}>
               <NoData />
             </div>
           )}
