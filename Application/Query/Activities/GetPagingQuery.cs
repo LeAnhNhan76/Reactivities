@@ -19,6 +19,7 @@ namespace Application.Query
         public string Category { get; set; }
         public bool IsHosting { get; set; }
         public bool IsGoing { get; set; }
+        public DateTimeOffset? Date { get; set; }
     }
 
     public class ActivityPagingItem
@@ -77,6 +78,16 @@ namespace Application.Query
             if (request.IsHosting)
             {
                 query = query.Where(x => x.HostId == _currentUserId);
+            }
+
+            if (request.IsGoing)
+            {
+                query = query.Where(x => x.Members.Select(x => x.MemberId).Contains(_currentUserId));
+            }
+
+            if (request.Date != null)
+            {
+                query = query.Where(x => x.Date == request.Date);
             }
 
             var totalItems = await query.CountAsync();
