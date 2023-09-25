@@ -5,6 +5,7 @@ export type ActivityPagingParams = PagingParams & {
     isHosting: boolean;
     isGoing: boolean;
     category: string;
+    date: string | null;
 }
 
 export type ActivityPagingItem = {
@@ -44,3 +45,5 @@ export type CreateOrEditActivity = {
 export type ActivityDetails = ActivityPagingItem & {
     description: string;
 }
+
+export type ActivityFilterType = "all" | "going" | "hosting";

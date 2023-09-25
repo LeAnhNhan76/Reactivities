@@ -4,6 +4,7 @@ import Placeholder from "../../../common/ui/Placeholder/Placeholder";
 import { useStore } from "../../../stores/store";
 import ActivityListItem from "../ListItem/ListItem";
 import "./List.scss";
+import NoData from "../../../common/ui/NoData/NoData";
 
 const List = () => {
   const { activitiesStore } = useStore();
@@ -41,6 +42,11 @@ const List = () => {
         </>
       ) : (
         <>
+          {activitiesStore.activitiesPagingList.length === 0 && (
+            <div style={{ height: 110 }}>
+              <NoData />
+            </div>
+          )}
           {activitiesStore.activitiesPagingList.map((item, index) => (
             <ActivityListItem key={item.id} activity={item} />
           ))}

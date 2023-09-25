@@ -2,7 +2,8 @@
 import { action, observable } from "mobx";
 import agent from "../api/agent";
 import { DefaultPaging } from "../constants/common.constant";
-import { ActivityDetails, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
+import { ActivityDetails, ActivityFilterType, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
+import { now } from "../utils/dateTime.util";
 
 export default class ActivitiesStore {
     @observable isLoading: boolean = false;
@@ -12,10 +13,11 @@ export default class ActivitiesStore {
         searchText: '',
         isHosting: false,
         isGoing: false,
-        category: ''
+        category: '',
+        date: null
     }
     @observable currentActivityDetails: ActivityDetails = {} as ActivityDetails;
-    
+
     @action showLoading() {
         this.isLoading = true;
     }
@@ -111,5 +113,18 @@ export default class ActivitiesStore {
                 this.hideLoading();
             }
         }
+    }
+
+    @action setFilterType = (type: ActivityFilterType) => {
+        this.pagingParams.isGoing = type === "going";
+        this.pagingParams.isHosting = type === "hosting";
+
+        this.getPagingList();
+    }
+
+    @action setFilterDate = (date: Date) => {
+        this.pagingParams.date = date.toJSON();
+
+        this.getPagingList();
     }
 }

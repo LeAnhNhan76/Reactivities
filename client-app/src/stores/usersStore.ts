@@ -1,6 +1,6 @@
-import { observable, action } from "mobx";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { action, observable } from "mobx";
 import agent from "../api/agent";
-import { act } from "@testing-library/react";
 
 export default class UsersStore {
     @observable isLoading: boolean = false;

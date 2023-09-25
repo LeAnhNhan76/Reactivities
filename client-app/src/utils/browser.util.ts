@@ -6,7 +6,9 @@ const generateQueryStringFromObj = (params: any | undefined) => {
     const searchParams = new URLSearchParams();
 
     Object.keys(params).forEach(key => {
-        searchParams.append(key, params[key]?.toString());
+        if (isNotNullOrUndefined(params[key])) {
+            searchParams.append(key, params[key]?.toString());
+        }
     });
 
     return searchParams.toString();

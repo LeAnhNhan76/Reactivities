@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { observable, action } from "mobx";
 import { ToastPosition } from "../types/toast.type";
 import { DefaultToast } from "../constants/common.constant";
