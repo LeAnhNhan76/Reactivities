@@ -5,16 +5,16 @@ type Props = {
 };
 
 const PlaceholderPara = ({ lines }: Props) => {
+  const widthLines = ["100%", "85%", "50%", "70%", "60%", "40%"];
+
   return (
     <div>
       {Array.from(Array(lines).keys()).map((item, index) => (
-        <>
-          {index % 5 === 0 && <Skeleton key={index} width={"85%"} height={8} />}
-          {index % 5 === 1 && <Skeleton key={index} width={"50%"} height={8} />}
-          {index % 5 === 2 && <Skeleton key={index} width={"70%"} height={8} />}
-          {index % 5 === 3 && <Skeleton key={index} width={"60%"} height={8} />}
-          {index % 5 === 4 && <Skeleton key={index} width={"40%"} height={8} />}
-        </>
+        <Skeleton
+          key={index}
+          width={widthLines[index % widthLines.length]}
+          height={8}
+        />
       ))}
     </div>
   );

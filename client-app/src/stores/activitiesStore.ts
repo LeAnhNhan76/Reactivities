@@ -3,7 +3,6 @@ import { action, observable } from "mobx";
 import agent from "../api/agent";
 import { DefaultPaging } from "../constants/common.constant";
 import { ActivityDetails, ActivityFilterType, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
-import { now } from "../utils/dateTime.util";
 
 export default class ActivitiesStore {
     @observable isLoading: boolean = false;

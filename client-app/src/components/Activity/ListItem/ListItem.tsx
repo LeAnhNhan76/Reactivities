@@ -105,6 +105,7 @@ const ListItem = ({ activity }: Props) => {
               img
             ) : (
               <Popup
+                key={item.id}
                 trigger={img}
                 // on="click"
                 // pinned
