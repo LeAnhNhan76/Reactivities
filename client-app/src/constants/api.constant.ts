@@ -46,5 +46,14 @@ export const ApiConstants = {
     unfollow(userId: string) {
       return `${this.root}?userId=${userId}`
     }
+  },
+  activityMembers: {
+    root: `${baseAPIURL}/activityMembers`,
+    join(activityId: string) {
+      return `${this.root}?activityId=${activityId}`;
+    },
+    unjoin(activityId: string) {
+      return `${this.root}?activityId=${activityId}`;
+    }
   }
 }

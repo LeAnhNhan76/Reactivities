@@ -15,30 +15,31 @@ namespace API.Controllers
     {
         private readonly IMediator _mediator;
         public ActivityMembersController(IHttpContextAccessor context
-          , IMediator mediator  
+          , IMediator mediator
         ) : base(context)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMembersJoinActivity([FromQuery]Guid activityId) 
+        public async Task<IActionResult> GetMembersJoinActivity([FromQuery] Guid activityId)
         {
-            var request = new GetMembersJoinActivityRequest() {
+            var request = new GetMembersJoinActivityRequest()
+            {
                 ActivityId = activityId
             };
 
             var result = await _mediator.Send(request);
-            
+
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> JoinActivityAsync ([FromBody] AddMemberToActivityRequest model)
+        public async Task<IActionResult> JoinActivityAsync([FromQuery] Guid activityId)
         {
-            var request = new AddMemberToActivityCommandRequest() {
-                ActivityId = model.ActivityId,
-                UserId = CurrentLoginUser.UserId
+            var request = new AddMemberToActivityRequest()
+            {
+                ActivityId = activityId
             };
 
             var result = await _mediator.Send(request);
@@ -48,9 +49,9 @@ namespace API.Controllers
         [HttpDelete]
         public async Task<IActionResult> UnjoinActivityAsync([FromQuery] Guid activityId)
         {
-            var request = new RemoveMemberOutOfActivityRequest() {
-                ActivityId = activityId,
-                UserId = CurrentLoginUser.UserId
+            var request = new RemoveMemberOutOfActivityRequest()
+            {
+                ActivityId = activityId
             };
 
             var result = await _mediator.Send(request);

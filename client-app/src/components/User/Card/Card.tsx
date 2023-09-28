@@ -63,7 +63,7 @@ const UserCard = ({ item }: Props) => {
   return (
     <Card>
       <Image
-        src={loadAvatar(item.joinerAvatar)}
+        src={loadAvatar(item?.joinerAvatar)}
         alt=""
         style={{ height: 275, objectFit: "cover" }}
       />

@@ -1,10 +1,10 @@
 import Skeleton from "react-loading-skeleton";
 
 type Props = {
-  lines: number;
+  lines?: number;
 };
 
-const PlaceholderPara = ({ lines }: Props) => {
+const PlaceholderPara = ({ lines = 1 }: Props) => {
   const widthLines = ["100%", "85%", "50%", "70%", "60%", "40%"];
 
   return (

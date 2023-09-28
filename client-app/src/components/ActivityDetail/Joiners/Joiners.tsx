@@ -11,7 +11,7 @@ const Joiners = () => {
   const { currentActivityDetails } = activitiesStore;
 
   const userId = currentUserId();
-  const isFollowing = (followers: string[]) => followers.includes(userId);
+  const isFollowing = (followers: string[]) => followers?.includes(userId);
 
   return (
     <div>
@@ -23,22 +23,22 @@ const Joiners = () => {
           {activitiesStore.isLoading && <Placeholder lines={7} />}
           <Item.Group divided>
             {currentActivityDetails?.joiners?.map((item, index) => (
-              <Item key={item.id}>
+              <Item key={item?.id}>
                 <Item.Content>
                   <Grid columns={2}>
                     <Grid.Row>
                       <Grid.Column width={10}>
                         <Avatar
-                          src={loadAvatar(item.joinerAvatar)}
+                          src={loadAvatar(item?.joinerAvatar)}
                           alt="avatar"
-                          title={item.joinerDisplayName}
+                          title={item?.joinerDisplayName}
                           subTitle={
-                            isFollowing(item.joinerFollowers)
+                            isFollowing(item?.joinerFollowers)
                               ? "Following"
                               : "No follow"
                           }
                           subTitleStyle={{
-                            color: isFollowing(item.joinerFollowers)
+                            color: isFollowing(item?.joinerFollowers)
                               ? "var(--red-color)"
                               : "var(--secondary-color)",
                           }}

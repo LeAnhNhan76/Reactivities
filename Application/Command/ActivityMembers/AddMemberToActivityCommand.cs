@@ -6,39 +6,37 @@ using Application.Exceptions;
 using Domain.Entities;
 using FluentValidation;
 using FrameworkCore.Enums;
+using FrameworkCore.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Command
 {
-    public class AddMemberToActivityRequest 
+    public class AddMemberToActivityRequest : IRequest<bool>
     {
         public Guid ActivityId { get; set; }
-    }
-    public class AddMemberToActivityCommandRequest: IRequest<bool>
-    {
-        public Guid ActivityId { get; set; }
-        public Guid UserId { get; set; }
     }
 
-    public class AddMemberToActivityCommandValidator: AbstractValidator<AddMemberToActivityCommandRequest>
+    public class AddMemberToActivityCommandValidator : AbstractValidator<AddMemberToActivityRequest>
     {
         public AddMemberToActivityCommandValidator()
         {
             RuleFor(x => x.ActivityId).NotEmpty().NotEqual(Guid.Empty);
-            RuleFor(x => x.UserId).NotEmpty().NotEqual(Guid.Empty);
         }
     }
 
-    public class AddMemberToActivityCommandHandler : IRequestHandler<AddMemberToActivityCommandRequest, bool>
+    public class AddMemberToActivityCommandHandler : IRequestHandler<AddMemberToActivityRequest, bool>
     {
         private readonly ApplicationDbContext _context;
-        public AddMemberToActivityCommandHandler(ApplicationDbContext context)
+        private Guid _currentUserId { get; set; }
+        public AddMemberToActivityCommandHandler(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _currentUserId = httpContextAccessor.HttpContext.CurrentUserId();
         }
-        public async Task<bool> Handle(AddMemberToActivityCommandRequest request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(AddMemberToActivityRequest request, CancellationToken cancellationToken)
         {
             var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.ActivityId);
 
@@ -53,16 +51,17 @@ namespace Application.Command
             if (!validStatuses.Contains(activity.Status))
                 throw new DomainException("Activity status is invalid");
 
-            var isExisted = await _context.ActivityMembers.AnyAsync(x => x.ActivityId == request.ActivityId && 
-                x.MemberId == request.UserId);
+            var isExisted = await _context.ActivityMembers.AnyAsync(x => x.ActivityId == request.ActivityId &&
+                x.MemberId == _currentUserId);
 
-            if (isExisted == true) 
+            if (isExisted == true)
                 throw new DomainException("This activity is joined");
 
-            var activityMember = new ActivityMember() {
+            var activityMember = new ActivityMember()
+            {
                 Id = Guid.NewGuid(),
                 ActivityId = request.ActivityId,
-                MemberId = request.UserId
+                MemberId = _currentUserId
             };
 
             await _context.ActivityMembers.AddAsync(activityMember);

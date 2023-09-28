@@ -2,7 +2,9 @@
 import { action, observable } from "mobx";
 import agent from "../api/agent";
 import { DefaultPaging } from "../constants/common.constant";
-import { ActivityDetails, ActivityFilterType, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
+import { ActivityDetails, ActivityFilterType, ActivityJoinerItem, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
+import { moveItemToFirst } from "../utils/array.util";
+import { isStrNotNullOrUndefined } from "../utils/string.util";
 
 export default class ActivitiesStore {
     @observable isLoading: boolean = false;
@@ -102,6 +104,12 @@ export default class ActivitiesStore {
             try {
                 const details = await agent.Activities.loadDetails(activityId);
                 if (details) {
+                    if (details.joiners.length > 0) {
+                        const hostJoinerIndex = details.joiners.findIndex(x => x.joinerId === details.hostId);
+                        if (hostJoinerIndex !== 0) {
+                            details.joiners = moveItemToFirst(details.joiners, hostJoinerIndex) as ActivityJoinerItem[];
+                        }
+                    }
                     this.currentActivityDetails = details;
                 }
             } catch (error) {
@@ -125,5 +133,17 @@ export default class ActivitiesStore {
         this.pagingParams.date = date.toJSON();
 
         this.getPagingList();
+    }
+
+    @action joinActivity = async (activityId: string) => {
+        if (isStrNotNullOrUndefined(activityId)) {
+            try {
+                const joinResult = await agent.ActivityMembers.follow(activityId);
+                return joinResult;
+            }
+            catch (err) {
+                console.log('Error Api: ', err)
+            }
+        }
     }
 }

@@ -3,25 +3,28 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Exceptions;
 using FrameworkCore.Enums;
+using FrameworkCore.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Command
 {
-    public class RemoveMemberOutOfActivityRequest: IRequest<bool>
+    public class RemoveMemberOutOfActivityRequest : IRequest<bool>
     {
         public Guid ActivityId { get; set; }
-        public Guid UserId { get; set; }
     }
 
     public class RemoveMemberOutOfActivityHandler : IRequestHandler<RemoveMemberOutOfActivityRequest, bool>
     {
         private readonly ApplicationDbContext _context;
+        private Guid _currentUserId { get; set; }
 
-        public RemoveMemberOutOfActivityHandler(ApplicationDbContext context) 
+        public RemoveMemberOutOfActivityHandler(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _currentUserId = httpContextAccessor.HttpContext.CurrentUserId();
         }
 
         public async Task<bool> Handle(RemoveMemberOutOfActivityRequest request, CancellationToken cancellationToken)
@@ -32,12 +35,12 @@ namespace Application.Command
              activity?.Status == (byte)ActivityStatusEnum.Draft)
                 throw new DomainException("Activity is invalid");
 
-            if (activity.HostId == request.UserId) 
+            if (activity.HostId == _currentUserId)
                 throw new DomainException("You are hosting, so you cannot perform action");
 
             var activityMember = await _context.ActivityMembers.FirstOrDefaultAsync(x =>
-                 x.ActivityId == request.ActivityId && x.MemberId == request.UserId);
-        
+                 x.ActivityId == request.ActivityId && x.MemberId == _currentUserId);
+
             if (activityMember == null)
                 throw new DomainException("You've not joined activity yet");
 

@@ -9,11 +9,10 @@ import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 
 const Description = () => {
   const { activitiesStore } = useStore();
-  const { currentActivityDetails: currentActivity } = activitiesStore;
+  const { currentActivityDetails: currentActivity, isLoading } =
+    activitiesStore;
 
-  const renderLoadingLine = activitiesStore.isLoading && (
-    <Skeleton inline={true} count={1} />
-  );
+  const renderLoadingLine = isLoading && <Skeleton inline={true} count={1} />;
 
   return (
     <Segment.Group className="activity-detail-desc">

@@ -5,6 +5,7 @@ import Account from './account.api';
 import Activities from './activities.api';
 import Followers from './followers.api';
 import Users from './users.api';
+import ActivityMembers from './activity-members.api'
 
 //axios.defaults.baseURL = 'https://localhost:5000/api';
 //axios.defaults.baseURL = 'https://localhost:44311/api';
@@ -43,7 +44,8 @@ const agent = {
   Account,
   Activities,
   Users,
-  Followers
+  Followers,
+  ActivityMembers
 }
 
 export default agent;
