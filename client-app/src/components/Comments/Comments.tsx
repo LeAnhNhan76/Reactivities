@@ -1,18 +1,26 @@
 import { Comment } from "semantic-ui-react";
+import { useStore } from "../../stores/store";
+import { loadAvatar } from "../../common/helpers/files.helper";
+import { formatDateTimeConversational } from "../../utils/dateTime.util";
+import { observer } from "mobx-react-lite";
 
 const Comments = () => {
+  const { commentsStore } = useStore();
+  const { comments } = commentsStore;
   return (
     <div>
       <Comment.Group>
-        {Array.from(Array(10).keys()).map((_, index) => (
-          <Comment key={index}>
-            <Comment.Avatar src="https://images.pexels.com/photos/18099920/pexels-photo-18099920/free-photo-of-woman-posing-in-front-of-a-modern-building.jpeg?auto=compress&cs=tinysrgb&w=300&lazy=load" />
+        {comments?.map((comment, index) => (
+          <Comment key={comment?.id}>
+            <Comment.Avatar src={loadAvatar(comment?.avatar)} />
             <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
+              <Comment.Author as="a">{comment?.displayName}</Comment.Author>
               <Comment.Metadata>
-                <div>Today at 5:42PM</div>
+                <div>
+                  {formatDateTimeConversational(comment?.commentedDate)}
+                </div>
               </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
+              <Comment.Text>{comment?.comment}</Comment.Text>
               <Comment.Actions>
                 <Comment.Action>Reply</Comment.Action>
               </Comment.Actions>
@@ -24,4 +32,4 @@ const Comments = () => {
   );
 };
 
-export default Comments;
+export default observer(Comments);

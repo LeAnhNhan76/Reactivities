@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Persistence.Migrations;
 
 namespace Application.Query.ActivityComments
 {
@@ -18,6 +16,7 @@ namespace Application.Query.ActivityComments
 
     public class CommentItemOfActivity
     {
+        public Guid Id { get; set; }
         public Guid ActivityId { get; set; }
         public Guid UserId { get; set; }
         public string DisplayName { get; set; }
@@ -37,8 +36,10 @@ namespace Application.Query.ActivityComments
         {
             var comments = await _dbContext.ActivityComments
                 .Where(x => x.ActivityId == request.ActivityId)
+                .OrderByDescending(x => x.CreatedDate)
                 .Select(x => new CommentItemOfActivity
                 {
+                    Id = x.Id,
                     ActivityId = x.ActivityId,
                     UserId = x.UserId,
                     DisplayName = x.User.DisplayName,
