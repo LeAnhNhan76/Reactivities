@@ -1,11 +1,9 @@
-using FrameworkCore.Constants;
 using FrameworkCore.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,18 +51,18 @@ namespace Application.Query.Activities
 
     public class GetAllActivityQueryHandler : IRequestHandler<GetAllActivityQueryRequest, IEnumerable<ActivityQueryResponse>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public GetAllActivityQueryHandler(ApplicationDbContext context)
+        public GetAllActivityQueryHandler(ApplicationDbContext dbContext)
         {
-            this._context = context;
+            this._dbContext = dbContext;
         }
 
         public async Task<IEnumerable<ActivityQueryResponse>> Handle(GetAllActivityQueryRequest request, CancellationToken cancellationToken)
         {
-            var data = await _context.Activities
+            var data = await _dbContext.Activities
                 .Where(x => x.Status != (byte)ActivityStatusEnum.Draft)
-                .Join(_context.AppUsers
+                .Join(_dbContext.AppUsers
                 , a => a.HostId
                 , au => au.Id
                 , (a, au) => new ActivityQueryResponse
@@ -80,9 +78,9 @@ namespace Application.Query.Activities
                     Status = a.Status,
                     HostName = au.DisplayName,
                     Avatar = au.Avatar,
-                    Members = _context.ActivityMembers
+                    Members = _dbContext.ActivityMembers
                         .Where(am => am.ActivityId == a.Id)
-                        .Join(_context.AppUsers
+                        .Join(_dbContext.AppUsers
                         , am => am.MemberId
                         , au2 => au2.Id
                         , (am, au2) => new MemberJoinInfo
@@ -90,7 +88,7 @@ namespace Application.Query.Activities
                             UserId = am.MemberId,
                             DisplayName = au2.DisplayName,
                             Avatar = au2.Avatar,
-                            Followers = _context.Followers
+                            Followers = _dbContext.Followers
                                 .Where(fw => fw.FollowingId == am.MemberId)
                                 .Select(fw => fw.FollowerId)
                                 .ToList()

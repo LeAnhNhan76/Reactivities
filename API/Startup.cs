@@ -18,6 +18,7 @@ using API.Middleware;
 using Application.Behaviors;
 using FluentValidation;
 using Application.Services.Interfaces;
+using API.SignalR;
 
 namespace API
 {
@@ -58,14 +59,16 @@ namespace API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(
                 authenticationScheme: JwtBearerDefaults.AuthenticationScheme,
-                configureOptions: options => {
-                  options.TokenValidationParameters = new TokenValidationParameters {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration[Constant.TokenKey])),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                  };
-              });
+                configureOptions: options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._configuration[Constant.TokenKey])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             services.AddHttpContextAccessor();
 
@@ -76,6 +79,8 @@ namespace API
             this.RegisterServices(services);
 
             this.RegisterAutoMapper(services);
+
+            this.RegisterSignalR(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,29 +111,31 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<CommentHub>("/commentHub");
             });
         }
 
-        public void RegisterMediatR(IServiceCollection services) 
+        public void RegisterMediatR(IServiceCollection services)
         {
-          var applicationAssembly = typeof(Application.AssemblyReference).Assembly;
+            var applicationAssembly = typeof(Application.AssemblyReference).Assembly;
 
-          services.AddMediatR(applicationAssembly);
+            services.AddMediatR(applicationAssembly);
 
-          services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-          services.AddValidatorsFromAssembly(applicationAssembly);
+            services.AddValidatorsFromAssembly(applicationAssembly);
         }
 
-        public void RegisterServices(IServiceCollection services) 
+        public void RegisterServices(IServiceCollection services)
         {
-          services.AddScoped<ITokenService, TokenService>();
-          services.AddScoped<IFileService, FileService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IFileService, FileService>();
         }
 
         public void RegisterAutoMapper(IServiceCollection services)
         {
-            var mapperConfig = new MapperConfiguration(mc => {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
                 mc.AddProfile(new MappingProfile());
             });
 
@@ -139,6 +146,11 @@ namespace API
         public void RegisterMiddleware(IServiceCollection services)
         {
             services.AddTransient<ExceptionHandlingMiddleware>();
+        }
+
+        public void RegisterSignalR(IServiceCollection services)
+        {
+            services.AddSignalR();
         }
     }
 }

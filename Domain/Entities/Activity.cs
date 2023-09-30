@@ -33,6 +33,6 @@ namespace Domain.Entities
 
         public virtual ActivityStatus ActivityStatus { get; set; }
 
-        public virtual IEnumerable<ActivityMember> Members { get; set; }
+        public virtual ICollection<ActivityMember> Members { get; set; }
     }
 }

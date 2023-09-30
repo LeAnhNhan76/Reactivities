@@ -1,5 +1,5 @@
-import "./NoData.scss";
 import { Image } from "semantic-ui-react";
+import "./NoData.scss";
 
 type Props = {
   content?: string | React.ReactNode;
@@ -15,6 +15,10 @@ const NoData = ({ content }: Props) => {
         alt=""
         size="small"
       />
+      {/* <Logo />
+      <Header as={"h4"} color="orange">
+        No data
+      </Header> */}
       <span>{content || "< No data, please try other filter >"}</span>
     </div>
   );

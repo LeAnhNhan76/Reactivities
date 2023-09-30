@@ -29,16 +29,16 @@ namespace Application.Command
 
     public class AddMemberToActivityCommandHandler : IRequestHandler<AddMemberToActivityRequest, bool>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
         private Guid _currentUserId { get; set; }
-        public AddMemberToActivityCommandHandler(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public AddMemberToActivityCommandHandler(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
-            _context = context;
+            _dbContext = dbContext;
             _currentUserId = httpContextAccessor.HttpContext.CurrentUserId();
         }
         public async Task<bool> Handle(AddMemberToActivityRequest request, CancellationToken cancellationToken)
         {
-            var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.ActivityId);
+            var activity = await _dbContext.Activities.FirstOrDefaultAsync(x => x.Id == request.ActivityId);
 
             if (activity == null)
                 throw new DomainException("Activity not found");
@@ -51,7 +51,7 @@ namespace Application.Command
             if (!validStatuses.Contains(activity.Status))
                 throw new DomainException("Activity status is invalid");
 
-            var isExisted = await _context.ActivityMembers.AnyAsync(x => x.ActivityId == request.ActivityId &&
+            var isExisted = await _dbContext.ActivityMembers.AnyAsync(x => x.ActivityId == request.ActivityId &&
                 x.MemberId == _currentUserId);
 
             if (isExisted == true)
@@ -64,8 +64,8 @@ namespace Application.Command
                 MemberId = _currentUserId
             };
 
-            await _context.ActivityMembers.AddAsync(activityMember);
-            await _context.SaveChangesAsync();
+            await _dbContext.ActivityMembers.AddAsync(activityMember);
+            await _dbContext.SaveChangesAsync();
 
             return true;
         }

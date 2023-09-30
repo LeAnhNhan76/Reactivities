@@ -21,18 +21,18 @@ namespace Application.Query.Activities
 
     public class GetByIdActivityQueryHandler : IRequestHandler<GetByIdActivityQueryRequest, ActivityDetail>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public GetByIdActivityQueryHandler(ApplicationDbContext context)
+        public GetByIdActivityQueryHandler(ApplicationDbContext dbContext)
         {
-            this._context = context;
+            this._dbContext = dbContext;
         }
 
         public async Task<ActivityDetail> Handle(GetByIdActivityQueryRequest request, CancellationToken cancellationToken)
         {
-            var details = await _context.Activities
+            var details = await _dbContext.Activities
                 .Where(x => x.Id == request.Id)
-                .Join(_context.AppUsers
+                .Join(_dbContext.AppUsers
                 , a => a.HostId
                 , au => au.Id
                 , (a, au) => new ActivityDetail
@@ -52,7 +52,7 @@ namespace Application.Query.Activities
 
             if (details != null)
             {
-                var joiners = await _context.ActivityMembers.Where(x => x.ActivityId == details.Id)
+                var joiners = await _dbContext.ActivityMembers.Where(x => x.ActivityId == details.Id)
                 .Select(x => new ActivityJoinerItem
                 {
                     Id = x.Id,
@@ -61,7 +61,7 @@ namespace Application.Query.Activities
                     JoinerAvatar = x.User.Avatar,
                     JoinerDisplayName = x.User.DisplayName,
                     JoinerRegisterDate = x.User.CreatedDate,
-                    JoinerFollowers = _context.Followers
+                    JoinerFollowers = _dbContext.Followers
                         .Where(f => f.FollowingId == x.MemberId)
                         .Select(f => f.FollowerId)
                         .ToList()

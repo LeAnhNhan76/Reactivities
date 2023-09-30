@@ -8,7 +8,6 @@ using FrameworkCore.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Persistence;
 
 namespace Application.Query
@@ -50,18 +49,18 @@ namespace Application.Query
 
     public class GetPagingActivitiesHandler : IRequestHandler<GetPagingActivitiesRequest, PagedList<ActivityPagingItem>>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
         private Guid _currentUserId { get; set; }
 
-        public GetPagingActivitiesHandler(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public GetPagingActivitiesHandler(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
-            _context = context;
+            _dbContext = dbContext;
             _currentUserId = httpContextAccessor.HttpContext.CurrentUserId();
         }
 
         public async Task<PagedList<ActivityPagingItem>> Handle(GetPagingActivitiesRequest request, CancellationToken cancellationToken)
         {
-            var query = _context.Activities.AsQueryable();
+            var query = _dbContext.Activities.AsQueryable();
 
             if (!string.IsNullOrEmpty(request.SearchText))
             {
@@ -92,7 +91,7 @@ namespace Application.Query
 
             var totalItems = await query.CountAsync();
             var items = await query.Paging(request.PageIndex, request.ItemsPerPage)
-                .Join(_context.AppUsers
+                .Join(_dbContext.AppUsers
                 , a => a.HostId
                 , u => u.Id
                 , (a, u) => new ActivityPagingItem
@@ -111,7 +110,7 @@ namespace Application.Query
 
             var itemsId = items.Select(x => x.Id);
 
-            var joiners = await _context.ActivityMembers.Where(x => itemsId.Contains(x.ActivityId))
+            var joiners = await _dbContext.ActivityMembers.Where(x => itemsId.Contains(x.ActivityId))
                 .Select(x => new ActivityJoinerItem
                 {
                     Id = x.Id,
@@ -120,7 +119,7 @@ namespace Application.Query
                     JoinerAvatar = x.User.Avatar,
                     JoinerDisplayName = x.User.DisplayName,
                     JoinerRegisterDate = x.User.CreatedDate,
-                    JoinerFollowers = _context.Followers
+                    JoinerFollowers = _dbContext.Followers
                         .Where(f => f.FollowingId == x.MemberId)
                         .Select(f => f.FollowerId)
                         .ToList()

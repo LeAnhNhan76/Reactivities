@@ -9,7 +9,7 @@ using Persistence;
 
 namespace Application.Query
 {
-    public class GetMembersJoinActivityRequest: IRequest<List<MemberJoinActivityInfo>>
+    public class GetMembersJoinActivityRequest : IRequest<List<MemberJoinActivityInfo>>
     {
         public Guid ActivityId { get; set; }
     }
@@ -24,23 +24,24 @@ namespace Application.Query
 
     public class GetMembersJoinActivityQueryHandler : IRequestHandler<GetMembersJoinActivityRequest, List<MemberJoinActivityInfo>>
     {
-        private readonly ApplicationDbContext _context;
-        public GetMembersJoinActivityQueryHandler(ApplicationDbContext context)
+        private readonly ApplicationDbContext _dbContext;
+        public GetMembersJoinActivityQueryHandler(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
         public async Task<List<MemberJoinActivityInfo>> Handle(GetMembersJoinActivityRequest request, CancellationToken cancellationToken)
         {
-            var members = await _context.ActivityMembers
+            var members = await _dbContext.ActivityMembers
                 .Where(x => x.ActivityId == request.ActivityId)
-                .Join(_context.AppUsers
+                .Join(_dbContext.AppUsers
                 , x => x.MemberId
                 , y => y.Id
-                , (x, y) => new MemberJoinActivityInfo {
+                , (x, y) => new MemberJoinActivityInfo
+                {
                     UserId = x.MemberId,
                     DisplayName = y.DisplayName,
                     Avatar = y.Avatar,
-                    Followers = _context.Followers.Where(fw => fw.FollowingId == x.MemberId)
+                    Followers = _dbContext.Followers.Where(fw => fw.FollowingId == x.MemberId)
                         .Select(fw => fw.FollowerId).ToList()
                 }).ToListAsync();
 

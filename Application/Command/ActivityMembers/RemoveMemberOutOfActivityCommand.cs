@@ -18,18 +18,18 @@ namespace Application.Command
 
     public class RemoveMemberOutOfActivityHandler : IRequestHandler<RemoveMemberOutOfActivityRequest, bool>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
         private Guid _currentUserId { get; set; }
 
-        public RemoveMemberOutOfActivityHandler(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public RemoveMemberOutOfActivityHandler(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
-            _context = context;
+            _dbContext = dbContext;
             _currentUserId = httpContextAccessor.HttpContext.CurrentUserId();
         }
 
         public async Task<bool> Handle(RemoveMemberOutOfActivityRequest request, CancellationToken cancellationToken)
         {
-            var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.ActivityId);
+            var activity = await _dbContext.Activities.FirstOrDefaultAsync(x => x.Id == request.ActivityId);
 
             if (activity == null || activity?.Status == (byte)ActivityStatusEnum.Inactive ||
              activity?.Status == (byte)ActivityStatusEnum.Draft)
@@ -38,15 +38,15 @@ namespace Application.Command
             if (activity.HostId == _currentUserId)
                 throw new DomainException("You are hosting, so you cannot perform action");
 
-            var activityMember = await _context.ActivityMembers.FirstOrDefaultAsync(x =>
+            var activityMember = await _dbContext.ActivityMembers.FirstOrDefaultAsync(x =>
                  x.ActivityId == request.ActivityId && x.MemberId == _currentUserId);
 
             if (activityMember == null)
                 throw new DomainException("You've not joined activity yet");
 
-            _context.Remove(activityMember);
+            _dbContext.Remove(activityMember);
 
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return true;
         }

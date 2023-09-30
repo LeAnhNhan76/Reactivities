@@ -8,7 +8,7 @@ using Persistence;
 
 namespace Application.Command
 {
-    public class UnFollowUserCommandRequest: IRequest<bool>
+    public class UnFollowUserCommandRequest : IRequest<bool>
     {
         public Guid UserId { get; set; }
         public Guid FollowerId { get; set; }
@@ -16,28 +16,28 @@ namespace Application.Command
 
     public class UnFollowUserCommandHandler : IRequestHandler<UnFollowUserCommandRequest, bool>
     {
-        private readonly ApplicationDbContext _context;
-        public UnFollowUserCommandHandler(ApplicationDbContext context) 
+        private readonly ApplicationDbContext _dbContext;
+        public UnFollowUserCommandHandler(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public async Task<bool> Handle(UnFollowUserCommandRequest request, CancellationToken cancellationToken)
         {
-            var isExistedUsers = await _context.AppUsers.AnyAsync(x => x.Id == request.UserId)
-                && await _context.AppUsers.AnyAsync(x => x.Id == request.FollowerId);
+            var isExistedUsers = await _dbContext.AppUsers.AnyAsync(x => x.Id == request.UserId)
+                && await _dbContext.AppUsers.AnyAsync(x => x.Id == request.FollowerId);
 
             if (isExistedUsers == false)
                 throw new DomainException("One or two users is not existed");
 
-            var follower = await _context.Followers.FirstOrDefaultAsync(x => 
+            var follower = await _dbContext.Followers.FirstOrDefaultAsync(x =>
                 x.FollowerId == request.FollowerId && x.FollowingId == request.UserId);
 
             if (follower == null)
                 throw new DomainException("This user is not followed");
 
-            _context.Followers.Remove(follower);
-            await _context.SaveChangesAsync();
+            _dbContext.Followers.Remove(follower);
+            await _dbContext.SaveChangesAsync();
 
             return true;
         }

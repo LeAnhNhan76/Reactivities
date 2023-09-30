@@ -10,13 +10,13 @@ using Persistence;
 
 namespace Application.Command
 {
-    public class CancelActivityCommandRequest: IRequest<bool>
+    public class CancelActivityCommandRequest : IRequest<bool>
     {
         public Guid ActivityId { get; set; }
         public Guid UserId { get; set; }
     }
 
-    public class CancelActivityCommandValidator: AbstractValidator<CancelActivityCommandRequest>
+    public class CancelActivityCommandValidator : AbstractValidator<CancelActivityCommandRequest>
     {
         public CancelActivityCommandValidator()
         {
@@ -27,23 +27,23 @@ namespace Application.Command
 
     public class CancelActivityCommandHandler : IRequestHandler<CancelActivityCommandRequest, bool>
     {
-        private readonly ApplicationDbContext _context;
-        public CancelActivityCommandHandler(ApplicationDbContext context)
+        private readonly ApplicationDbContext _dbContext;
+        public CancelActivityCommandHandler(ApplicationDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
         public async Task<bool> Handle(CancelActivityCommandRequest request, CancellationToken cancellationToken)
         {
-            var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.ActivityId);
+            var activity = await _dbContext.Activities.FirstOrDefaultAsync(x => x.Id == request.ActivityId);
 
-            if (activity == null) 
+            if (activity == null)
                 throw new DomainException("Activity not found");
 
             if (activity.HostId != request.UserId)
                 throw new DomainException("Have no privilege to cancel this activity");
 
             activity.Status = (byte)ActivityStatusEnum.Inactive;
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return true;
         }
     }

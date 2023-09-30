@@ -14,22 +14,22 @@ namespace Application.Command.Activities
 
     public class DeleteActivityCommandHandler : IRequestHandler<DeleteActivityCommandRequest, bool>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DeleteActivityCommandHandler(ApplicationDbContext context)
+        public DeleteActivityCommandHandler(ApplicationDbContext dbContext)
         {
-            this._context = context;
+            this._dbContext = dbContext;
         }
 
         public async Task<bool> Handle(DeleteActivityCommandRequest request, CancellationToken cancellationToken)
         {
-            var activity = await _context.Activities.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var activity = await _dbContext.Activities.FirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (activity == null)
                 throw new Exception("The item is not found!");
 
-            _context.Activities.Remove(activity);
-            await _context.SaveChangesAsync();
+            _dbContext.Activities.Remove(activity);
+            await _dbContext.SaveChangesAsync();
             return true;
         }
     }

@@ -19,16 +19,16 @@ namespace Application.Command.Activities
 
     public class EditActivityCommandHandler : IRequestHandler<EditActivityCommandRequest, bool>
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
 
-        public EditActivityCommandHandler(ApplicationDbContext context)
+        public EditActivityCommandHandler(ApplicationDbContext dbContext)
         {
-            this._context = context;
+            this._dbContext = dbContext;
         }
 
         public async Task<bool> Handle(EditActivityCommandRequest request, CancellationToken cancellationToken)
         {
-            var activity = await _context.Activities.FindAsync(request.Id);
+            var activity = await _dbContext.Activities.FindAsync(request.Id);
 
             if (activity == null)
                 throw new Exception("The item is not found!");
@@ -40,7 +40,7 @@ namespace Application.Command.Activities
             activity.City = request.City ?? activity.City;
             activity.Venue = request.Venue ?? activity.Venue;
 
-            await _context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return true;
         }
     }
