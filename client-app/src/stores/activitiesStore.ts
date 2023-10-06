@@ -5,6 +5,7 @@ import { DefaultPaging } from "../constants/common.constant";
 import { ActivityDetails, ActivityFilterType, ActivityJoinerItem, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
 import { moveItemToFirst } from "../utils/array.util";
 import { isStrNotNullOrUndefined } from "../utils/string.util";
+import { currentUserId } from "../utils/authentication.util";
 
 export default class ActivitiesStore {
     @observable isLoading: boolean = false;
@@ -96,29 +97,40 @@ export default class ActivitiesStore {
     @action async loadActivityDetails(activityId: string) {
         const index = this.activitiesPagingList.findIndex(x => x.id === activityId);
         if (index !== -1) {
-            this.currentActivityDetails = {
-                ...this.activitiesPagingList[index],
+            const loadedData = {
+                ...this.activitiesPagingList[index]
             } as ActivityDetails;
-        } else {
-            this.showLoading();
-            try {
-                const details = await agent.Activities.loadDetails(activityId);
-                if (details) {
-                    if (details.joiners.length > 0) {
-                        const hostJoinerIndex = details.joiners.findIndex(x => x.joinerId === details.hostId);
-                        if (hostJoinerIndex !== 0) {
-                            details.joiners = moveItemToFirst(details.joiners, hostJoinerIndex) as ActivityJoinerItem[];
-                        }
-                    }
-                    this.currentActivityDetails = details;
+            if (loadedData.joiners.length > 0) {
+                const hostJoinerIndex = loadedData.joiners.findIndex(x => x.joinerId === loadedData.hostId);
+                if (hostJoinerIndex !== 0) {
+                    loadedData.joiners = moveItemToFirst(loadedData.joiners, hostJoinerIndex) as ActivityJoinerItem[];
                 }
-            } catch (error) {
-                console.log('Error api: ', error);
-                this.hideLoading();
             }
-            finally {
-                this.hideLoading();
+            this.currentActivityDetails = loadedData;
+        } else {
+            await this.getActivityDetailsApi(activityId);
+        }
+    }
+
+    @action async getActivityDetailsApi(activityId: string) {
+        this.showLoading();
+        try {
+            const details = await agent.Activities.loadDetails(activityId);
+            if (details) {
+                if (details.joiners.length > 0) {
+                    const hostJoinerIndex = details.joiners.findIndex(x => x.joinerId === details.hostId);
+                    if (hostJoinerIndex !== 0) {
+                        details.joiners = moveItemToFirst(details.joiners, hostJoinerIndex) as ActivityJoinerItem[];
+                    }
+                }
+                this.currentActivityDetails = details;
             }
+        } catch (error) {
+            console.log('Error api: ', error);
+            this.hideLoading();
+        }
+        finally {
+            this.hideLoading();
         }
     }
 
@@ -143,6 +155,17 @@ export default class ActivitiesStore {
             }
             catch (err) {
                 console.log('Error Api: ', err)
+            }
+        }
+    }
+
+    @action unjoinActivity = async (activityId: string) => {
+        if (isStrNotNullOrUndefined(activityId)) {
+            try {
+                const unjoinResult = await agent.ActivityMembers.unfollow(activityId);
+                return unjoinResult;
+            } catch (err) {
+                console.log('Error api: ', err)
             }
         }
     }

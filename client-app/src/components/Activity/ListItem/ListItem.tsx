@@ -8,7 +8,9 @@ import {
   Icon,
   Image,
   Item,
+  Label,
   Popup,
+  SemanticCOLORS,
 } from "semantic-ui-react";
 import {
   formatActivityDateConversational,
@@ -16,6 +18,7 @@ import {
 } from "../../../common/helpers/activities.helper";
 import { loadAvatar } from "../../../common/helpers/files.helper";
 import Placeholder from "../../../common/ui/Placeholder/Placeholder";
+import { ActivityStatusEnum } from "../../../enums/common.enum";
 import { ActivityPagingItem } from "../../../types/activity.type";
 import { currentUserId } from "../../../utils/authentication.util";
 import { formatDateTime } from "../../../utils/dateTime.util";
@@ -27,23 +30,29 @@ type Props = {
   activity: ActivityPagingItem;
 };
 
+const statusInfoMap = new Map<
+  ActivityStatusEnum,
+  { title: string; color: SemanticCOLORS }
+>([
+  [ActivityStatusEnum.Pending, { title: "Coming soon", color: "orange" }],
+  [ActivityStatusEnum.Active, { title: "Happening", color: "green" }],
+  [ActivityStatusEnum.InActive, { title: "Finished", color: "red" }],
+]);
+
 const ListItem = ({ activity }: Props) => {
   const userId = currentUserId();
-  const isJoined = activity.joiners.some((x) => x.joinerId === userId);
-
   const [openUserCard, setOpenUserCard] = useState(false);
-
   const navigate = useNavigate();
-
   const handleViewDetails = () => {
     navigate(`/activities/${activity.id}`);
   };
+  const statusInfo = statusInfoMap.get(activity?.status);
 
   return (
     <div className="activity-list-item">
       <Header
         content={formatDateTime(activity.date)}
-        color="orange"
+        color={statusInfo?.color}
         size="small"
       />
       <Card fluid>
@@ -60,17 +69,19 @@ const ListItem = ({ activity }: Props) => {
                 avatar
               ></Item.Image>
               <Item.Content>
-                <Item.Header content={activity.title} />
-                <Item.Meta content={`Host by ${activity.hostName}`} />
+                <Item.Header>{activity.title}</Item.Header>
+                <Item.Meta
+                  content={
+                    <span>
+                      Host by <b>{activity.hostName}</b>
+                    </span>
+                  }
+                />
                 <Item.Description>
-                  <Button
-                    content={
-                      isJoined
-                        ? "You are going to this activity"
-                        : "You have been not joined, yet!"
-                    }
-                    color={isJoined ? "green" : "red"}
-                    inverted
+                  <Label
+                    content={statusInfo?.title}
+                    color={statusInfo?.color}
+                    size="medium"
                   />
                 </Item.Description>
               </Item.Content>

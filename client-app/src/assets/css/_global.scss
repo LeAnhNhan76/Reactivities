@@ -81,3 +81,13 @@
   background-color: var(--secondary-color) !important;
   color: white !important;
 }
+
+.w-full {
+  width: 100%;
+  >.field {
+    width: inherit;
+    .racti-semantic-datepicker {
+      margin-bottom: 6px;
+    }
+  }
+}

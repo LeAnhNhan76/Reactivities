@@ -12,34 +12,24 @@ const Description = () => {
   const { currentActivityDetails: currentActivity, isLoading } =
     activitiesStore;
 
-  const renderLoadingLine = isLoading && <Skeleton inline={true} count={1} />;
-
   return (
     <Segment.Group className="activity-detail-desc">
       <Segment>
         <Grid columns={2}>
           <Grid.Row>
-            <Grid.Column width={1}>
-              <Icon name="info" color="orange"></Icon>
-            </Grid.Column>
-            <Grid.Column width={15}>
-              {renderLoadingLine}
-              <span>
-                {formatActivityDateConversational(currentActivity.date)}
-              </span>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-      <Segment>
-        <Grid columns={2}>
-          <Grid.Row>
-            <Grid.Column width={1}>
-              <Icon name="calendar" color="orange"></Icon>
-            </Grid.Column>
-            <Grid.Column width={15}>
-              {renderLoadingLine}
-              <span>{formatDate(currentActivity.date)}</span>
+            <Grid.Column width={16}>
+              {isLoading ? (
+                <Skeleton count={1} />
+              ) : (
+                <>
+                  <Icon
+                    name="info"
+                    color="orange"
+                    style={{ display: "inline-block" }}
+                  ></Icon>
+                  <span>{currentActivity.statusName}</span>
+                </>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -47,21 +37,66 @@ const Description = () => {
       <Segment>
         <Grid columns={2}>
           <Grid.Row>
-            <Grid.Column width={1}>
-              <Icon
-                name="map marker"
-                color="orange"
-                style={{ display: "inline-block" }}
-              ></Icon>
+            <Grid.Column width={16}>
+              {isLoading ? (
+                <Skeleton count={1} />
+              ) : (
+                <>
+                  <Icon
+                    name="time"
+                    color="orange"
+                    style={{ display: "inline-block" }}
+                  ></Icon>
+                  <span>
+                    {formatActivityDateConversational(currentActivity.date)}
+                  </span>
+                </>
+              )}
             </Grid.Column>
-            <Grid.Column width={15}>
-              {renderLoadingLine}
-              <span>
-                {currentActivity.venue}
-                {isStrNotNullOrUndefined(currentActivity.city)
-                  ? `, ${currentActivity.city}`
-                  : ""}
-              </span>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+      <Segment>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column width={16}>
+              {isLoading ? (
+                <Skeleton count={1} />
+              ) : (
+                <>
+                  <Icon
+                    name="calendar"
+                    color="orange"
+                    style={{ display: "inline-block" }}
+                  ></Icon>
+                  <span>{formatDate(currentActivity.date)}</span>
+                </>
+              )}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+      <Segment>
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column width={16}>
+              {isLoading ? (
+                <Skeleton count={1} />
+              ) : (
+                <>
+                  <Icon
+                    name="map marker"
+                    color="orange"
+                    style={{ display: "inline-block" }}
+                  ></Icon>
+                  <span>
+                    {currentActivity.venue}
+                    {isStrNotNullOrUndefined(currentActivity.city)
+                      ? `, ${currentActivity.city}`
+                      : ""}
+                  </span>
+                </>
+              )}
             </Grid.Column>
           </Grid.Row>
         </Grid>

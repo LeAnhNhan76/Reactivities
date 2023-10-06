@@ -44,7 +44,32 @@ const Header = () => {
             description: "You already have been joined this event!",
           });
         }
-        activitiesStore.loadActivityDetails(currentActivityDetails?.id);
+        activitiesStore.getActivityDetailsApi(currentActivityDetails?.id);
+      } catch (error) {
+        setLoading(false);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleUnjoinActivity = async () => {
+    if (
+      currentActivityDetails &&
+      isStrNotNullOrUndefined(currentActivityDetails?.id)
+    ) {
+      setLoading(true);
+      try {
+        const result = await activitiesStore.unjoinActivity(
+          currentActivityDetails?.id
+        );
+        if (result === true) {
+          toastSuccess({
+            title: "Cancel attandance",
+            description: "You was cancel attandance",
+          });
+          activitiesStore.getActivityDetailsApi(currentActivityDetails?.id);
+        }
       } catch (error) {
         setLoading(false);
       } finally {
@@ -89,7 +114,13 @@ const Header = () => {
                   </Button>
                 )}
                 {isGoing && !isHosting && (
-                  <Button color="red">Cancel attendance</Button>
+                  <Button
+                    color="red"
+                    onClick={handleUnjoinActivity}
+                    loading={loading}
+                  >
+                    Cancel attendance
+                  </Button>
                 )}
                 {isGoing && isHosting && (
                   <>

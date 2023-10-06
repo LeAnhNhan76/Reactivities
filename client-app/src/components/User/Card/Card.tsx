@@ -27,6 +27,7 @@ const UserCard = ({ item }: Props) => {
   const isFollowing = item.joinerFollowers.includes(userId);
 
   const btnEditFollowRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const handleClickOutBtnEditFollow = () => {
     setFollowAction(ButtonFollowAction.Show);
@@ -45,18 +46,26 @@ const UserCard = ({ item }: Props) => {
 
   const handleEditFollow = async () => {
     let result: boolean | undefined = false;
-    if (isFollowing) {
-      result = await usersStore.unfollow(item.joinerId);
-    } else {
-      result = await usersStore.follow(item.joinerId);
-    }
-
-    if (result === true) {
+    setLoading(true);
+    try {
       if (isFollowing) {
-        activitiesStore.unfollowUser(item.activityId, userId, item.joinerId);
+        result = await usersStore.unfollow(item.joinerId);
       } else {
-        activitiesStore.followUser(item.activityId, userId, item.joinerId);
+        result = await usersStore.follow(item.joinerId);
       }
+
+      if (result === true) {
+        if (isFollowing) {
+          activitiesStore.unfollowUser(item.activityId, userId, item.joinerId);
+        } else {
+          activitiesStore.followUser(item.activityId, userId, item.joinerId);
+        }
+      }
+    } catch (error) {
+      console.log("Error follow: ", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +87,7 @@ const UserCard = ({ item }: Props) => {
       </Card.Content>
       <Card.Content>
         {followAction === ButtonFollowAction.Show && (
-          <Transition.Group animation="slide right" duration={300}>
+          <Transition.Group animation="slide right" duration={400}>
             {visibleButtonShow && (
               <Button
                 color="orange"
@@ -89,7 +98,7 @@ const UserCard = ({ item }: Props) => {
 
                   setTimeout(() => {
                     setFollowAction(ButtonFollowAction.Edit);
-                  }, 300);
+                  }, 400);
                 }}
                 type="button"
               >
@@ -99,17 +108,20 @@ const UserCard = ({ item }: Props) => {
           </Transition.Group>
         )}
         <div ref={btnEditFollowRef}>
-          <Transition.Group animation="fade right" duration={300}>
+          <Transition.Group animation="fade" duration={400}>
             {followAction === ButtonFollowAction.Edit && (
-              <Button
-                color={isFollowing ? "red" : "green"}
-                fluid
-                size="large"
-                onClick={handleEditFollow}
-                type="button"
-              >
-                {isFollowing ? "Unfollow" : "Follow"}
-              </Button>
+              <div>
+                <Button
+                  color={isFollowing ? "red" : "green"}
+                  fluid
+                  size="large"
+                  onClick={handleEditFollow}
+                  type="button"
+                  loading={loading}
+                >
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </Button>
+              </div>
             )}
           </Transition.Group>
         </div>

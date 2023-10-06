@@ -10,15 +10,19 @@
                     width: 100px !important;
     
                     img {
-                        width: 100px !important;
-                        height: 100px !important;
+                        width: 95px !important;
+                        height: 95px !important;
                         object-fit: cover;
                     }
                 }
                 .content {
                     display: flex;
                     flex-direction: column;
-                    gap: 2px;
+                    justify-content: center;
+
+                    b {
+                        color: var(--secondary-color)
+                    }
                 }
             }
         }

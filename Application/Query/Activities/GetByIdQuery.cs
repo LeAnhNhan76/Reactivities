@@ -45,6 +45,7 @@ namespace Application.Query.Activities
                     City = a.City,
                     Venue = a.Venue,
                     Status = a.Status,
+                    StatusName = a.ActivityStatus.Name,
                     HostId = a.HostId,
                     HostName = au.DisplayName
                 })

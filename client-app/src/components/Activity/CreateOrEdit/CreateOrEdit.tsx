@@ -7,6 +7,7 @@ import {
   Modal,
   DropdownProps,
   InputOnChangeData,
+  Grid,
 } from "semantic-ui-react";
 import { activityCategoryOptions } from "../../../constants/activity.constant";
 import { CreateOrEditActivity } from "../../../types/activity.type";
@@ -16,6 +17,8 @@ import { now } from "../../../utils/dateTime.util";
 import { useStore } from "../../../stores/store";
 import { toastSuccess } from "../../../utils/toast.util";
 import { DefaultToast } from "../../../constants/common.constant";
+import SemanticDatepicker from "react-semantic-ui-datepickers";
+import { dateTimeFormat } from "../../../constants/dateTime.constant";
 
 type Props = ModalProps & {
   item?: any;
@@ -73,7 +76,7 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
     }
   };
 
-  const handleChangeDate = (data: InputOnChangeData) => {
+  const handleChangeDate = (event: any, data: any) => {
     if (data && data.value) {
       setActivity((prev: any) => {
         return { ...prev, date: data.value };
@@ -87,7 +90,7 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
       onClose={onDismiss}
       closeIcon={<Icon name="close" />}
       size="large"
-      style={{ overflowY: "auto", height: "500px", top: "30%" }}
+      style={{ overflowY: "auto", top: "20%" }}
       className="create-new-activity"
     >
       <Modal.Header>Create new activity</Modal.Header>
@@ -126,7 +129,7 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Input
+            {/* <Form.Input
               label="Date"
               type="date"
               width={16}
@@ -134,7 +137,18 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
               name="date"
               value={activity.date}
               onChange={(_, data) => handleChangeDate(data)}
-            />
+            /> */}
+            <div className="w-full">
+              <SemanticDatepicker
+                format={dateTimeFormat.datepickerFormat}
+                className="racti-input racti-semantic-datepicker"
+                showToday
+                label={"Date"}
+                value={now}
+                onChange={handleChangeDate}
+                minDate={now}
+              />
+            </div>
           </Form.Group>
           <Form.Group grouped>
             <Form.TextArea

@@ -50,7 +50,6 @@ const Avatar = ({
               style={{
                 fontSize: "10px",
                 fontWeight: "600",
-                fontStyle: "italic",
                 color: "var(--secondary-color)",
                 ...subTitleStyle,
               }}

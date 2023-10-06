@@ -12,7 +12,15 @@ const Comments = () => {
       <Comment.Group>
         {comments?.map((comment, index) => (
           <Comment key={comment?.id}>
-            <Comment.Avatar src={loadAvatar(comment?.avatar)} />
+            <Comment.Avatar
+              style={{
+                width: "40px",
+                height: "50px",
+                objetFit: "cover",
+                marginRight: "13px",
+              }}
+              src={loadAvatar(comment?.avatar)}
+            />
             <Comment.Content>
               <Comment.Author as="a">{comment?.displayName}</Comment.Author>
               <Comment.Metadata>

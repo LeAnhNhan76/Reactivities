@@ -6,6 +6,7 @@ import { observer } from "mobx-react-lite";
 import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 import { useForm, Controller } from "react-hook-form";
 import { getAuthenProfile } from "../../../utils/authentication.util";
+import Skeleton from "../../../common/ui/Skeleton/Skeleton";
 
 const defaultForm = {
   comment: "",
@@ -75,7 +76,7 @@ const Chats = () => {
                 />
               )}
             />
-            <Comments />
+            {activitiesStore.isLoading ? <Skeleton count={5} /> : <Comments />}
           </Form>
         </Segment>
       </Segment.Group>
