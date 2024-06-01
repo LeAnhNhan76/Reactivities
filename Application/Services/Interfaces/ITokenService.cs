@@ -4,6 +4,6 @@ namespace Application.Services.Interfaces
 {
   public interface ITokenService
   {
-    string CreateToken(AppUser user);
+    (string token, string refreshToken) GenerateTokens(AppUser user);
   }
 }

@@ -8,19 +8,32 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Domain.Entities;
 using Application.Services.Interfaces;
+using Persistence;
+using System.Security.Cryptography;
 
 namespace Application.Services
 {
   public class TokenService : ITokenService
   {
     private readonly SymmetricSecurityKey _key;
-    public TokenService(IConfiguration config)
+    private readonly ApplicationDbContext _dbContext;
+    public TokenService(IConfiguration config, ApplicationDbContext dbContext)
     {
       this._key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[Constant.TokenKey]));
+      this._dbContext = dbContext;
     }
-    public string CreateToken(AppUser user)
+
+    public (string token, string refreshToken) GenerateTokens(AppUser user)
     {
-      var claims = new List<Claim>() 
+      var token = GenerateToken(user);
+      var refreshToken = GenerateRefreshToken();
+
+      return (token, refreshToken);
+    }
+
+    private string GenerateToken(AppUser user)
+    {
+      var claims = new List<Claim>()
       {
         new Claim(ReactivitiesClaimTypes.CurrentUserId, user.Id.ToString()),
         new Claim(ReactivitiesClaimTypes.CurrentUserName, user.UserName),
@@ -28,7 +41,7 @@ namespace Application.Services
 
       var creds = new SigningCredentials(this._key, SecurityAlgorithms.HmacSha512Signature);
 
-      var tokenDescriptor = new SecurityTokenDescriptor() 
+      var tokenDescriptor = new SecurityTokenDescriptor()
       {
         Subject = new ClaimsIdentity(claims),
         Expires = DateTimeOffset.UtcNow.AddDays(7).UtcDateTime,
@@ -40,6 +53,16 @@ namespace Application.Services
       SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 
       return tokenHandler.WriteToken(token);
+    }
+
+    private string GenerateRefreshToken()
+    {
+      var randomNumber = new byte[32];
+      using (var rng = RandomNumberGenerator.Create())
+      {
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
+      }
     }
   }
 }

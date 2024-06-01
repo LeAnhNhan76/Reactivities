@@ -22,7 +22,6 @@ import { ActivityStatusEnum } from "../../../enums/common.enum";
 import { ActivityPagingItem } from "../../../types/activity.type";
 import { currentUserId } from "../../../utils/authentication.util";
 import { formatDateTime } from "../../../utils/dateTime.util";
-import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 import UserCard from "../../User/Card/Card";
 import "./ListItem.scss";
 
@@ -92,11 +91,7 @@ const ListItem = ({ activity }: Props) => {
           <Icon name="clock" />
           <span>{formatDateTime(activity.date)}</span>
           <Icon name="map marker" />
-          <span>
-            {isStrNotNullOrUndefined(activity.city)
-              ? `${activity.venue}, ${activity.city}`
-              : activity.venue}
-          </span>
+          <span>{[activity.city, activity.venue].join(", ")}</span>
         </Card.Content>
         <Card.Content extra className="joiners">
           {activity.joiners.length === 0 && (

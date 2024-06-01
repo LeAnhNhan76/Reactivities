@@ -5,7 +5,6 @@ import { DefaultPaging } from "../constants/common.constant";
 import { ActivityDetails, ActivityFilterType, ActivityJoinerItem, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
 import { moveItemToFirst } from "../utils/array.util";
 import { isStrNotNullOrUndefined } from "../utils/string.util";
-import { currentUserId } from "../utils/authentication.util";
 
 export default class ActivitiesStore {
     @observable isLoading: boolean = false;

@@ -15,6 +15,7 @@ import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 import { toastSuccess } from "../../../utils/toast.util";
 import { ActivityStatusEnum } from "../../../enums/common.enum";
 import { useState } from "react";
+import CreateOrEdit from "../../Activity/CreateOrEdit/CreateOrEdit";
 
 const Header = () => {
   const { activitiesStore } = useStore();
@@ -78,6 +79,8 @@ const Header = () => {
     }
   };
 
+  const [openManageEvent, setOpenManageEvent] = useState(false);
+
   return (
     <div className="activity-detail-header">
       {activitiesStore.isLoading ? (
@@ -125,9 +128,20 @@ const Header = () => {
                 {isGoing && isHosting && (
                   <>
                     <Button>Cancel Activity</Button>
-                    <Button floated="right" color="orange">
+                    <Button
+                      floated="right"
+                      color="orange"
+                      onClick={() => setOpenManageEvent(true)}
+                    >
                       Manage Event
                     </Button>
+                    {openManageEvent && (
+                      <CreateOrEdit
+                        isOpen={openManageEvent}
+                        onDismiss={() => setOpenManageEvent(false)}
+                        item={currentActivityDetails}
+                      />
+                    )}
                   </>
                 )}
               </>

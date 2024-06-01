@@ -1,27 +1,30 @@
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import SemanticDatepicker from "react-semantic-ui-datepickers";
+import { SemanticDatepickerProps } from "react-semantic-ui-datepickers/dist/types";
 import {
   Button,
+  DropdownProps,
   Form,
   FormProps,
   Icon,
   Modal,
-  DropdownProps,
-  InputOnChangeData,
-  Grid,
 } from "semantic-ui-react";
 import { activityCategoryOptions } from "../../../constants/activity.constant";
-import { CreateOrEditActivity } from "../../../types/activity.type";
-import { ModalProps } from "../../../types/modal.type";
-import "./CreateOrEdit.scss";
-import { now } from "../../../utils/dateTime.util";
-import { useStore } from "../../../stores/store";
-import { toastSuccess } from "../../../utils/toast.util";
 import { DefaultToast } from "../../../constants/common.constant";
-import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { dateTimeFormat } from "../../../constants/dateTime.constant";
+import { useStore } from "../../../stores/store";
+import {
+  ActivityDetails,
+  CreateOrEditActivity,
+} from "../../../types/activity.type";
+import { ModalProps } from "../../../types/modal.type";
+import { now } from "../../../utils/dateTime.util";
+import { toastSuccess } from "../../../utils/toast.util";
+import "./CreateOrEdit.scss";
 
 type Props = ModalProps & {
-  item?: any;
+  item?: ActivityDetails;
 };
 const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
   const { activitiesStore, commonStore } = useStore();
@@ -56,10 +59,12 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
     }
   };
 
+  console.log("item", item);
+
   const initialActivity = item
-    ? {
+    ? ({
         ...item,
-      }
+      } as CreateOrEditActivity)
     : ({
         category: activityCategoryOptions[0].value,
         date: now,
@@ -76,11 +81,11 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
     }
   };
 
-  const handleChangeDate = (event: any, data: any) => {
-    if (data && data.value) {
-      setActivity((prev: any) => {
-        return { ...prev, date: data.value };
-      });
+  const handleChangeDate = (_: any, data: SemanticDatepickerProps) => {
+    console.log("data: ", data);
+    if (data) {
+      const newVal = { ...activity, date: data.value } as CreateOrEditActivity;
+      setActivity(newVal);
     }
   };
 
@@ -103,6 +108,7 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
               label="Title"
               width={8}
               name="title"
+              value={activity.title}
             />
             <Form.Select
               className="racti-input"
@@ -120,33 +126,25 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
               width={8}
               className="racti-input"
               name="city"
+              value={activity.city}
             />
             <Form.Input
               label="venue"
               width={8}
               className="racti-input"
               name="venue"
+              value={activity.venue}
             />
           </Form.Group>
           <Form.Group>
-            {/* <Form.Input
-              label="Date"
-              type="date"
-              width={16}
-              className="racti-input"
-              name="date"
-              value={activity.date}
-              onChange={(_, data) => handleChangeDate(data)}
-            /> */}
             <div className="w-full">
               <SemanticDatepicker
                 format={dateTimeFormat.datepickerFormat}
                 className="racti-input racti-semantic-datepicker"
                 showToday
                 label={"Date"}
-                value={now}
+                value={new Date()}
                 onChange={handleChangeDate}
-                minDate={now}
               />
             </div>
           </Form.Group>
@@ -156,6 +154,7 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
               width={16}
               className="racti-input"
               name="desc"
+              value={activity.description}
             />
           </Form.Group>
           <Form.Group>
@@ -174,4 +173,4 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
   );
 };
 
-export default CreateOrEdit;
+export default observer(CreateOrEdit);
