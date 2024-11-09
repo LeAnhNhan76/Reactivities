@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouteObject } from "react-router-dom";
 import App from "../App";
 import Layout from "../components/Layout/Layout";
-import { routingConstants } from "../constants/routing.constant";
+import { RoutingConstants } from "../constants/routing.constant";
 import Activities from "../pages/Activities/Activities";
 import ActivityDetail from "../pages/ActivityDetail/ActivityDetail";
 import Errors from "../pages/Errors/Errors";
@@ -17,14 +17,14 @@ export const routes: RouteObject[] = [
         path: "",
         element: <Layout />,
         children: [
-          { path: routingConstants.Activities, element: <Activities /> },
+          { path: RoutingConstants.Activities, element: <Activities /> },
           {
-            path: routingConstants.ActivityDetail,
+            path: RoutingConstants.ActivityDetail,
             element: <ActivityDetail />,
           },
-          { path: routingConstants.Errors, element: <Errors /> },
-          { path: routingConstants.Profile, element: <Profile /> },
-          { path: routingConstants.NotFound, element: <NotFound /> },
+          { path: RoutingConstants.Errors, element: <Errors /> },
+          { path: RoutingConstants.Profile, element: <Profile /> },
+          { path: RoutingConstants.NotFound, element: <NotFound /> },
         ],
       },
     ],

@@ -1,12 +1,12 @@
-import { Modal, Header, Form, Button, Message, Input } from "semantic-ui-react";
-import { ModalProps } from "../../types/modal.type";
-import { LoginType } from "../../types/login.type";
-import { useNavigate } from "react-router-dom";
-import { toastSuccess } from "../../utils/toast.util";
-import { useStore } from "../../stores/store";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { routingConstants } from "../../constants/routing.constant";
+import { useNavigate } from "react-router-dom";
+import { Button, Form, Header, Input, Message, Modal } from "semantic-ui-react";
+import { RoutingConstants } from "../../constants/routing.constant";
+import { useStore } from "../../stores/store";
+import { LoginType } from "../../types/login.type";
+import { ModalProps } from "../../types/modal.type";
+import { toastSuccess } from "../../utils/toast.util";
 
 type Props = ModalProps;
 
@@ -31,7 +31,7 @@ const Login = ({ isOpen, onDismiss }: Props) => {
         description: "Welcome you back to app, again!",
       });
       setTimeout(() => {
-        navigate(routingConstants.Activities);
+        navigate(RoutingConstants.Activities);
       }, 1000);
     } else {
       setLogginErr(true);

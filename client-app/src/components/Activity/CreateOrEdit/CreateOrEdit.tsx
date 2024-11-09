@@ -82,10 +82,10 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
   };
 
   const handleChangeDate = (_: any, data: SemanticDatepickerProps) => {
-    console.log("data: ", data);
     if (data) {
-      const newVal = { ...activity, date: data.value } as CreateOrEditActivity;
-      setActivity(newVal);
+      setActivity((prev: any) => {
+        return { ...prev, date: data.value };
+      });
     }
   };
 
@@ -95,7 +95,7 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
       onClose={onDismiss}
       closeIcon={<Icon name="close" />}
       size="large"
-      style={{ overflowY: "auto", top: "20%" }}
+      style={{ top: "20%" }}
       className="create-new-activity"
     >
       <Modal.Header>Create new activity</Modal.Header>
@@ -137,13 +137,13 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
             />
           </Form.Group>
           <Form.Group>
-            <div className="w-full">
+            <div className="w-full mb-5">
               <SemanticDatepicker
                 format={dateTimeFormat.datepickerFormat}
-                className="racti-input racti-semantic-datepicker"
+                className="racti-input"
                 showToday
                 label={"Date"}
-                value={new Date()}
+                value={activity.date}
                 onChange={handleChangeDate}
               />
             </div>

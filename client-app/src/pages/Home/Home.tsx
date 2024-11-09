@@ -1,14 +1,23 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button, Divider, Header, Icon } from "semantic-ui-react";
-import Login from "../../components/Login/Login";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Divider, Icon } from "semantic-ui-react";
 import Logo from "../../common/ui/Logo/Logo";
+import Login from "../../components/Login/Login";
+import { RoutingConstants } from "../../constants/routing.constant";
 import { hasToken } from "../../utils/authentication.util";
 import "./Home.scss";
 
 const Home = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const loggedIn = hasToken();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate(RoutingConstants.Activities);
+    }
+  }, []);
+
   return (
     <div className="home">
       <div className="home-container">
@@ -42,22 +51,6 @@ const Home = () => {
                 content={"Login with Facebook"}
                 size="massive"
               />
-            </>
-          )}
-          {loggedIn && (
-            <>
-              <Header
-                content="Helo my friend, hope you have a nice day! <3 <3 <3"
-                size="large"
-              />
-              <Link to="/activities">
-                <Button
-                  content={"Let discover amazing things today!"}
-                  icon="heart"
-                  positive
-                  size="large"
-                />
-              </Link>
             </>
           )}
 

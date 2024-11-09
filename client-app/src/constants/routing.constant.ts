@@ -1,4 +1,4 @@
-const routingConstants = {
+const RoutingConstants = {
     Home: "home",
     Activities: "activities",
     ActivityDetail: "activities/:id",
@@ -8,5 +8,6 @@ const routingConstants = {
 }
 
 export {
-    routingConstants
+    RoutingConstants
 }
+
