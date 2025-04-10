@@ -32,7 +32,7 @@ axiosInstance.interceptors.response.use((value: AxiosResponse) => {
 }, async (error) => {
   if (error && error.response?.status === 401) {
     try {
-      const response = await requests.post('REFRESH TOKEN ENDPOINT', {});
+      await requests.post('REFRESH TOKEN ENDPOINT', {});
       // SET REFRESH TOKEN HERE
     }
     catch (refreshError) {

@@ -22,8 +22,10 @@
   }
 }
 
-.ui.header {
-  margin: 0px !important;
+.ui.modal {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 .ui.dropdown {
@@ -34,20 +36,8 @@
    }
 }
 
-.ui.modal {
-  top: 40%;
-}
-
 .ui.dimmer {
   background-color: rgba(0, 0, 0, 0.65);
-}
-
-.ui.form .divider {
-  margin: 0;
-}
-
-.ui.statistics {
-  margin: 0;
 }
 
 /* width */

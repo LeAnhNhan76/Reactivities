@@ -16,7 +16,7 @@ const Home = () => {
     if (loggedIn) {
       navigate(RoutingConstants.Activities);
     }
-  }, []);
+  }, [loggedIn, navigate]);
 
   return (
     <div className="home">
@@ -25,22 +25,18 @@ const Home = () => {
           <Logo size="huge" />
           {!loggedIn && (
             <>
-              <div className="">
+              <div>
                 <Button
                   type="button"
                   color="orange"
                   content={"Login"}
                   className="btn-login"
-                  size="massive"
-                  style={{ width: "200px" }}
                   onClick={() => setOpenLogin(!openLogin)}
                 />
                 <Button
                   type="button"
                   color="grey"
                   content={"Register"}
-                  size="massive"
-                  style={{ width: "200px" }}
                   onClick={() => {}}
                 />
               </div>
@@ -49,7 +45,6 @@ const Home = () => {
                 color="facebook"
                 icon={<Icon name="facebook" />}
                 content={"Login with Facebook"}
-                size="massive"
               />
             </>
           )}

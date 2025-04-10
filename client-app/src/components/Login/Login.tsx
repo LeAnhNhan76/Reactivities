@@ -1,7 +1,14 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Form, Header, Input, Message, Modal } from "semantic-ui-react";
+import {
+  Form,
+  Header,
+  Input,
+  Message,
+  Modal,
+  ModalProps as SematicModalProps,
+} from "semantic-ui-react";
 import { RoutingConstants } from "../../constants/routing.constant";
 import { useStore } from "../../stores/store";
 import { LoginType } from "../../types/login.type";
@@ -38,21 +45,16 @@ const Login = ({ isOpen, onDismiss }: Props) => {
     }
   };
 
+  const customModalProps: SematicModalProps = {
+    open: isOpen,
+    onClose: onDismiss,
+    closeIcon: true,
+    size: "mini",
+    centered: true,
+  };
+
   return (
-    <Modal
-      open={isOpen}
-      onClose={onDismiss}
-      size="small"
-      closeIcon
-      closeOnEscape
-      style={{
-        width: "40%",
-        maxWidth: "550px",
-        top: "35%",
-        left: "53%",
-      }}
-      centered
-    >
+    <Modal {...customModalProps}>
       <Header
         content="Login to Reactivities"
         color="orange"
@@ -83,15 +85,13 @@ const Login = ({ isOpen, onDismiss }: Props) => {
               type="password"
             />
           </Form.Field>
-          <Form.Button fluid>
-            <Button
-              fluid
-              type="submit"
-              color="orange"
-              content="Login"
-              loading={authStore.isLoading}
-            />
-          </Form.Button>
+          <Form.Button
+            type="submit"
+            color="orange"
+            content="Login"
+            loading={authStore.isLoading}
+            fluid
+          ></Form.Button>
         </Form>
       </Modal.Content>
     </Modal>

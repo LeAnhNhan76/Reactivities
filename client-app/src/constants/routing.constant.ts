@@ -7,7 +7,12 @@ const RoutingConstants = {
     NotFound: "*"
 }
 
+const HomeRoutingConstants = [
+    "",
+    RoutingConstants.Home
+]
+
 export {
-    RoutingConstants
+    HomeRoutingConstants, RoutingConstants
 }
 

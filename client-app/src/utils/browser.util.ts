@@ -1,4 +1,6 @@
-import { isNotNullOrUndefined } from "./common.util"
+import { Location } from "react-router-dom";
+import { HomeRoutingConstants } from "../constants/routing.constant";
+import { isNotNullOrUndefined } from "./common.util";
 
 const generateQueryStringFromObj = (params: any | undefined) => {
     if (!isNotNullOrUndefined(params)) return '';
@@ -12,8 +14,25 @@ const generateQueryStringFromObj = (params: any | undefined) => {
     });
 
     return searchParams.toString();
-} 
+}
+
+const getCurrentRoute = (location: Location | undefined): string => {
+    if (location) {
+        return location.pathname.split('/')[1];
+    }
+    return '';
+}
+
+const isHomePage = (route: string | undefined | null): boolean => {
+    if (route !== undefined && route !== null && route !== '') {
+        return HomeRoutingConstants.includes(route);
+    }
+    return false;
+}
 
 export {
-    generateQueryStringFromObj
-}
+    generateQueryStringFromObj,
+    getCurrentRoute,
+    isHomePage
+};
+
