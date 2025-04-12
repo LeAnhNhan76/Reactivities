@@ -6,10 +6,15 @@ import {
   Button,
   DropdownProps,
   Form,
+  FormGroup,
+  FormInput,
   FormProps,
+  FormSelect,
+  FormTextArea,
   Icon,
   Modal,
 } from "semantic-ui-react";
+import FormFooterButton from "../../../common/ui/Form/FormFooterButton/FormFooterButton";
 import { activityCategoryOptions } from "../../../constants/activity.constant";
 import { DefaultToast } from "../../../constants/common.constant";
 import { dateTimeFormat } from "../../../constants/dateTime.constant";
@@ -101,72 +106,46 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
       <Modal.Header>Create new activity</Modal.Header>
       <Modal.Content>
         <Form onSubmit={handleSubmitForm}>
-          <Form.Group widths={"equal"}>
-            <Form.Input
-              className="racti-input"
+          <FormGroup widths={"equal"}>
+            <FormInput
               fluid
               label="Title"
-              width={8}
               name="title"
               value={activity.title}
             />
-            <Form.Select
-              className="racti-input"
-              options={activityCategoryOptions}
+            <FormSelect
               label="Catogory"
-              width={8}
               name="category"
+              options={activityCategoryOptions}
               value={activity.category}
               onChange={(_, data) => handleChangeCategory(data)}
             />
-          </Form.Group>
-          <Form.Group>
-            <Form.Input
-              label="City"
-              width={8}
-              className="racti-input"
-              name="city"
-              value={activity.city}
-            />
-            <Form.Input
-              label="venue"
-              width={8}
-              className="racti-input"
-              name="venue"
-              value={activity.venue}
-            />
-          </Form.Group>
-          <Form.Group>
+          </FormGroup>
+          <FormGroup widths={"equal"}>
+            <FormInput label="City" name="city" value={activity.city} />
+            <FormInput label="Venue" name="venue" value={activity.venue} />
+          </FormGroup>
+          <FormGroup>
             <div className="w-full mb-5">
               <SemanticDatepicker
-                format={dateTimeFormat.datepickerFormat}
-                className="racti-input"
-                showToday
                 label={"Date"}
+                format={dateTimeFormat.datepickerFormat}
+                showToday
                 value={activity.date}
                 onChange={handleChangeDate}
               />
             </div>
-          </Form.Group>
-          <Form.Group grouped>
-            <Form.TextArea
-              label="Description"
-              width={16}
-              className="racti-input"
-              name="desc"
-              value={activity.description}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Button floated="right" width={16} basic compact>
-              <Button color="orange" type="submit">
-                Create new
-              </Button>
-              <Button color="grey" onClick={onDismiss}>
-                Cancel
-              </Button>
-            </Form.Button>
-          </Form.Group>
+          </FormGroup>
+          <FormTextArea
+            label="Description"
+            name="desc"
+            fluid
+            value={activity.description}
+          />
+          <FormFooterButton>
+            <Button color="orange">Create</Button>
+            <Button onClick={onDismiss}>Cancel</Button>
+          </FormFooterButton>
         </Form>
       </Modal.Content>
     </Modal>
