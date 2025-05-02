@@ -12,9 +12,18 @@ import {
 } from "semantic-ui-react";
 import { loadAvatar } from "../../common/helpers/files.helper";
 import Logo from "../../common/ui/Logo/Logo";
+import { RoutingConstants } from "../../constants/routing.constant";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
+import { getCurrentRoute } from "../../utils/browser.util";
 import "./Header.scss";
+
+type MenuItem = {
+  key: string;
+  name: string;
+  icon: JSX.Element;
+  link: string;
+};
 
 const Header = () => {
   const navMenus = [
@@ -30,8 +39,8 @@ const Header = () => {
       icon: <Icon name="bug" />,
       link: "/errors",
     },
-  ];
-  const profileMenus: DropdownItemProps[] = [
+  ] as MenuItem[];
+  const profileMenus = [
     {
       key: "profile",
       text: "Your profile",
@@ -48,15 +57,14 @@ const Header = () => {
       icon: "shutdown",
       onClick: () => setOpenConfirmLogout(true),
     },
-  ];
+  ] as DropdownItemProps[];
 
-  const location = useLocation();
-  const route = location.pathname.split("/")[1];
-  const activeRouteIndex = navMenus.findIndex((x) => x.key === route);
+  const activeRoute = getCurrentRoute(useLocation());
+  const isActiveRoute = (key: string) => key === activeRoute;
+  const activeRouteIndex = navMenus.findIndex((x) => x.key === activeRoute);
   const navigate = useNavigate();
 
   const authenProfile = getAuthenProfile();
-
   const profileTrigger = (
     <div className="profile-menu-trigger">
       <Image avatar src={loadAvatar(authenProfile?.avatar)} />
@@ -67,15 +75,14 @@ const Header = () => {
   const { authStore } = useStore();
 
   const [openConfirmLogout, setOpenConfirmLogout] = useState(false);
-  const [openNewAct, setOpenNewAct] = useState(false);
-
   const onLogout = () => {
     authStore.logout();
     setOpenConfirmLogout(false);
     navigate("/");
   };
 
-  const onCreateNewActivity = () => {};
+  const onCreateNewActivity = () =>
+    navigate(RoutingConstants.CreateNewActivity);
 
   return (
     <div className="racti-header">
@@ -90,10 +97,8 @@ const Header = () => {
             <Menu.Item
               key={menu.key}
               name={menu.name}
-              active={menu.key === route}
-              onClick={() => {
-                navigate(menu.link);
-              }}
+              active={isActiveRoute(menu.key)}
+              onClick={() => navigate(menu.link)}
             >
               {menu.icon}
               <span>{menu.name}</span>

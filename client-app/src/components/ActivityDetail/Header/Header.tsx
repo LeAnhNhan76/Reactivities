@@ -86,7 +86,7 @@ const Header = () => {
           <Button
             floated="right"
             color="orange"
-            onClick={() => setOpenManageEvent(true)}
+            // onClick={() => setOpenManageEvent(true)}
           >
             Manage Event
           </Button>
