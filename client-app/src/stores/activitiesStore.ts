@@ -5,6 +5,7 @@ import { DefaultPaging } from "../constants/common.constant";
 import { ActivityDetails, ActivityFilterType, ActivityJoinerItem, ActivityPagingItem, ActivityPagingParams, CreateOrEditActivity } from "../types/activity.type";
 import { moveItemToFirst } from "../utils/array.util";
 import { isStrNotNullOrUndefined } from "../utils/string.util";
+import { toastError } from "../utils/toast.util";
 
 export default class ActivitiesStore {
     @observable isLoading: boolean = false;
@@ -82,10 +83,9 @@ export default class ActivitiesStore {
         this.showLoading();
         try {
             const createResult = await agent.Activities.create(data);
-            console.log('createResult', createResult);
             return createResult;
         } catch (error) {
-            console.log('Error api: ', error);
+            toastError({title: 'Create activity'});
             this.hideLoading();
         }
         finally {

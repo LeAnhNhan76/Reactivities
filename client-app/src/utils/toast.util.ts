@@ -21,8 +21,16 @@ const toastWarning = ({ title, description, ...otherOptions }: Props) => toast({
     ...otherOptions
 })
 
+const toastError = ({ title, description, ...otherOptions }: Props) => toast({
+    type: "error",
+    title: title || "Error",
+    description: description || "Something went wrong. Please check the information and try again!",
+    time: 500,
+    ...otherOptions
+})
+
 export {
-    toastSuccess,
+    toastError, toastSuccess,
     toastWarning
 };
 

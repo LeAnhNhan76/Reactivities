@@ -11,10 +11,9 @@ import {
   Menu,
 } from "semantic-ui-react";
 import { loadAvatar } from "../../common/helpers/files.helper";
+import Logo from "../../common/ui/Logo/Logo";
 import { useStore } from "../../stores/store";
 import { getAuthenProfile } from "../../utils/authentication.util";
-import CreateOrEditActivity from "../Activity/CreateOrEdit/CreateOrEdit";
-import Logo from "../../common/ui/Logo/Logo";
 import "./Header.scss";
 
 const Header = () => {
@@ -76,6 +75,8 @@ const Header = () => {
     navigate("/");
   };
 
+  const onCreateNewActivity = () => {};
+
   return (
     <div className="racti-header">
       <Container>
@@ -103,7 +104,7 @@ const Header = () => {
               content="Create new activity"
               icon="add"
               color="green"
-              onClick={() => setOpenNewAct(true)}
+              onClick={onCreateNewActivity}
             />
           </Menu.Item>
           <Menu.Menu position="right">
@@ -115,8 +116,8 @@ const Header = () => {
               </Dropdown.Menu>
             </Dropdown>
             <Confirm
-              header="Confirm logout"
-              content="Are you sure logout now?"
+              header="Logout"
+              content="Are you sure to logout now?"
               open={openConfirmLogout}
               size="tiny"
               onCancel={() => setOpenConfirmLogout(false)}
@@ -124,12 +125,12 @@ const Header = () => {
             />
           </Menu.Menu>
         </Menu>
-        {openNewAct && (
+        {/* {openNewAct && (
           <CreateOrEditActivity
             isOpen={openNewAct}
             onDismiss={() => setOpenNewAct(false)}
           />
-        )}
+        )} */}
       </Container>
     </div>
   );

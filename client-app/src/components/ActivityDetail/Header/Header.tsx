@@ -1,21 +1,20 @@
-import {
-  Segment,
-  Image,
-  Header as SemanticHeader,
-  Button,
-  Label,
-} from "semantic-ui-react";
-import { formatDate } from "../../../utils/dateTime.util";
-import "./Header.scss";
-import { useStore } from "../../../stores/store";
 import { observer } from "mobx-react-lite";
+import { useState } from "react";
+import {
+  Button,
+  Image,
+  Label,
+  Segment,
+  Header as SemanticHeader,
+} from "semantic-ui-react";
 import Placeholder from "../../../common/ui/Placeholder/Placeholder";
+import { ActivityStatusEnum } from "../../../enums/common.enum";
+import { useStore } from "../../../stores/store";
 import { currentUserId } from "../../../utils/authentication.util";
+import { formatDate } from "../../../utils/dateTime.util";
 import { isStrNotNullOrUndefined } from "../../../utils/string.util";
 import { toastSuccess } from "../../../utils/toast.util";
-import { ActivityStatusEnum } from "../../../enums/common.enum";
-import { useState } from "react";
-import CreateOrEdit from "../../Activity/CreateOrEdit/CreateOrEdit";
+import "./Header.scss";
 
 const Header = () => {
   const { activitiesStore } = useStore();
@@ -79,7 +78,36 @@ const Header = () => {
     }
   };
 
-  const [openManageEvent, setOpenManageEvent] = useState(false);
+  const renderButtonsStatusNotInActive = () => {
+    if (isGoing && isHosting) {
+      return (
+        <>
+          <Button>Cancel Activity</Button>
+          <Button
+            floated="right"
+            color="orange"
+            onClick={() => setOpenManageEvent(true)}
+          >
+            Manage Event
+          </Button>
+        </>
+      );
+    }
+
+    if (!isGoing) {
+      return (
+        <Button onClick={handleJoinActivity} loading={loading}>
+          Click to join event
+        </Button>
+      );
+    }
+
+    return (
+      <Button color="red" onClick={handleUnjoinActivity} loading={loading}>
+        Cancel attendance
+      </Button>
+    );
+  };
 
   return (
     <div className="activity-detail-header">
@@ -109,43 +137,15 @@ const Header = () => {
             {currentActivityDetails?.status === ActivityStatusEnum.InActive && (
               <Label color="red">Already finished!</Label>
             )}
-            {currentActivityDetails?.status !== ActivityStatusEnum.InActive && (
-              <>
-                {!isGoing && (
-                  <Button onClick={handleJoinActivity} loading={loading}>
-                    Click to join event
-                  </Button>
-                )}
-                {isGoing && !isHosting && (
-                  <Button
-                    color="red"
-                    onClick={handleUnjoinActivity}
-                    loading={loading}
-                  >
-                    Cancel attendance
-                  </Button>
-                )}
-                {isGoing && isHosting && (
-                  <>
-                    <Button>Cancel Activity</Button>
-                    <Button
-                      floated="right"
-                      color="orange"
-                      onClick={() => setOpenManageEvent(true)}
-                    >
-                      Manage Event
-                    </Button>
-                    {openManageEvent && (
-                      <CreateOrEdit
-                        isOpen={openManageEvent}
-                        onDismiss={() => setOpenManageEvent(false)}
-                        item={currentActivityDetails}
-                      />
-                    )}
-                  </>
-                )}
-              </>
-            )}
+            {currentActivityDetails?.status !== ActivityStatusEnum.InActive &&
+              renderButtonsStatusNotInActive()}
+            {/* {openManageEvent && (
+              <CreateOrEdit
+                isOpen={openManageEvent}
+                onDismiss={() => setOpenManageEvent(false)}
+                editMode={true}
+              />
+            )} */}
           </Segment>
         </Segment.Group>
       )}

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SemanticDatepicker from "react-semantic-ui-datepickers";
 import { SemanticDatepickerProps } from "react-semantic-ui-datepickers/dist/types";
 import {
@@ -8,7 +8,6 @@ import {
   Form,
   FormGroup,
   FormInput,
-  FormProps,
   FormSelect,
   FormTextArea,
   Icon,
@@ -19,24 +18,22 @@ import { activityCategoryOptions } from "../../../constants/activity.constant";
 import { DefaultToast } from "../../../constants/common.constant";
 import { dateTimeFormat } from "../../../constants/dateTime.constant";
 import { useStore } from "../../../stores/store";
-import {
-  ActivityDetails,
-  CreateOrEditActivity,
-} from "../../../types/activity.type";
+import { CreateOrEditActivity } from "../../../types/activity.type";
 import { ModalProps } from "../../../types/modal.type";
 import { now } from "../../../utils/dateTime.util";
 import { toastSuccess } from "../../../utils/toast.util";
 import "./CreateOrEdit.scss";
 
 type Props = ModalProps & {
-  item?: ActivityDetails;
+  editMode?: boolean;
 };
-const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
+const CreateOrEdit = ({ isOpen, editMode, onDismiss }: Props) => {
   const { activitiesStore, commonStore } = useStore();
+  const { currentActivityDetails } = activitiesStore;
 
   const handleSubmitForm = async (
     event: React.FormEvent<HTMLFormElement>,
-    data: FormProps
+    data: any
   ) => {
     event.preventDefault();
 
@@ -50,30 +47,36 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
       description: elements.desc.value,
     };
 
-    const actionResult = await activitiesStore.create(newestActivity);
-    if (actionResult === true) {
-      commonStore.setToastPosition("top-right");
-      toastSuccess({
-        title: "Create new",
-        description: "Create new activity was successfully!",
-      });
+    if (editMode) {
+      // Update activity
+    } else {
+      // Create activity
+      const actionResult = await activitiesStore.create(newestActivity);
+      if (actionResult === true) {
+        commonStore.setToastPosition("top-right");
+        toastSuccess({
+          title: "Create new",
+          description: "Create new activity was successfully!",
+        });
 
-      setTimeout(() => {
-        commonStore.resetToastPosition();
-      }, DefaultToast.ResetDuration);
+        setTimeout(() => {
+          commonStore.resetToastPosition();
+        }, DefaultToast.ResetDuration);
+        onDismiss?.();
+      }
     }
   };
 
-  console.log("item", item);
-
-  const initialActivity = item
-    ? ({
-        ...item,
-      } as CreateOrEditActivity)
-    : ({
-        category: activityCategoryOptions[0].value,
-        date: now,
-      } as CreateOrEditActivity);
+  const initialActivity = useMemo(() => {
+    return editMode
+      ? ({
+          ...currentActivityDetails,
+        } as CreateOrEditActivity)
+      : ({
+          category: activityCategoryOptions[0].value,
+          date: now,
+        } as CreateOrEditActivity);
+  }, [editMode, currentActivityDetails]);
 
   const [activity, setActivity] =
     useState<CreateOrEditActivity>(initialActivity);
@@ -93,6 +96,8 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
       });
     }
   };
+
+  const primaryButtonText = editMode ? "Save" : "Create";
 
   return (
     <Modal
@@ -131,7 +136,7 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
                 label={"Date"}
                 format={dateTimeFormat.datepickerFormat}
                 showToday
-                value={activity.date}
+                value={new Date(activity.date)}
                 onChange={handleChangeDate}
               />
             </div>
@@ -143,7 +148,9 @@ const CreateOrEdit = ({ isOpen, item, onDismiss }: Props) => {
             value={activity.description}
           />
           <FormFooterButton>
-            <Button color="orange">Create</Button>
+            <Button color="orange" type="submit">
+              {primaryButtonText}
+            </Button>
             <Button onClick={onDismiss}>Cancel</Button>
           </FormFooterButton>
         </Form>

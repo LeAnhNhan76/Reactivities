@@ -13,6 +13,7 @@
     "@types/react-dom": "^16.9.9",
     "@types/uuid": "^8.3.0",
     "axios": "^0.21.0",
+    "formik": "^2.4.6",
     "mobx": "^5.15.5",
     "mobx-react-lite": "^2.2.2",
     "moment": "^2.29.4",

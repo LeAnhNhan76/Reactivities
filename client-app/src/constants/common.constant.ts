@@ -7,12 +7,13 @@ const DefaultPaging: PagingParams = {
 }
 
 const DefaultToast = {
-    Position: "bottom-right" as ToastPosition,
-    Duration: 500,
+    Position: "top-right" as ToastPosition,
+    Duration: 1000,
     ResetDuration: 1000
 };
 
 export {
     DefaultPaging,
     DefaultToast
-}
+};
+
